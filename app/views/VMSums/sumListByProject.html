@@ -1,0 +1,57 @@
+#{extends 'CRUD/layout.html' /}
+
+<title>&{'BY_PROJECT_STATISTICS_TITLE'}</title><!-- 按项目统计 -->
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i><span>&{'BY_PROJECT_STATISTICS_TITLE'}</span><!-- 按项目统计 -->
+			</h1>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				<div class="table-info">
+				<table class="table table-bordered table-striped" style="margin-bottom: 0;" >
+				<thead>
+					<tr>
+						<th width="15%">
+							<strong>项目名称</strong>
+						</th>
+						<th width="15%">
+							<strong>虚拟机总和</strong>
+						</th>
+						<th width="15%">
+							<strong>虚拟CPU总和</strong>
+						</th>
+						<th width="15%">
+							<strong>内存总和</strong>
+						</th>
+						<th width="15%">
+							<strong>存储总和</strong>
+						</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					#{list items:entyList, as:'cb'}
+						<tr>
+							<td>${cb.PROJECT_NAME}</td>
+    						<td>${cb.VM_NUMBER}</td>
+    						<td>${cb.VCPU}</td>
+    						<td>${cb.MEMORY_SIZE}</td>
+    						<td>${cb.STORAGE_SIZE}</td>
+    					</tr>
+					#{/list}
+				</tbody>
+				</table>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+

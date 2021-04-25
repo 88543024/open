@@ -1,0 +1,33 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+<div class="panel">
+	<div class="panel-body">
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'host.lun.mapping'}</span>
+			</h1>
+			
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				#{crud.table fields:['HOST_NAME','HBA_WWN','VOLUME_NAME','CAPACITY','SUBSYSTEM_NAME'] }
+				 #{crud.custom 'HOST_NAME'}
+					      	${object.HOST_NAME}
+					   #{/crud.custom}
+					   
+					  #{crud.custom 'CAPACITY'}
+					      	${utils.Format.parserCapacity(object.CAPACITY)}
+					   #{/crud.custom}
+					#{/crud.table}
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+</div>

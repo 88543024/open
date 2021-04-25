@@ -1,0 +1,600 @@
+package controllers;
+
+import java.rmi.RemoteException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.FutureTask;
+
+import javax.xml.rpc.ServiceException;
+
+import models.TConfigUser;
+import models.TDataDic;
+import models.TMsWorkorder;
+import models.TResComputer;
+import models.TWorkorder;
+import msws.IBMCloudServiceLocator;
+import msws.IBMCloudServiceSoap;
+import msws.Ms_Model;
+import msws.WorkOrdersEntity;
+import play.Logger;
+import rest.ContactClient;
+import rest.MyContactClient;
+import utils.MailUtil;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+
+@CRUD.For(TWorkorder.class)
+public class Orders extends CRUD {
+	private static SimpleDateFormat sdf1 = new SimpleDateFormat(
+			"yyyy-MM-dd HH:mm:ss");
+
+	/**
+	 * 展示工单详细信息
+	 * 
+	 * @param id
+	 */
+	public static void view(Long id) {
+		TWorkorder object = TWorkorder.findById(id);
+		render(object);
+	}
+
+	/**
+	 * 弹出派单页面
+	 * 
+	 * @param id
+	 */
+	public static void assign(Long id) {
+		TWorkorder object = TWorkorder.findById(id);
+		List<TConfigUser> userlist = TConfigUser.findAll();
+		List<TConfigUser> users = new ArrayList<TConfigUser>();
+		for (int i = 0; i < userlist.size(); i++) {
+			if (userlist.get(i).PERMISSION != null) {
+				if ("operator".equalsIgnoreCase(userlist.get(i).PERMISSION
+						.trim())) {
+					users.add(userlist.get(i));
+				}
+			}
+		}
+		render(object, users);
+	}
+
+	public static void selOper() {
+		List<TConfigUser> userlist = TConfigUser.findAll();
+		List<TConfigUser> opusers = new ArrayList<TConfigUser>();
+		for (int i = 0; i < userlist.size(); i++) {
+			if (userlist.get(i).PERMISSION != null) {
+				if ("operator".equalsIgnoreCase(userlist.get(i).PERMISSION
+						.trim())) {
+					opusers.add(userlist.get(i));
+				}
+			}
+		}
+		render(opusers);
+	}
+
+	/**
+	 * 派单操作
+	 * 
+	 * @param id
+	 * @param userId
+	 */
+	public static void assignOrder(Long id, Long userId) {
+		TWorkorder object = TWorkorder.findById(id);
+		TConfigUser users = TConfigUser.findById(userId);
+		object.setOPERATOR(users.USER_NAME);// 工单执行人（由派单操作指定？）
+		object.setASSIGNER(session.get("username"));// 分配人（派单人）
+		object.setSTATUS("3");// 3我方工单状态（已配单）
+		object.save();
+		redirect(request.controller + ".list");
+	}
+
+	/**
+	 * 跳转到工单备注页面----对完成状态的工单备注（我方工单）
+	 * 
+	 * @param id
+	 */
+	public static void alertMemo(Long id) {
+		TWorkorder object = TWorkorder.findById(id);
+		render(object);
+	}
+
+	/**
+	 * 对完成状态的工单进行备注操作（我方工单）
+	 * 
+	 * @param id
+	 */
+	public static void addMemo(Long id) {
+		TWorkorder object = TWorkorder.findById(id);
+		String remark = params.get("remark");
+		if (remark != null && !"".equals(remark.trim())) {
+			String oldRemark = null2Str(object.getREMARK()).trim();
+			String operator = object.getOPERATOR();// 执行人
+			Date date = new Date();
+			String dateStr = sdf1.format(date);
+			object.setREMARK(null2Str(oldRemark) + "  "
+					+ null2Str(remark.trim()) + null2Str(operator) + "|"
+					+ dateStr + "     ");
+			object.save();
+		}
+		redirect(request.controller + ".list");
+	}
+
+	/**
+	 * 跳转到执行工单的页面（即列出我方工单的项目信息，允许续加备注）
+	 * 
+	 * @param id
+	 */
+	public static void operate(Long id) {
+		TWorkorder object = TWorkorder.findById(id);
+		List<TMsWorkorder> objList = null;// 微软工单
+		Integer flag = 0;// 无微软工单关联
+		Integer osFlag = 0;// os版本信息不存在
+		Integer dbFlag = 0;// db版本信息不存在
+		Integer middlewareFlag = 0;// middleware版本信息不存在
+		String os_will = "";// 要添加的OS版本字符串组合，已，分隔
+		String db_will = "";// 要添加的DB版本字符串组合，已，分隔
+		String web_will = "";// 要添加的MiddleWare版本字符串组合，已，分隔
+		if (object.ELEMENT_ID != null) {
+			objList = TMsWorkorder.getOrderListByElementId(object.ELEMENT_ID);
+			if (objList != null && objList.size() > 0) {
+				flag = 1;// 有微软工单关联
+				for (int i = 0; i < objList.size(); i++) {
+					String os = objList.get(i).os;
+					TDataDic osDic = TDataDic.getDicByTypeAndValue("OSPATCH",
+							os);
+					if (osDic != null) {
+						osFlag = 1;
+						break;
+					} else {
+						os_will = os_will + os + ",";
+					}
+				}
+				for (int i = 0; i < objList.size(); i++) {
+					String dbsoft = objList.get(i).dbsoft;
+					TDataDic dbDic = TDataDic.getDicByTypeAndValue("DBPATCH",
+							dbsoft);
+					if (dbsoft != null) {
+						dbFlag = 1;
+						break;
+					} else {
+						db_will = db_will + dbsoft + ",";
+					}
+				}
+				for (int i = 0; i < objList.size(); i++) {
+					String web = objList.get(i).middleware;
+					TDataDic middlewareDic = TDataDic.getDicByTypeAndValue(
+							"WEBPATCH", web);
+					if (middlewareDic != null) {
+						middlewareFlag = 1;
+						break;
+					} else {
+						web_will = web_will + web + ",";
+					}
+				}
+
+			}
+		}
+
+		render(object, flag, osFlag, dbFlag, middlewareFlag, os_will, db_will,
+				web_will);
+	}
+
+	/**
+	 * 第一步：资源申请（处理微软工单）
+	 * 
+	 * @param id
+	 */
+	public static void lookOrEditVM(Long id) {
+		TWorkorder object = TWorkorder.findById(id);
+		String remark = params.get("remark");
+		if (remark != null && !"".equals(remark.trim())) {
+			String oldRemark = null2Str(object.getREMARK()).trim();
+			String operator = object.getOPERATOR();// 执行人
+			Date date = new Date();
+			String dateStr = sdf1.format(date);
+			object.setREMARK(null2Str(oldRemark) + "  "
+					+ null2Str(remark.trim()) + null2Str(operator) + "|"
+					+ dateStr + "     ");
+		}
+		if (session.get("permission") != null
+				&& ("supermanager".equals(session.get("permission")) || "manager"
+						.equals(session.get("permission")))) {
+			object.setOPERATOR(session.get("username"));
+		}
+
+		TMsWorkorder obj = null;// 微软工单
+		if (object.ELEMENT_ID != null) {
+			obj = getTMsWorkOrder(object.ELEMENT_ID);
+		} else {
+			obj = new TMsWorkorder();
+			obj.ELEMENT_ID = object.ELEMENT_ID;
+		}
+		if (obj == null) {
+			obj = new TMsWorkorder();
+			obj.ELEMENT_ID = object.ELEMENT_ID;
+			object.setSTATUS("4");// 4我方工单处理中(执行中)
+		}
+		object.save();
+		Long tWorkOrderId = id;// 我方工单的主键ID
+
+		// 数据字典
+		List<TDataDic> dicList = TDataDic.findAll();
+		List<TDataDic> osPatchList = new ArrayList();
+		List<TDataDic> dbPatchList = new ArrayList();
+		List<TDataDic> webPatchList = new ArrayList();
+		List<TDataDic> cpuList = new ArrayList();
+		List<TDataDic> memoryList = new ArrayList();
+		for (TDataDic dic : dicList) {
+			if (dic.DIC_TYPE != null && "OSPATCH".equals(dic.DIC_TYPE)) {
+				osPatchList.add(dic);
+			} else if (dic.DIC_TYPE != null && "DBPATCH".equals(dic.DIC_TYPE)) {
+				dbPatchList.add(dic);
+			} else if (dic.DIC_TYPE != null && "WEBPATCH".equals(dic.DIC_TYPE)) {
+				webPatchList.add(dic);
+			} else if (dic.DIC_TYPE != null && "VCPU_NUM".equals(dic.DIC_TYPE)) {
+				cpuList.add(dic);
+			} else if (dic.DIC_TYPE != null
+					&& "MEMORY_SIZE".equals(dic.DIC_TYPE)) {
+				memoryList.add(dic);
+			}
+		}
+		if (obj.status != null && ("3".equals(obj.status))
+				|| "6".equals(obj.status)) {// 虚拟机创建已完成或者虚拟机调整完成
+			render("/Orders/manual.html", obj, tWorkOrderId, object);
+		} else {
+			render(obj, tWorkOrderId, object, osPatchList, dbPatchList,
+					webPatchList, cpuList, memoryList);
+		}
+<<<<<<< .mine
+    	
+    }
+    
+    /**
+     * 第二步：手工完成存储的工作后，为任务标识存储任务调整完成（处理微软工单）
+     * @param id
+     */
+    public static void manual(Long id) {
+    	
+    	TMsWorkorder obj = TMsWorkorder.findById(id);
+    	String countStr = params.get("count");
+    	Integer count = Integer.valueOf(countStr);
+    	String memory = params.get("memory");
+    	String os = params.get("os");
+    	String dbsoft = params.get("dbsoft");
+    	String middleware = params.get("middleware");
+    	String disksize = params.get("disksize");
+    	String vcpu = params.get("vcpu");
+    	String status = params.get("status");
+    	String hostname = params.get("hostname");
+    	String ip = params.get("ip");
+    	String username = params.get("username");
+    	String tWorkOrderIdStr =  params.get("tWorkOrderId");
+    	Long tWorkOrderId = Long.valueOf(tWorkOrderIdStr);
+    	TWorkorder object = TWorkorder.findById(tWorkOrderId);//我方工单
+    	String ELEMENT_IDStr =  params.get("ELEMENT_ID");
+    	Integer ELEMENT_ID = Integer.valueOf(ELEMENT_IDStr);
+    	String submitType = params.get("submitType");//提交按钮的类型：1资源申请2资源删除3挂起4暂停5返回
+    	
+    	if(submitType!=null&&"5".equals(submitType)){
+    		redirect(request.controller + ".list");
+    	}else{
+    		obj.count = count;
+        	obj.memory = memory;
+        	obj.os = os;
+        	obj.dbsoft = dbsoft;
+        	obj.middleware = middleware;
+        	obj.disksize = disksize;
+        	obj.vcpu = vcpu;
+//        	obj.hostname = hostname;
+//        	obj.ip = ip;
+//        	obj.username = username;
+        	obj.ELEMENT_ID = ELEMENT_ID;
+//        	obj.status = "3";//微软工单虚拟机创建成功
+//        	obj.status = "4";//微软工单虚拟机创建失败
+        	
+        	String imageId = "";
+        	//调用REST API创建虚拟机
+        	if(object.PROJECT_NAME!=null){
+        		int num = TWorkorder.getNumByProjectId(object.PROJECT_NAME);
+        		if(num==1){
+        			if(object.STATUS!=null&&"4".equals(object.STATUS)){
+        				try {
+            				ContactClient.addProject(memory,os,dbsoft,middleware,disksize,vcpu,object.PROJECT_ID,object.PROJECT_NAME,imageId,obj.count+"");
+            				obj.status = "3";//微软工单虚拟机创建成功
+            			} catch (Exception e) {
+            				obj.status = "4";//微软工单虚拟机创建失败
+            				e.printStackTrace();
+    					}
+        			}else{
+        				try {
+//            				MyContactClient.createProject(memory,os,dbsoft,middleware,disksize,vcpu,object.PROJECT_ID,object.PROJECT_NAME,imageId,obj.count+"");
+            				obj.status = "3";//微软工单虚拟机创建成功
+            			} catch (Exception e) {
+            				obj.status = "4";//微软工单虚拟机创建失败
+            				e.printStackTrace();
+    					} 
+        			}
+        			
+        		}else{
+        			try {
+        				ContactClient.addProject(memory,os,dbsoft,middleware,disksize,vcpu,object.PROJECT_ID,object.PROJECT_NAME,imageId,obj.count+"");
+        				obj.status = "3";//微软工单虚拟机创建成功
+        			} catch (Exception e) {
+        				obj.status = "4";//微软工单虚拟机创建失败
+        				e.printStackTrace();
+=======
+
+	}
+
+	/**
+	 * 第二步：手工完成存储的工作后，为任务标识存储任务调整完成（处理微软工单）
+	 * 
+	 * @param id
+	 */
+	public static void manual(Long id) {
+
+		TMsWorkorder obj = TMsWorkorder.findById(id);
+		String countStr = params.get("count");
+		Integer count = Integer.valueOf(countStr);
+		String memory = params.get("memory");
+		String os = params.get("os");
+		String dbsoft = params.get("dbsoft");
+		String middleware = params.get("middleware");
+		String disksize = params.get("disksize");
+		String vcpu = params.get("vcpu");
+		// String status = params.get("status");
+		// String hostname = params.get("hostname");
+		// String ip = params.get("ip");
+		// String username = params.get("username");
+		String tWorkOrderIdStr = params.get("tWorkOrderId");
+		Long tWorkOrderId = Long.valueOf(tWorkOrderIdStr);
+		TWorkorder object = TWorkorder.findById(tWorkOrderId);// 我方工单
+		String ELEMENT_IDStr = params.get("ELEMENT_ID");
+		Integer ELEMENT_ID = Integer.valueOf(ELEMENT_IDStr);
+		String submitType = params.get("submitType");// 提交按钮的类型：1资源申请2资源删除3挂起4暂停5返回
+
+		if (submitType != null && "5".equals(submitType)) {
+			redirect(request.controller + ".list");
+		} else {
+			obj.count = count;
+			obj.memory = memory;
+			obj.os = os;
+			obj.dbsoft = dbsoft;
+			obj.middleware = middleware;
+			obj.disksize = disksize;
+			obj.vcpu = vcpu;
+			// obj.hostname = hostname;
+			// obj.ip = ip;
+			// obj.username = username;
+			obj.ELEMENT_ID = ELEMENT_ID;
+			// obj.status = "3";//微软工单虚拟机创建成功
+			// obj.status = "4";//微软工单虚拟机创建失败
+
+			String imageId = "";
+			// 调用REST API创建虚拟机
+			if (object.PROJECT_NAME != null) {
+				// int num =
+				// TWorkorder.getNumByProjectName(object.PROJECT_NAME);
+				List<TWorkorder> workorderList = TWorkorder
+						.getWorkOrderListByProName(object.PROJECT_NAME);
+				int num = workorderList.size();
+				if (num == 1) {
+					if (object.STATUS != null && "4".equals(object.STATUS)) {
+						try {
+							ContactClient.addProject(memory, os, dbsoft,
+									middleware, disksize, vcpu,
+									object.ELEMENT_ID, object.PROJECT_NAME,
+									imageId, obj.count + "", tWorkOrderId);
+							obj.status = "3";// 微软工单虚拟机创建成功
+						} catch (Exception e) {
+							obj.status = "4";// 微软工单虚拟机创建失败
+							e.printStackTrace();
+						}
+					} else {
+						try {
+							MyContactClient.createProject(memory, os, dbsoft,
+									middleware, disksize, vcpu,
+									object.ELEMENT_ID, object.PROJECT_NAME,
+									imageId, obj.count + "", tWorkOrderId);
+							obj.status = "3";// 微软工单虚拟机创建成功
+						} catch (Exception e) {
+							obj.status = "4";// 微软工单虚拟机创建失败
+							e.printStackTrace();
+						}
+>>>>>>> .r3745
+					}
+
+				} else if (num > 1) {
+					int numb = TWorkorder
+							.getNumByProjectNameAndStatus(object.PROJECT_NAME);// 根据PROJECTName查询处理中的工单数量
+					if (numb == 0) {
+						try {
+							MyContactClient.createProject(memory, os, dbsoft,
+									middleware, disksize, vcpu,
+									object.ELEMENT_ID, object.PROJECT_NAME,
+									imageId, obj.count + "", tWorkOrderId);
+							obj.status = "3";// 微软工单虚拟机创建成功
+						} catch (Exception e) {
+							obj.status = "4";// 微软工单虚拟机创建失败
+							e.printStackTrace();
+						}
+					} else if (numb > 0) {
+						try {
+							ContactClient.addProject(memory, os, dbsoft,
+									middleware, disksize, vcpu,
+									object.ELEMENT_ID, object.PROJECT_NAME,
+									imageId, obj.count + "", tWorkOrderId);
+							obj.status = "3";// 微软工单虚拟机创建成功
+						} catch (Exception e) {
+							obj.status = "4";// 微软工单虚拟机创建失败
+							e.printStackTrace();
+						}
+					}
+				} else {
+					obj.status = "4";
+				}
+			} else {
+				obj.status = "4";
+			}
+
+			// boolean b = callMsWS(obj);//微软消息通知接口
+			// if(b){
+			// obj.status = "3";//微软工单虚拟机创建成功
+			// }else{
+			// obj.status = "4";//微软工单虚拟机创建失败
+			// }
+
+			obj.save();
+			render(obj, tWorkOrderId);
+		}
+
+	}
+
+	/**
+	 * 第三步：工单备注（我方工单备注）（调用接口）
+	 * 
+	 * @param id
+	 */
+	public static void remarkWorkOrder(Integer ELEMENT_ID) {
+		String msWorkOrderIdStr = params.get("msWorkOrderId");
+		Long msWorkOrderId = Long.valueOf(msWorkOrderIdStr);
+		TMsWorkorder obj = TMsWorkorder.findById(msWorkOrderId);
+		String step = params.get("step");// 是上一步还是下一步
+		String tWorkOrderIdStr = params.get("tWorkOrderId");
+		Long tWorkOrderId = Long.valueOf(tWorkOrderIdStr);
+		TWorkorder object = TWorkorder.findById(tWorkOrderId);
+		if (step != null && "1".equals(step)) {// 手工操作中选择了上一步
+
+			// 数据字典
+			List<TDataDic> dicList = TDataDic.findAll();
+			List<TDataDic> osPatchList = new ArrayList();
+			List<TDataDic> dbPatchList = new ArrayList();
+			List<TDataDic> webPatchList = new ArrayList();
+			List<TDataDic> cpuList = new ArrayList();
+			List<TDataDic> memoryList = new ArrayList();
+			for (TDataDic dic : dicList) {
+				if (dic.DIC_TYPE != null && "OSPATCH".equals(dic.DIC_TYPE)) {
+					osPatchList.add(dic);
+				} else if (dic.DIC_TYPE != null
+						&& "DBPATCH".equals(dic.DIC_TYPE)) {
+					dbPatchList.add(dic);
+				} else if (dic.DIC_TYPE != null
+						&& "WEBPATCH".equals(dic.DIC_TYPE)) {
+					webPatchList.add(dic);
+				} else if (dic.DIC_TYPE != null
+						&& "VCPU_NUM".equals(dic.DIC_TYPE)) {
+					cpuList.add(dic);
+				} else if (dic.DIC_TYPE != null
+						&& "MEMORY_SIZE".equals(dic.DIC_TYPE)) {
+					memoryList.add(dic);
+				}
+			}
+			render("/Orders/lookOrEditVM.html", obj, tWorkOrderId, object,
+					osPatchList, dbPatchList, webPatchList, cpuList, memoryList);
+		} else if (step != null && "2".equals(step)) {// 手工操作中选择了下一步
+			// 是否完成手工操作
+			String isSuccess = params.get("isSuccess");
+			obj.memo = isSuccess;
+			obj.status = "8";// 微软工单完成
+			obj.ELEMENT_ID = ELEMENT_ID;
+			obj.save();
+			TMsWorkorder msOrder = getTMsWorkOrder(obj.ELEMENT_ID);
+			if (msOrder == null) {
+				object.STATUS = "5";// 我方工单状态完成
+			} else {
+				object.STATUS = "4";// 我方工单状态执行中
+			}
+			object.save();
+			render(obj, tWorkOrderId);
+		}
+
+	}
+
+	// 给工单添加备注
+	public static void addMSRemark(Long id) {
+		TMsWorkorder obj = TMsWorkorder.findById(id);
+		String memo = params.get("memo");
+		String tWorkOrderIdStr = params.get("tWorkOrderId");
+		// obj.status = "6";//微软工单状态处理完成
+		obj.save();
+
+		if (memo != null && !"".equals(memo.trim()) && tWorkOrderIdStr != null
+				&& !"".equals(tWorkOrderIdStr)) {
+			Long tWorkOrderId = Long.valueOf(tWorkOrderIdStr);
+			TWorkorder order = TWorkorder.findById(tWorkOrderId);
+
+			String oldRemark = order.getREMARK();
+			Date date = new Date();
+			String dateStr = sdf1.format(date);
+			String operator = order.getOPERATOR();// 执行人
+			order.setREMARK(null2Str(oldRemark).trim() + "   "
+					+ null2Str(memo).trim() + null2Str(operator) + "|"
+					+ dateStr + "    ");
+
+			// TMsWorkorder msOrder = getTMsWorkOrder(order.ELEMENT_ID);
+			// if(msOrder==null){
+			// order.STATUS = "5";//我方工单状态完成
+			// }else{
+			// order.STATUS = "4";//我方工单状态执行中
+			// }
+			order.save();
+		}
+
+		redirect(request.controller + ".list");
+	}
+
+	/**
+	 * 查询状态为未处理的微软工单，从查询结果中取出1个返回
+	 * 
+	 * @param elementId
+	 * @return
+	 */
+	private static TMsWorkorder getTMsWorkOrder(Integer elementId) {
+		TMsWorkorder msOrder = null;
+		if (elementId != null) {
+			List<TMsWorkorder> resultList = TMsWorkorder
+					.getOrderListByElementId(elementId);
+			if (resultList != null && resultList.size() > 0) {
+				for (TMsWorkorder order : resultList) {
+					String status = order.status;
+					if (status == null || !"8".equals(status.trim())) {// 8微软工单处理完成（手工操作完成）
+						msOrder = order;
+					}
+				}
+			}
+		}
+		return msOrder;
+	}
+
+	// 查询未处理工单数
+	public static void asd() {
+		int wcount = 0;
+		String permiss = session.get("permission");
+		if (permiss != null) {
+			if ("supermanager".equals(permiss)) {
+				wcount = TWorkorder.getNumForManager();
+			} else if ("operator".equals(permiss)) {
+				wcount = TWorkorder.getNumForOperator(session.get("username"));
+			}
+		}
+		renderJSON(wcount);
+	}
+
+	/**
+	 * NULL转""
+	 * 
+	 * @param str
+	 * @return str
+	 */
+	public static String null2Str(String str) {
+		if (str == null) {
+			str = "";
+		}
+		return str;
+	}
+
+}

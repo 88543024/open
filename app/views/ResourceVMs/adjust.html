@@ -1,0 +1,91 @@
+#{extends 'main.html' /}
+#{set title:'' /}
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'vcpu'}</label>
+			<div class="controls col-md-8">
+				#{select 'vcpu', items:cpuList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', value:obj.CPU_NUMBER, class:'form-control', id:'vcpu' /}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'memory'}</label>
+			<div class="controls col-md-8">
+				#{select 'memory', items:memoryList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', value:obj.MEMORY_SIZE, class:'form-control', id:'memory' /}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'disksize'}(GB)</label>
+			<div class="controls col-md-8">
+				<input type="hidden" id="vsId" name="vsId" value="${obj.VS_ID}" class="form-control">
+				<input type="text" id="disksize" name="disksize" value="${obj.DATA_VG_SIZE}" class="form-control">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+					<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="adjustRes()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'ADJUST'}</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!-- 调整 -->
+			    	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="cancel()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'CANCEL_BUTTON'}</button><!-- 取消 -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+function adjustRes(){
+	var disksize = $("#disksize").val();
+	var vsId = $("#vsId").val();
+	if(disksize==null||disksize==''){
+		alert("磁盘大小不能为空");
+		return false;
+	}else{
+		$.ajax({
+				type : 'POST',
+                url : '@{adjustRes()}',
+			 	data : {
+			 		vsId: $('#vsId').val(),
+			 		vcpu: $('#vcpu').val(),
+			 		memory: $('#memory').val(),
+			 		disksize: $('#disksize').val()
+			 	},
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+			 		if(data=="0"){
+        				alert("虚拟机调整提交失败");
+        				return false;
+        			}else if(data=="1"){
+        				alert("虚拟机调整提交成功");
+        				return false;
+        			}else{
+        				alert("虚拟机调整失败");
+        				return false;
+        			}
+			 	}
+		
+		});
+	
+	}
+	
+}
+
+function cancel(){
+	window.location="menuViews?ProName="+"${projectName}";
+}
+
+</script>
+

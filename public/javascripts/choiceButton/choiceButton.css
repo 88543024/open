@@ -1,0 +1,16 @@
+.choiceTd{
+ background-color:#E4F73A !important;
+}
+.bottombutton{
+	text-align:right;
+	margin-right:1%;
+}
+.unbtn{
+	background-color:#BAB6B6 !important;
+	border-color: #A7A9AC !important;
+	background-image: -webkit-linear-gradient(top,#F2EDED 0,#B0B6BA 100%) !important;
+}
+.bottomAbtn{
+	line-height:15px !important; 
+	font-size:12px !important;
+}

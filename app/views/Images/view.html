@@ -1,0 +1,84 @@
+#{extends 'main.html' /}
+#{set title:'' /}
+
+#{form action:@editImageInfo(object._key()), enctype:'multipart/form-data', class:'form form-horizontal validate-form'}
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'IMAGE_NAME'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.imageName}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'OS_PATCH'}</label>
+			<div class="controls col-md-8">
+				<!-- <input type="text" value="${object.OS_PATCH}" class="form-control" disabled>  -->
+				#{select 'os', items:osPatchList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', value:object.OS_PATCH, class:'form-control', id:'os' }
+					<option value="no">无</option>
+				#{/select}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'WEB_PATCH'}</label>
+			<div class="controls col-md-8">
+				<!-- <input type="text" value="${object.WEB_PATCH}" class="form-control" disabled> -->
+				#{select 'middleware', items:webPatchList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', value:object.WEB_PATCH, class:'form-control', id:'middleware' }
+					<option value="no">无</option>
+				#{/select}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'DB_PATCH'}</label>
+			<div class="controls col-md-8">
+				<!-- <input type="text" value="${object.DB_PATCH}" class="form-control" disabled>-->
+				#{select 'dbsoft', items:dbPatchList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', value:object.DB_PATCH, class:'form-control', id:'dbsoft' }
+					<option value="no">无</option>
+				#{/select}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-8">&{'IMAGE_REMARK'}</label>
+			<div class="controls col-md-12">
+				<input type="hidden" id="hiddenRemark" class="form-control" value="${object.remark}">
+				<textarea rows="5" cols="20" name="remark" id="remark" class="form-control">
+				</textarea>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+					<button type="submit" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'MODIFY_BUTTON'}</button><!-- 修改 -->
+			    	<button type="submit" onclick="javascript:window.history.go(-1);" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'RETURN_BUTTON'}</button>&nbsp;&nbsp;<!-- 返回 -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+#{/form}
+<script language="javascript">
+$(function() {
+	var hiddenRemark = document.getElementById("hiddenRemark").value;
+	var textobj = document.getElementById('remark');
+	textobj.innerHTML = hiddenRemark;
+});
+</script>

@@ -1,0 +1,450 @@
+<!-- movablelayer-->
+<LINK rel=stylesheet type=text/css href="@{'/public/javascripts/movablelayer/movPopup.css'}">
+<!-- movablelayer-->
+<script type=text/javascript src="@{'/public/javascripts/movablelayer/movPopup.js'}"></script>
+
+
+<div id="fd" style="display:none;filter:alpha(opacity=100);opacity:1;width:500px;">  
+<div style="background:#f8f8f8;">
+ <div class="contentup"> <a href="#" class="od" onclick = "closeed('fd');return false;"> 关 闭 </a>  
+ <div id="tittleup">虚拟机信息列表</div>
+</div>  	
+#{if objs!=null && objs.size()>0}
+		<input type="hidden" value="${tWorkOrderId}" name="tWorkOrderId" class="form-control">
+		#{list items:objs, as:'obj'}
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'count'}</label>
+						<div class="controls col-md-8">
+							<input type="text" value="${obj.count}" name="${obj.id}_count" class="form-control" readonly="readonly">
+							<input type="hidden" value="${obj.ELEMENT_ID}" name="ELEMENT_ID" class="form-control">
+							<input type="hidden" value="${obj.id}" name="msWorkOrderId" class="form-control">
+							<input type="hidden" value="" id="submitType" name="submitType" class="form-control">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'memory'}</label>
+						<div class="controls col-md-8">
+							<input type="text" value="${obj.memory}" name="memory" class="form-control" readonly="readonly">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'os'}</label>
+						<div class="controls col-md-8">
+							<input type="text" value="${obj.os}" name="os" class="form-control" readonly="readonly">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'dbsoft'}</label>
+						<div class="controls col-md-8">
+							<input type="text" value="${obj.dbsoft}" name="dbsoft" class="form-control" readonly="readonly">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'middleware'}</label>
+						<div class="controls col-md-8">
+								<input type="text" value="${obj.middleware}" name="middleware" class="form-control" readonly="readonly">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'ROOT_VG'}</label>
+						<div class="controls col-md-8">
+							<input type="text" value="100G" name="${obj.id}_disksize" class="form-control" readonly="readonly">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'DATA_VG'}</label>
+						<div class="controls col-md-8">
+							<input type="text" value="${obj.disksize}" name="" class="form-control" readonly="readonly">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'vcpu'}</label>
+						<div class="controls col-md-8">
+							<input type="text" value="${obj.vcpu}" name="vcpu" class="form-control" readonly="readonly">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'status'}</label>
+						<div class="controls col-md-8">
+							
+							<!--<input type="text" value="${obj.status}" name="status" class="form-control" disabled>  -->
+							#{if obj.status == '1' || obj.status == '' || obj.status ==null }
+								<input type="text" value="工单未处理" name="status" class="form-control" disabled>
+							#{/if}
+							#{elseif obj.status == '2'}
+								<input type="text" value="虚拟机创建中" name="status" class="form-control" disabled>
+							#{/elseif}
+							#{elseif obj.status == '3'}
+								<input type="text" value="虚拟机创建完成" name="status" class="form-control" disabled>
+							#{/elseif}
+							#{elseif obj.status == '4'}
+								<input type="text" value="虚拟机创建失败" name="status" class="form-control" disabled>
+							#{/elseif}
+							#{elseif obj.status == '5'}
+								<input type="text" value="虚拟机调整中" name="status" class="form-control" disabled>
+							#{/elseif}
+							#{elseif obj.status == '6'}
+								<input type="text" value="虚拟机调整完成" name="status" class="form-control" disabled>
+							#{/elseif}
+							#{elseif obj.status == '7'}
+								<input type="text" value="虚拟机调整失败" name="status" class="form-control" disabled>
+							#{/elseif}
+							#{elseif obj.status == '8'}
+								<input type="text" value="手工操作完成" name="status" class="form-control" disabled>
+							#{/elseif}
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'ip'}</label>
+						<div class="controls col-md-8">
+							<input type="text" value="自动生成" class="form-control" disabled>
+						</div>
+					</div>
+				</div>
+			</div>
+		--><hr/>
+		#{/list}
+		#{/if}
+  </div>  
+</div> 
+
+
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal">×</button>
+	<h4 class="modal-title">
+		&{'ASSIGN_ORDER_TITLE'}<!-- 派单操作 -->
+	</h4>
+</div>
+		<div class="modal-body">
+		#{form action:@assignOrder(object._key()), enctype:'multipart/form-data', class:'form form-horizontal validate-form'}
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-4">
+							<label class="control-label col-md-4">&{'OPERATOR'}</label>
+						</div>
+						<div class="col-md-4">
+							#{select name:'userId',class:'form-control', items:users, valueProperty:'id', labelProperty:'DISPLAY_NAME', value:0, id:'userSelect' /}
+						</div>
+						
+						<div class="col-md-4">
+						<!-- 
+							<button type="button" class="btn btn-primary btn-sm" name="_save" onclick="test();"><i class="fa fa-save"></i>选择操作员</button>
+							<input type="text" name="province" id="province" class="cba" onkeyup="searchDev(this.value)"/>
+						 -->
+						 <!-- 
+						 <a href="#" name="@{Orders.selOper()}" class="btn btn-mini seloperator">选择操作员</a>
+						 -->
+						</div>
+					</div>
+					<hr/>
+					
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'ELEMENT_ID'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" value="${object.ELEMENT_ID}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'PROJECT_NAME'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" title="${object.PROJECT_NAME}" value="${object.PROJECT_NAME}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'PROJECT_ID'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" value="${object.PROJECT_ID}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'SYS_SHORTNAME'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" title="${object.SYS_SHORTNAME}" value="${object.SYS_SHORTNAME}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'SYS_NAME'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" title="${object.SYS_NAME}" value="${object.SYS_NAME}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'COMPETENT_OFFICE_ID'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" title="${object.COMPETENT_OFFICE_ID}" value="${object.COMPETENT_OFFICE_ID}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'COMPETENT_OFFICE_NAME'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" title="${object.COMPETENT_OFFICE_NAME}" value="${object.COMPETENT_OFFICE_NAME}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'BUSINESS_LEAD_DEPARTMENT'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" title="${object.BUSINESS_LEAD_DEPARTMENT}" value="${object.BUSINESS_LEAD_DEPARTMENT}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'BUSINESS_LEAD_PERSON'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" title="${object.BUSINESS_LEAD_PERSON}" value="${object.BUSINESS_LEAD_PERSON}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'BUSINESS_LEAD_PHONE'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" title="${object.BUSINESS_LEAD_PHONE}" value="${object.BUSINESS_LEAD_PHONE}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'APPLY_TIME'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" value="${object.APPLY_TIME}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'APPLY_PERSON'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" title="${object.APPLY_PERSON}" value="${object.APPLY_PERSON}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'APPLY_TYPE'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" value="${object.APPLY_TYPE}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'APLLY_NAME'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" title="${object.APLLY_NAME}" value="${object.APLLY_NAME}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<!--
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'X86_RESOURCE'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" title="${object.X86_RESOURCE}" value="${object.X86_RESOURCE}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+					-->
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'MINICOMPUTER_RESOURCE'}</label>
+								<div class="controls col-md-8">
+									<!--<input type="text" class="form-control" title="${object.MINICOMPUTER_RESOURCE}" value="${object.MINICOMPUTER_RESOURCE}" readonly="readonly">
+								--><!--<a onclick="javascript:document.all.divCenter.style.display='block';">显示该层</a>
+								--><a href="#" onclick = "show('count','fd',event);return false;">显示虚拟机信息</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'x86_CLUSTER'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" title="${object.x86_CLUSTER}" value="${object.x86_CLUSTER}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+					</div>
+					-->
+					<div class="row">
+					   <div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'MINICOMPUTER_REMARKS'}</label>
+								<div class="controls col-md-8">
+									<!--<a href="@{Orders.vmList(object.ELEMENT_ID)}" name="" target="${object.ELEMENT_ID}_black" class="btn btn-primary btn-sm" ><i class="fa fa-save"></i>查看小机资源</a>
+									-->
+									<input type="text" class="form-control" title="${object.MINICOMPUTER_REMARKS}" value="${object.MINICOMPUTER_REMARKS}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'WORKORDER_ID'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" value="${object.WORKORDER_ID}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'OPERATOR'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" title="${object.OPERATOR}" value="${object.OPERATOR}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<!--<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'RESPONSE_TIME'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" value="${object.RESPONSE_TIME}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+					-->
+					</div>
+					
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'COMPLETION_TIME'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" value="${object.COMPLETION_TIME}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'STATUS'}</label>
+								<div class="controls col-md-8">
+									#{if object.STATUS == '1' || object.STATUS == '' || object.STATUS ==null }
+										<input type="text" class="form-control" value="未处理" readonly="readonly">
+									#{/if}
+									#{elseif object.STATUS == '2'}
+										<input type="text" class="form-control" value="配单中" readonly="readonly">
+									#{/elseif}
+									#{elseif object.STATUS == '3'}
+										<input type="text" class="form-control" value="已配单" readonly="readonly">
+									#{/elseif}
+									#{elseif object.STATUS == '4'}
+										<input type="text" class="form-control" value="处理中" readonly="readonly">
+									#{/elseif}
+									#{elseif object.STATUS == '5'}
+										<input type="text" class="form-control" value="已处理" readonly="readonly">
+									#{/elseif}
+									
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'PROGRESS'}</label>
+								<div class="controls col-md-8">
+									<input type="text" class="form-control" title="${object.PROGRESS}" value="${object.PROGRESS}" readonly="readonly">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			
+			<div class="row">
+				<div class="col-sm-12">
+					
+				        <div class="form-actions" style="margin-bottom: 0">
+							<div class="row">
+								<div class="col-sm-9 col-sm-offset-3" style="text-align:center;margin-left:10%;margin-right:10%;width:80%">
+			                        <button type="submit" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&{'ASSIGN_ORDER_BUTTON'}</button><!-- 派单 -->
+				        			<button type="reset" onclick="refund();" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'RETURN_BUTTON'}</button><!-- 返回 -->
+				        		</div>
+				        	</div>
+				        </div>
+				    
+				</div>
+			</div>
+			#{/form}
+		</div>
+
+
+<div id="operatorModal" class="modal fade modal-blur">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content" id="operatorModalContent">
+		</div>
+	</div>
+</div>
+	
+<script type="text/javascript">
+function test(){
+	alert("aaa");
+ $(".chzn-select").chosen();
+}
+
+$('.seloperator').on('click', function (e) {
+  	$("#operatorModal").modal();
+  	$("#operatorModalContent").empty();
+  	$("#operatorModalContent").load(this.name);
+  
+})
+function refund(){
+	window.location="/application/list?where=STATUS%3D%270%27+or+STATUS%3DNULL+or+STATUS%3D%27%27+or+StATUS+%3D+%271%27+&order=ASC&orderBy=ELEMENT_ID&page=1";
+}
+</script>

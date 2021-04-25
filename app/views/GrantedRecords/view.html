@@ -1,0 +1,51 @@
+#{extends 'main.html' /}
+#{set title:'' /}
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'UNAME'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.UNAME}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'ROLETYPE'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.ROLETYPE}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'GRANTPERSON'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.GRANTPERSON}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'GRANTTIME'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.GRANTTIME}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+			    	<button type="submit" onclick="javascript:window.history.go(-1);" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'RETURN_BUTTON'}</button>&nbsp;&nbsp;<!-- 返回 -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

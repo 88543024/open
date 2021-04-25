@@ -1,0 +1,108 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+	    		#{if reportType == "周报"}
+					<i class="icon-ok"></i> <span> &{'REPORT_MANAGE'}＞&{'PERFORMANCE_REPORT'}＞&{'WEEKLY_REPORT'}</span>
+				#{/if}
+				#{else}
+					<i class="icon-ok"></i> <span> &{'REPORT_MANAGE'}＞&{'PERFORMANCE_REPORT'}＞&{'MONTH_REPORT'}</span>
+				#{/else}
+			</h1>
+		</div>
+	</div>
+</div>
+<div id="crudList" class="${type.name}">
+    <!-- <div id="crudListSearch">
+    	<div class="row-fluid">
+    		<div class="span9">
+    			#{crud.search /}
+    		</div>
+    		
+    	</div>
+    </div> -->
+
+    <div id="crudListTable" >
+      
+        #{crud.table fields:['序号','报表名称', '报表描述', '报表类型', '报表作者', '管理员', '创建时间', '导出时间', '已经通知', '下载次数', '操作']}
+			 #{crud.custom '序号'}
+			    ${object.NUM}
+			 #{/crud.custom}
+			 #{crud.custom '报表名称'}
+			    ${object.REPORT_NAME}
+			 #{/crud.custom}
+			 #{crud.custom '报表名称'}
+			    ${object.REPORT_NAME}
+			 #{/crud.custom}
+			 #{crud.custom '报表描述'}
+			    ${object.REPORT_DESCRIPTION}
+			 #{/crud.custom}
+			 #{crud.custom '报表类型'}
+			    ${object.REPORT_TYPE}
+			 #{/crud.custom}
+			 #{crud.custom '报表作者'}
+			    ${object.REPORT_CREATER}
+			 #{/crud.custom}
+			 #{crud.custom '管理员'}
+			    ${object.REPORT_MONITOR}
+			 #{/crud.custom}
+			 #{crud.custom '创建时间'}
+			    ${object.CREATE_TIME}
+			 #{/crud.custom}
+			 #{crud.custom '导出时间'}
+			    ${object.EXPORT_TIME}
+			 #{/crud.custom}
+			 #{crud.custom '已经通知'}
+			    ${object.IS_MAIL}
+			 #{/crud.custom}
+			 #{crud.custom '下载次数'}
+			    ${object.DOWNLOAD_TIMES}
+			 #{/crud.custom}
+			 #{crud.custom '操作'}
+			 %{path = object.DOWNLOAD_PATH;
+			 reportName = object.REPORT_NAME;
+			 reportId = object.id;
+			 }%
+			    <a href="@{downloadReport(path,reportName,reportId)}">下载</a>
+			    <!--<a href="#" onclick="downloadReportFile('${path}','${reportName}',${reportId})">下载</a>-->
+			    
+			 #{/crud.custom}
+		#{/crud.table}
+		
+    </div>
+</div>
+
+<script type="text/javascript">
+
+  //下载文件方法
+function downloadReportFile(path,reportName,reportId){
+	$.ajax({
+				type : 'POST',
+                url : '@{downloadReport(path,reportName,reportId)}',
+			 	data : {
+			 	},
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+			 		if(data){
+			 		      /*new $.msgbox({
+								type: 'alert',
+								content: '下载成功！'
+							}).show();*/
+							alert('下载成功！');
+							location.reload();
+        			}else{
+        				/*new $.msgbox({
+								type: 'alert',
+								content: '下载失败！'
+							}).show();*/
+							alert( '下载失败！');
+							location.reload();
+        			}
+			 	}
+			
+			});
+	}
+</script>

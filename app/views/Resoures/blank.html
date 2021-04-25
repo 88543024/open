@@ -1,0 +1,366 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.blank.title', type.modelName) /}
+
+<div id="crudBlank" class="${type.name}">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="page-header">
+				<h1 class="pull-left">
+					<i class="icon-ok"></i> <span>&{'crud.blank.title', type.modelName}</span>
+				</h1>
+			</div>
+		</div>
+	</div>
+	
+    <div class="objectForm">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'PRO_NAME'}</label>
+					<div class="controls col-md-8">
+					    <input type="text" name="proName" id="proName" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'ROOM_POSITION'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="roomPosition" id="roomPosition" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'INTERNAL_NUMBER'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="internalNum" id="internalNum" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'RACK_NUMBER'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="rackNum" id="rackNum" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'LOCATION'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="location" id="location" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+						<input type="hidden" name="buttonType" id="buttonType" class="form-control" style="display:inline;width:97%">
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'APP_NAME'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="appName" id="appName" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'VENDOR'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="vendor" id="vendor" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'MODEL'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="model" id="model" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'SN'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="sn" id="sn" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'CONFIG'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="config" id="config" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'DEVICE_TYPE'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="deviceType" id="deviceType" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'PARTITION_INFO'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="partitionInfo" id="partitionInfo" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'IP'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="ip" id="ip" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'OS'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="os" id="os" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'BEGIN_DATE'}</label>
+					<div class="controls col-md-8">
+						<input type="text" value="请选择时间" name="beginDate" id="beginDate"
+							onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'END_DATE'}</label>
+					<div class="controls col-md-8">
+						<input type="text" value="请选择时间" name="endDate" id="endDate"
+							onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'DEPARTMENT'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="department" id="department" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'APP_DEPARTMENT'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="appDepartment" id="appDepartment" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'CONTACTS'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="contacts" id="contacts" class="form-control" style="display:inline;width:97%"><font color="red">*</font>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'TELEPHONE'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="telephone" id="telephone" class="form-control" style="display:inline;width:97%">
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'REMARK'}</label>
+					<div class="controls col-md-8">
+						<textarea rows="5" cols="20" name="remark" class="form-control" id="remark" ></textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+                    <button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="addType();return checkIsNull()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'crud.save', type.modelName}</button>
+                    <button type="submit" class="btn btn-primary btn-sm" name="_saveAndAddAnother" onclick="saveAndAddAnotherType();return checkIsNull()"><i class="fa fa-plus"></i>&nbsp;&nbsp;&{'crud.saveAndAddAnother', type.modelName}</button>
+                    <button type="submit" onclick="javascript:window.history.go(-1);" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'RETURN_BUTTON'}</button>&nbsp;&nbsp;<!-- 返回 -->
+                </div>
+			</div>
+		</div>
+    </div>
+
+</div>
+<script type="text/javascript">
+function addType(){
+	$("#buttonType").val("1");
+}
+function saveAndAddAnotherType(){
+	$("#buttonType").val("2");
+}
+
+function checkIsNull(){
+	var proName = $("#proName").val();
+	var roomPosition = $("#roomPosition").val();
+	var internalNum = $("#internalNum").val();
+	var rackNum = $("#rackNum").val();
+	var location = $("#location").val();
+	var appName = $("#appName").val();
+	var vendor = $("#vendor").val();
+	var model = $("#model").val();
+	var sn = $("#sn").val();
+	var config = $("#config").val();
+	var deviceType = $("#deviceType").val();
+	var partitionInfo = $("#partitionInfo").val();
+	var ip = $("#ip").val();
+	var os = $("#os").val();
+	var beginDate = $("#beginDate").val();
+	var endDate = $("#endDate").val();
+	var department = $("#department").val();
+	var appDepartment = $("#appDepartment").val();
+	var contacts = $("#contacts").val();
+	var telephone = $("#telephone").val();
+	var remark = $("#remark").val();
+	if(proName==null||proName==''){
+		alert("名称不能为空");
+		return false;
+	}else if(roomPosition==null||roomPosition==''){
+		alert("机房位置不能为空");
+		return false;
+	}else if(internalNum==null||internalNum==''){
+		alert("内部编号不能为空");
+		return false;
+	}else if(rackNum==null||rackNum==''){
+		alert("机柜编号不能为空");
+		return false;
+	}else if(location==null||location==''){
+		alert("具体位置不能为空");
+		return false;
+	}else if(appName==null||appName==''){
+		alert("应用名称不能为空");
+		return false;
+	}else if(vendor==null||vendor==''){
+		alert("品牌不能为空");
+		return false;
+	}else if(model==null||model==''){
+		alert("型号不能为空");
+		return false;
+	}else if(sn==null||sn==''){
+		alert("序列号不能为空");
+		return false;
+	}else if(config==null||config==''){
+		alert("配置不能为空");
+		return false;
+	}else if(deviceType==null||deviceType==''){
+		alert("设备类型不能为空");
+		return false;
+	}else if(partitionInfo==null||partitionInfo==''){
+		alert("分区信息不能为空");
+		return false;
+	}else if(ip==null||ip==''){
+		alert("IP地址不能为空");
+		return false;
+	}else if(os==null||os==''){
+		alert("操作系统不能为空");
+		return false;
+	}else if(beginDate==null||beginDate=='' || beginDate=='请选择时间'){
+		alert("进入机房时间不能为空");
+		return false;
+	}else if(endDate==null||endDate=='' || endDate == '请选择时间'){
+		alert("保修截止时间不能为空");
+		return false;
+	}else if(department==null||department==''){
+		alert("所属部门不能为空");
+		return false;
+	}else if(appDepartment==null||appDepartment==''){
+		alert("应用部门不能为空");
+		return false;
+	}else if(contacts==null||contacts==''){
+		alert("联系人不能为空");
+		return false;
+	}else {
+		$.ajax({
+			 	type : 'POST',
+                url : '@{add()}',
+			 	data : {
+			 		proName: $('#proName').val(),
+                    roomPosition: $('#roomPosition').val(),
+                    internalNum: $('#internalNum').val(),
+                    rackNum: $('#rackNum').val(),
+                    location: $('#location').val(),
+                    appName: $('#appName').val(),
+                    vendor: $('#vendor').val(),
+                    model: $('#model').val(),
+                    sn: $('#sn').val(),
+                    config: $('#config').val(),
+                    deviceType: $('#deviceType').val(),
+                    partitionInfo: $('#partitionInfo').val(),
+                    ip: $('#ip').val(),
+                    os: $('#os').val(),
+                    beginDate: $('#beginDate').val(),
+                    endDate: $('#endDate').val(),
+                    department: $('#department').val(),
+                    appDepartment: $('#appDepartment').val(),
+                    contacts: $('#contacts').val(),
+                    telephone: $('#telephone').val(),
+                    remark: $('#remark').val()
+                },
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+        			if(data=="1"){
+        				alert("添加失败");
+        				return false;
+        			}else if(data=="0"){
+        				alert("添加成功");
+        				var buttonType = $('#buttonType').val();
+        				if(buttonType=="1"){
+        					window.location="list";
+        					$('#buttonType').val("");
+        					return true;
+        				}else if(buttonType=="2"){
+        					window.location="blank";
+        					$('#buttonType').val("");
+        					return true;
+        				}else{
+        					window.location="list";
+        					$('#buttonType').val("");
+        					return true;
+        				}
+        			}else{
+        				alert("未知错误");
+        				return false;
+        			}
+      			}
+      		});
+	}
+	
+}
+
+</script>

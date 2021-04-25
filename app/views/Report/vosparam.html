@@ -1,0 +1,149 @@
+#{extends 'main.html' /}
+
+
+	<!-- 查询窗口 -->
+	<div class="easyui-layout" data-options="fit:true">
+
+		<form action="" class="panel form-horizontal" id="params-form">
+			<div class="panel-heading">
+				<span class="panel-title">${report.REPORT_NAME}查询</span>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					
+					<div class="col-sm-4">
+						<div class="form-group no-margin-hr">
+							<label class="control-label">性能KPI</label> <select id="metric"
+								class="form-control">
+
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="form-group no-margin-hr">
+							<label class="control-label">开始时间</label> <input type="text"
+								name="starttime" id="starttime" class="form-control">
+						</div>
+					</div>
+					<!-- col-sm-6 -->
+					<div class="col-sm-4">
+						<div class="form-group no-margin-hr">
+							<label class="control-label">结束时间</label> <input type="text"
+								name="stoptime" id="stoptime" class="form-control">
+						</div>
+					</div>
+
+				</div>
+
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="form-group no-margin-hr">
+							<label class="control-label">查询间隔</label> <select
+								id="interval_len" class="form-control">
+								<option value=''>请选择查询间隔</option>
+								<option value='hour'>小时</option>
+								<option value='day'>天</option>
+								<!-- <option value='week'>周</option> -->
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						
+						<div class="form-group no-margin-hr">
+							<label class="control-label">服务器名称或IP</label> <select
+								class="form-control" name="system_names" id="system_names">
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer text-left">
+				<button type="button" class="btn btn-primary" onclick="queryReport()">查询</button>
+				<button type="button" class="btn btn-primary btn-warning">重置</button>
+			</div>
+		</form>
+	</div>
+
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			initKpi();
+			initDevice();
+            $('#starttime').datetimepicker({lang:'ch',format:'Y-m-d H:i:s'});
+            $('#stoptime').datetimepicker({lang:'ch',format:'Y-m-d H:i:s'});
+		})
+
+		function initKpi() {
+			$.post('/Report/getKPIs?reportId=${report.REPORT_ID}', function(
+					data) {
+				var kpiSelection = $('#metric');
+				kpiSelection.empty();
+				data = eval(data);
+				kpiSelection.append('<option value="">选择KPI</option>');
+				for ( var i = 0; i < data.length; i++) {
+					kpiSelection.append('<option value ='+data[i].value+'>'
+							+ data[i].name + '</option>');
+				}
+			});
+		}
+
+		function initDevice() {
+			$.post('/Report/getVoss', function(data) {
+				var deviceSelection = $('#system_names');
+				deviceSelection.empty();
+				data = eval(data);
+				deviceSelection.append('<option value="">选择服务器</option>');
+				for ( var i = 0; i < data.length; i++) {
+					deviceSelection.append('<option value ='+data[i].value+'>'
+							+ data[i].name + '</option>');
+				}
+			});
+		}
+
+		// 查询服务器性能日报
+		function queryReport() {
+				type = '${report.DEVICE_TYPE}';
+				var metric = $("#metric").val();
+				var elementIds = $("#system_names").val();
+				var starttime = $("#starttime").val();
+				var stoptime = $("#stoptime").val();
+				var interval_len = $("#interval_len").val();
+				if ('' == metric) {
+					alert("KPI不能为空");
+					return false;
+				}
+				if ('' == elementIds || null == elementIds) {
+					alert("服务器名称不能为空");
+					return false;
+				}
+				if ('' == starttime) {
+					alert("起始时间不能为空");
+					return false;
+				}
+				if ('' == stoptime) {
+					alert("结束时间不能为空");
+					return false;
+				}
+				if (starttime > stoptime) {
+					alert("起始时间不能大于结束时间");
+					return false;
+				}
+				if ('' == interval_len) {
+					alert("采样间隔不能为空");
+					return false;
+				}				
+				var params = '&kpi=' + metric + '&elementIds=' + elementIds
+						+ '&startTime=' + starttime + '&stopTime=' + stoptime
+						+ '&interval_len=' + interval_len;
+				var design = '${report.RPT_FILE_URL}';
+				if(metric=='h_310001'){
+					design = '${report.IMG_URL}';
+				}
+				if(metric=='h_210003'){
+					design = '${report.REPORT_ICON}';
+				}
+				var url = design + '&__parameterpage=false';
+				url = url + params;
+				window.open(url);
+		}
+	</script>

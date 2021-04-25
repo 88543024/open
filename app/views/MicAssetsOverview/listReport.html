@@ -1,0 +1,84 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+<!--设备分类资产报表-->
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'AssetReport_TITLE'}</span><!--设备分类资产报表-->
+			</h1>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				<div class="table-info">
+				<table class="table table-bordered table-striped" style="margin-bottom: 0;" >
+				<thead>
+					<tr>
+						<th width="5%">
+							<strong>&{'SerialNumber'}</strong>
+						</th>
+						<th width="10%">
+							<strong>&{'ServerNumber'}</strong>
+						</th><!--
+						<th width="15%">
+							<strong>&{'SNNumer'}</strong>
+						</th>
+						--><th width="5%">
+							<strong>&{'Brand'}</strong>
+						</th>
+						<th width="10%">
+							<strong>&{'AssetModel'}</strong>
+						</th>
+						<th width="10%">
+							<strong>IP</strong>
+						</th>
+						<th width="10%">
+							<strong>&{'Cabinet'}</strong>
+						</th>
+						<th width="15%">
+							<strong>&{'CabinetPosition'}</strong>
+						</th><!--
+						<th width="5%">
+							<strong>&{'Use'}</strong>
+						</th>
+						<th width="15%">
+							<strong>&{'OperatingSystem'}</strong>
+						</th>
+					--></tr>
+				</thead>
+				
+				<tbody>
+					#{list items:objects, as:'cb'}
+						<tr>
+							<td>${cb.num}</td>
+    						<td>${cb.Name}</td><!--
+    						<td>${cb.SN}</td>
+    						--><td>${cb.VendorName_cat}</td>
+    						<td>${cb.Model}</td>
+    					    <td>${cb.IP}</td>
+    						<td>${cb.CabinetID}</td>
+    						<td>${cb.CabinetLocat}</td><!--
+    						<td></td>
+    						<td></td>
+    					--></tr>
+					#{/list}
+				</tbody>
+				</table>
+			</div>
+				<div style="display: none">
+					#{crud.table fields:['TypeName']}
+						#{crud.custom 'TypeName'}
+						#{/crud.custom}
+					#{/crud.table}
+			   </div>
+		 </div>
+		</div>
+	</div>
+</div>
+  <div id="crudListPagination" class="pagination">
+    </div>

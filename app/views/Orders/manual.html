@@ -1,0 +1,108 @@
+#{extends 'main.html' /}
+#{set title:'' /}
+
+#{form action:@remarkWorkOrder(obj.ELEMENT_ID), enctype:'multipart/form-data', class:'form form-horizontal validate-form'}
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'manual'}</label>
+			<div class="controls col-md-8">
+				<input type="checkbox" id="chkbox" name="chkbox" value="0"/><br/>
+				<input type="hidden" value="" id="isSuccess" name="isSuccess" value="" class="form-control">
+				
+				<input type="hidden" value="${tWorkOrderId}" name="tWorkOrderId" class="form-control">
+				<input type="hidden" value="${obj.ELEMENT_ID}" name="ELEMENT_ID" class="form-control">
+				<input type="hidden" value="${obj.id}" name="msWorkOrderId" class="form-control">
+				<input type="hidden" value="${obj.count}" name="count" class="form-control">
+				<input type="hidden" value="${obj.memory}" name="memory" class="form-control">
+				<input type="hidden" value="${obj.os}" name="os" class="form-control">
+				<input type="hidden" value="${obj.dbsoft}" name="dbsoft" class="form-control">
+				<input type="hidden" value="${obj.middleware}" name="middleware" class="form-control">
+				<input type="hidden" value="${obj.disksize}" name="disksize" class="form-control">
+				<input type="hidden" value="${obj.vcpu}" name="vcpu" class="form-control">
+				<input type="hidden" value="${obj.status}" name="status" id="status" class="form-control">
+				<input type="hidden" value="${obj.hostname}" name="hostname" class="form-control">
+				<input type="hidden" value="${obj.ip}" name="ip" class="form-control">
+				<input type="hidden" value="${obj.username}" name="username" class="form-control">
+				<input type="hidden" value="${obj.hostname}" name="hostname" class="form-control">
+				<input type="hidden" value="${obj.hostname}" name="hostname" class="form-control">
+				<input type="hidden" value="" id="step" name="step" class="form-control">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+					#{if obj.status=="3" || obj.status=="6"}
+						<button type="submit" class="btn btn-primary btn-sm" name="_save" disabled><i class="fa fa-save"></i>&nbsp;&nbsp;&{'UP_STEP_BUTTON'}</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!-- 上一步 -->
+					#{/if}
+					#{else}
+						<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="upstep()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'UP_STEP_BUTTON'}</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!-- 上一步 -->
+					#{/else}
+			    	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="return nextstep()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'NEXT_STEP_BUTTON'}</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!-- 下一步 -->
+			    	<button type="reset" class="btn btn-primary btn-sm" name="_save" onclick="cancel()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'CANCEL_BUTTON'}</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!-- 取消 -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+#{/form}
+
+
+<script type="text/javascript">
+var status = document.getElementById("status").value;
+
+function upstep(){
+	document.getElementById("step").value="1";
+}
+function nextstep(){
+	document.getElementById("step").value="2";
+	var chkbox = document.getElementById("chkbox");
+	if(chkbox.checked){
+		document.getElementById("isSuccess").value="";
+		document.getElementById("isSuccess").value="0";
+		if(status=="4"||status==""||status==null){
+			alert("虚拟机申请失败,无法进行下一步操作");
+			return false;
+		}else if(status=="7"){
+			alert("虚拟机调整失败,无法进行下一步操作");
+			return false;
+		}else{
+			return true;
+		}
+	}else {
+		document.getElementById("isSuccess").value="";
+		document.getElementById("isSuccess").value="1";
+		alert("请选中后再进行下一步操作");
+		return false;
+	}
+}
+
+$(function() {
+	if(status=="3"){
+		alert("请知晓：虚拟机申请已提交成功，请稍后查询");
+	}else if(status=="6"){
+		alert("请知晓：虚拟机调整已提交成功，请稍后查询");
+	}else if(status=="4"){
+		alert("请知晓：虚拟机申请失败");
+	}else if(status=="7"){
+		alert("请知晓：虚拟机调整失败");
+	}else{
+	
+	}
+	
+});
+
+
+function cancel(){
+	window.location="list";
+ 
+ }
+
+</script>

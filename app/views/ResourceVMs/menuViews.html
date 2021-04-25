@@ -1,0 +1,452 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'crud.list.title', type.modelName}＞&{proName}</span>
+			</h1>
+			<!--<div class="pull-right">
+				<a class="btn box-collapse btn-xs btn-warning" onclick="manualTSAMInfoSynchron();" href="#">刷新</a>
+				&nbsp;&nbsp;
+				<a class="btn box-collapse btn-xs btn-warning" href="@{blank()}">&{'RESOURCE_REQUEST'}</a>
+			</div>
+			-->
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+	    	 <div class="table-info">
+		    	<table class="table table-bordered table-striped" style="margin-bottom: 0;" >
+				<thead>
+					<tr>
+						<th width="1%">
+							<strong>&{'CHOICE'}</strong>
+						</th>
+						<th width="11%">
+							<strong>&{'IP'}</strong>
+						</th>
+						<th width="20%">
+							<strong>&{'SYS_INFO'}</strong>
+						</th>
+						<!--
+						<th width="5%">
+							<strong>&{'OS'}</strong>
+						</th>
+						-->
+						<th width="10%">
+							<strong>&{'NAME'}</strong>
+						</th>
+					 	<th width="6%">
+							<strong>&{'CpuRate'}% </strong>
+						</th>
+						<th width="5%">
+							<strong>&{'MemRate'}% </strong>
+						</th>
+					    <th width="6%">
+							<strong>&{'RootVgRate'}% </strong>
+						</th>
+						 <th width="6%">
+							<strong>&{'DataVgRate'}% </strong>
+						</th>
+						 <th width="13%">
+							<strong>&{'CREATE_TIME'}</strong>
+						</th>
+						<th width="13%">
+							<strong>&{'PENDING_TIME'}</strong>
+						</th>
+						<!--
+						 <th width="10%">
+							<strong>&{'OPERATE'}</strong>
+						</th>
+				        -->
+				       </tr>
+				</thead>
+				
+				<tbody>
+					#{list items:objects, as:'ob'}
+						<tr>
+						 	<td><input type="radio" name="vmId" objectId="${ob.id}" value="${ob.VS_ID}" onclick="selectTrColor()"/></td>
+							<td><a href="@{ResourceVMs.view(ob.id)}">${ob.IP}</a></td>
+    						<td>${ob.SYS_INFO}</td>
+    						<!--<td>${ob.OS}</td>-->
+    						<td>${ob.NAME}</td>
+    						<td>${ob.MemoryUSERate}</td>
+    						<td>${ob.CpuUSERate}</td>
+    						<td>${ob.RootVgRate}</td>
+    						<td>${ob.DataVgRate}</td>
+    						<td>${ob.CREATE_TIME}</td>
+    						<td>${ob.PENDING_TIME}</td>
+    						<!--
+    						<td>
+						 	#{if session.get("permission") == 'manager' || session.get("permission") == 'supermanager'}
+					  			<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="delResMesBox(${ob.VS_ID});"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"DELETE"}</button>
+				      			<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="hangResMesBox(${ob.VS_ID});"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"HANG"}</button>
+				      			<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="restartResMesBox(${ob.VS_ID});"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"RESTART"}</button>
+				      			<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="adjustResMesBox(${ob.id},${ob.VS_ID});"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ADJUST"}</button>
+				     			<a href="@{ResourceVMs.viewUp(ob.id)}" name="" class="btn btn-mini operate">root确认</a>
+				     	     #{/if}
+    						 </td>
+    						 -->
+    					 </tr>
+					#{/list}
+				</tbody>
+				</table>
+			</div>
+			<div Style="display:none;">
+				#{crud.table fields:['IP','SYS_INFO','OS','NAME','CREATE_TIME','PENDING_TIME','OPERATE']}
+					#{crud.custom 'IP'}
+						<a href="@{ResourceVMs.view(object.id)}">${object.IP}</a>
+					#{/crud.custom}
+					#{crud.custom 'OPERATE'}
+						#{if session.get("permission") == 'manager' || session.get("permission") == 'supermanager'}
+					  	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="delResMesBox(${object.VS_ID});"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"DELETE"}</button>
+				      	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="hangResMesBox(${object.VS_ID});"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"HANG"}</button>
+				      	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="restartResMesBox(${object.VS_ID});"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"RESTART"}</button>
+				      	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="adjustResMesBox(${object.id},${object.VS_ID});"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ADJUST"}</button>
+				     	<!--<a href="@{ResourceVMs.viewUp(object.id)}" name="" class="btn btn-mini operate">root确认</a>-->
+				     	 #{/if}
+				    #{/crud.custom}
+				#{/crud.table}
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div style="text-align:center;">
+	 <div class = "bottombutton">
+	 	#{if proName != '朝阳门利旧'}
+		<a class="btn box-collapse btn-xs btn-warning" style="font-size:12px;" onclick="manualTSAMInfoSynchron();" href="#" >刷新</a>
+				&nbsp;&nbsp;
+		<a class="btn box-collapse btn-xs btn-warning" style="font-size:12px;" href="@{blank()}">&{'RESOURCE_REQUEST'}</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+		#{if session.get("permission") == 'manager' || session.get("permission") == 'supermanager'}
+			  	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="delResMesBox();"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"DELETE"}</button>
+		      	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="hangResMesBox();"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"HANG"}</button>
+		      	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="restartResMesBox();"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"RESTART"}</button>
+		      	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="adjustResMesBox();"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ADJUST"}</button>
+		        <button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="editResVmMesBox();"><i class="fa fa-save"></i>&nbsp;&nbsp;root重置</button>
+		     	<!--<a href="@{ResourceVMs.viewUp()}" name="" class="btn btn-mini operate">root确认</a>-->
+     	 #{/if}
+     	#{/if} 
+     	#{else}
+     		<a class="btn box-collapse btn-xs" style="background-color:#BAB6B6 !important; font-size:12px;"  href="javaScript:void(0);">刷新</a>
+				&nbsp;&nbsp;
+			<a class="btn box-collapse btn-xs" style="background-color:#BAB6B6 !important; font-size:12px;" href="javaScript:void(0);">&{'RESOURCE_REQUEST'}</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+		#{if session.get("permission") == 'manager' || session.get("permission") == 'supermanager'}
+			  	<button type="submit" class="btn btn-sm unbtn" name="_save" onclick=""><i class="fa fa-save" style="background-color:#BAB6B6 !important" ></i>&nbsp;&nbsp;&{"DELETE"}</button>
+		      	<button type="submit" class="btn btn-sm unbtn"  name="_save" onclick=""><i class="fa fa-save"></i>&nbsp;&nbsp;&{"HANG"}</button>
+		      	<button type="submit" class="btn btn-sm unbtn"  name="_save" onclick=""><i class="fa fa-save"></i>&nbsp;&nbsp;&{"RESTART"}</button>
+		      	<button type="submit" class="btn btn-sm unbtn"  name="_save" onclick=""><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ADJUST"}</button>
+		      	<button type="submit" class="btn btn-sm unbtn" name="_save" onclick=""><i class="fa fa-save"></i>&nbsp;&nbsp;root重置</button>
+		     	<!--<a href="@{ResourceVMs.viewUp()}" name="" class="btn btn-mini operate">root确认</a>-->
+     	#{/if} 
+     #{/else}
+   	 </div>
+</div>
+<style>
+.seleTd{
+ background-color:#E4F73A !important;
+}
+</style>
+<script type="text/javascript">
+function selectTrColor(){
+	 $("input[name='vmId']").parent().removeClass();
+	 $("input[name='vmId']").parent().siblings().removeClass();
+	 $("input[name='vmId']:checked").parent().addClass("seleTd");
+	 $("input[name='vmId']:checked").parent().siblings().addClass("seleTd");
+}
+//删除
+function delResMesBox(){
+ var vsId = $("input[name='vmId']:checked").val();
+ if(vsId == null || vsId==''){
+	new $.msgbox({
+			width:300,
+			height:100,
+			title: '信息提醒',
+			content: '请选择要操作的项!',
+			bgOpacity: 0.8
+		}).show();
+	return;
+  }
+   var r = false;
+   //定义一个确认消息窗口
+	new $.msgbox({
+		onClose: function(){
+			 r = this.getValue();
+		     delRes(vsId,r);
+		}, // with onclose plugin
+		title: '信息提醒',
+		type: 'confirm',
+		content: '您确认要删除吗？'
+	 }).show();
+}
+
+//删除
+function delRes(vsId,r){
+    if(r){
+		if(vsId==null||vsId==''){
+			alert("虚拟机ID不能为空");
+			return false;
+		}else{
+			$.ajax({
+					type : 'POST',
+	                url : '@{delRes()}',
+				 	data : {
+				 		vsId: $('#vsId').val()
+				 	},
+	                dataType : 'json',
+	                async : false,
+				 	success: function(data){
+				 		if(data=="0"){
+	        				alert("虚拟机删除提交失败");
+	        				return false;
+	        			}else if(data=="1"){
+	        				alert("虚拟机删除提交成功");
+	        				return false;
+	        			}else{
+	        				alert("虚拟机删除提交失败");
+	        				return false;
+	        			}
+				 	}
+			
+			});
+	  }
+	}else{
+		//alert(0);
+	}
+}
+
+
+//挂起
+function hangResMesBox(){
+ var vsId = $("input[name='vmId']:checked").val();
+ if(vsId == null || vsId==''){
+ 		new $.msgbox({
+			width:300,
+			height:100,
+			title: '信息提醒',
+			content: '请选择要操作的项!',
+			bgOpacity: 0.8
+		}).show();
+	return;
+  }
+   var r = false;
+   //定义一个确认消息窗口
+	new $.msgbox({
+		onClose: function(){
+			 r = this.getValue();
+		     hangRes(vsId,r);
+		}, // with onclose plugin
+		title: '信息提醒',
+		type: 'confirm',
+		content: '您确认要挂起吗？'
+	 }).show();
+}
+
+//挂起
+function hangRes(vsId,r){
+  if(r){
+	if(vsId==null||vsId==''){
+		alert("虚拟机ID不能为空");
+		return false;
+	}else{
+		$.ajax({
+				type : 'POST',
+                url : '@{hangRes()}',
+			 	data : {
+			 		vsId: $('#vsId').val()
+			 	},
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+			 		if(data=="0"){
+        				alert("虚拟机挂起提交失败");
+        				return false;
+        			}else if(data=="1"){
+        				alert("虚拟机挂起提交成功");
+        				return false;
+        			}else{
+        				alert("虚拟机挂起提交失败");
+        				return false;
+        			}
+			 	}
+		});
+	}
+  }
+}
+
+//重启
+function restartResMesBox(){
+ var vsId = $("input[name='vmId']:checked").val();
+ if(vsId == null || vsId==''){
+	new $.msgbox({
+			width:300,
+			height:100,
+			title: '信息提醒',
+			content: '请选择要操作的项!',
+			bgOpacity: 0.8
+		}).show();
+	return;
+  }
+   var r = false;
+   //定义一个确认消息窗口
+	new $.msgbox({
+		onClose: function(){
+			 r = this.getValue();
+			 restartRes(vsId,r);
+		}, // with onclose plugin
+		title: '信息提醒',
+		type: 'confirm',
+		content: '您确认要重启吗？'
+	 }).show();
+}
+
+//重启
+function restartRes(vsId,r){
+  if(r){
+	if(vsId==null||vsId==''){
+		alert("虚拟机ID不能为空");
+		return false;
+	}else{
+		$.ajax({
+				type : 'POST',
+                url : '@{restartRes()}',
+			 	data : {
+			 		vsId: $('#vsId').val()
+			 	},
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+			 		if(data=="0"){
+        				alert("虚拟机重启提交失败");
+        				return false;
+        			}else if(data=="1"){
+        				alert("虚拟机重启提交成功");
+        				return false;
+        			}else{
+        				alert("虚拟机重启提交失败");
+        				return false;
+        			}
+			 	}
+		
+		});
+	 }
+	}
+}
+
+function manualTSAMInfoSynchron(){
+		$.ajax({
+			 type : 'POST',
+             url : '@{Schedulings.manualTSAMInfoSynchronous()}',
+			 data : {
+                },
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+        			if(data==true){
+        				alert("刷新成功");
+        				 window.location.reload();
+        			}else {
+        				alert("刷新失败");
+        			}
+      			}
+      	});
+}
+
+
+//调整
+function adjustResMesBox(){
+ var vsId = $("input[name='vmId']:checked").val();
+ var id = $("input[name='vmId']:checked").attr("objectId");
+ if(vsId == null || vsId==''){
+		new $.msgbox({
+			width:300,
+			height:100,
+			title: '信息提醒',
+			content: '请选择要操作的项!',
+			bgOpacity: 0.8
+		}).show();
+	return;
+  }
+   var r = false;
+   //定义一个确认消息窗口
+	new $.msgbox({
+		onClose: function(){
+			 r = this.getValue();
+			 adjustRes(id,vsId,r);
+		}, // with onclose plugin
+		title: '信息提醒',
+		type: 'confirm',
+		content: '您确认要调整吗？'
+	 }).show();
+}
+
+//调整
+function adjustRes(id,vsId,r){
+	if(r){
+	   window.location="adjust"+"?id="+id+"&vsId="+vsId;
+	}
+}
+
+//root密码重置
+function editResVmMesBox(){
+   alert(0);
+	  var id = $("input[name='vmId']:checked").attr("objectId");
+	 if(id == null || id==''){
+	 		new $.msgbox({
+				width:300,
+				height:100,
+				title: '信息提醒',
+				content: '请选择要操作的项!',
+				bgOpacity: 0.8
+			}).show();
+		return;
+	  }
+	   var r = false;
+	   //定义一个确认消息窗口
+		new $.msgbox({
+			onClose: function(){
+				 r = this.getValue();
+			     editResVm(id,r);
+			}, // with onclose plugin
+			title: '信息提醒',
+			type: 'confirm',
+			content: '您确认要重置密码？'
+		 }).show();
+}
+function editResVm(id,r){
+ alert(id);
+ if(r){
+    if(id==null||id==''){
+		alert("资源ID不能为空");
+		return false;
+	}else{
+	    //window.location="modifyPasView"+"?id="+id;
+	    $.ajax({
+				type : 'POST',
+				url:'@{modifypas()}',
+			 	data : {
+			 		vmId:id
+			 	},
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+			 	   alert(data);
+			 		if(data){
+        				alert("虚拟机密码重置成功!");
+        				return false;
+        			}else{
+        				alert("虚拟机密码重置失败!");
+        			}
+			 	}
+		
+		});	
+	  } 
+	} 
+}
+</script>

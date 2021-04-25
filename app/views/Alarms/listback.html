@@ -1,0 +1,56 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+<style>
+		.altTd{
+		    background-color:rgb(245, 122, 206) !important;
+		}
+</style>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'REPORT_MANAGE'}＞&{'ALARM_INFO'}</span>
+			</h1>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div id = "altTable" class="box-content box-padding">
+				#{crud.table fields:['SerialNumber','DEVICE_NAME','DEVICE_ORIGINAL_SEVERITY','ALARM_CODE','ALARM_DESCRIPTION','LAST_OCCURENCE','SUBDEVICE_NAME','DEVICE_TYPE']}
+					#{crud.custom 'SerialNumber'}
+						${object.SerialNumber}
+					#{/crud.custom}
+					#{crud.custom 'DEVICE_NAME'}
+						<font class="${object.styleCss}">${object.DEVICE_NAME}</font>
+					#{/crud.custom}
+				#{/crud.table}
+			</div>
+		 </div>
+	 </div>
+ </div>
+
+<script type="text/javascript">
+/*$("tr").height();
+$("tr").find("td").find("font").find(".redNameTr").parent().parent().css("background-color", "red");
+ var d = new Date();
+ d.setTime(d.getTime()-24*60*60*1000);
+ var s = d.getFullYear()+"-" + (d.getMonth()+1) + "-" + d.getDate();
+ alert(s);*/
+   //jQuery('tr').find('> td').find('>font').find('.red').parent().parent.css('background-color', 'red');
+   //var oDl=document.getElementsByTagName('red');
+ //  alert(oDl.length);
+    $(function(){
+          var i = 0;
+          $("#altTable table tr td font").each(function(){
+               // $(this).filter(".red").parent().parent().removeClass();
+                 $(this).filter(".red").parent().addClass("altTd");
+                 $(this).filter(".red").parent().siblings().addClass("altTd");
+      			 //$(this).filter(".red").parent().parent().css("background-color", "rgb(245, 122, 206) !important");
+            }
+           )                
+        })
+</script>
+

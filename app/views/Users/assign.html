@@ -1,0 +1,92 @@
+<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h4 class="modal-title">
+					&{'PERMISSION_OPERATE_TITLE'}<!-- 权限操作 -->
+				</h4>
+			</div>
+			<div class="modal-body">
+		#{form action:@assignPermission(object._key()), enctype:'multipart/form-data', class:'form form-horizontal validate-form'}
+			<div class="row">
+				<div class="col-md-12">
+					#{if (object.PERMISSION != 'supermanager') }
+					<div class="row">
+						<div class="col-md-4">
+							&{'PERMISSION'}
+						</div>
+						<div class="col-md-8">
+						<select class="form-control" name="permission" size="1" id="select1" >
+  							<option value="manager">管理员</option>
+  							<option value="operator" selected="selected">操作员</option>
+						</select>
+						</div>
+					</div>
+					#{/if}
+					<hr/>
+					
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'USER_NAME'}</label>
+								<div class="controls col-md-8">
+									<input type="text" name="email" class="form-control" value="${object.USER_NAME}" disabled>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'DISPLAY_NAME'}</label>
+								<div class="controls col-md-8">
+									<input type="text" name="email" class="form-control" value="${object.DISPLAY_NAME}" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'DEPARTMENT'}</label>
+								<div class="controls col-md-8">
+									<input type="text" name="email" class="form-control" value="${object.DEPARTMENT}" disabled>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'TELPHONE'}</label>
+								<div class="controls col-md-8">
+									<input type="text" name="email" class="form-control" value="${object.TELPHONE}" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group no-margin-hr">
+								<label class="control-label col-md-4">&{'EMAIL'}</label>
+								<div class="controls col-md-8">
+									<input type="text" name="email" class="form-control" value="${object.EMAIL}" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+			
+			
+			<div class="row">
+				<div class="col-sm-12">
+					
+				        <div class="form-actions" style="margin-bottom: 0">
+							<div class="row">
+								<div class="col-sm-9 col-sm-offset-3">
+			                        <button type="submit" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'crud.save', type.modelName}</button>
+				        		</div>
+				        	</div>
+				        </div>
+				    
+				</div>
+			</div>
+			#{/form}
+		</div>

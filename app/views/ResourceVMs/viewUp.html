@@ -1,0 +1,243 @@
+#{extends 'main.html' /}
+#{set title:'' /}
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'IP'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.IP}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'SYS_INFO'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.SYS_INFO}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'OS'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.OS}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'NAME'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.NAME}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'CREATE_TIME'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.CREATE_TIME}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'PENDING_TIME'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.PENDING_TIME}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'WORK_ORDER_ID'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.WORK_ORDER_ID}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'SECURITY_LEVEL'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.SECURITY_LEVEL}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'SERVER_ROLE'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.SERVER_ROLE}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'CPU_NUMBER'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.CPU_NUMBER}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'MEMORY_SIZE'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.MEMORY_SIZE}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'DMZ'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.DMZ}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'CLUSTER_NAME'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.CLUSTER_NAME}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'CLUSTER_IP'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.CLUSTER_IP}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'PARENT_HOST'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.PARENT_HOST}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'status'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.STATUS}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'ROOT_VG_SIZE'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.ROOT_VG_SIZE}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'DATA_VG_SIZE'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.DATA_VG_SIZE}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'UPDATE_TIME'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.UPDATE_TIME}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">root密码</label>
+			<div class="controls col-md-8">
+				<input id="rootPas" type="text" value="" class="form-control">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+			    	<button type="submit" onclick="sendMs(${object.id},${object.TworkID})" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;确认</button>&nbsp;&nbsp;
+			    	<button type="submit" onclick="javascript:window.history.go(-1);" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'RETURN_BUTTON'}</button>&nbsp;&nbsp;<!-- 返回 -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+
+//发送虚拟机信息
+function sendMs(id,wkId){
+	var rootPas = $("#rootPas").val();
+	alert(rootPas);
+	/*if(wkId==null||wkId==''){
+		alert("工单ID不能为空");
+		return false;
+	 }else */
+	 if(id == null || id==''){
+	 	alert("资源ID不能为空");
+		return false;
+	 }else if(rootPas == null || rootPas==''){
+	    alert("虚拟机密码不能为空");
+		return false;
+	 }else{
+		$.ajax({
+				type : 'POST',
+                url : '@{sendMs()}',
+			 	data : {
+			 		wkId: wkId,
+			 		id: id,
+			 		rootPas: rootPas
+			 	},
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+			 		if(data){
+        				alert("工单信息发送成功!!!");
+        				return false;
+        			}else{
+        				alert("工单信息发送失败!!!");
+        				return false;
+        			}
+			 	}
+		
+		});
+	}
+}
+</script>

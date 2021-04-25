@@ -1,0 +1,245 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+<style type="text/css">
+	.sorting_asc{
+		width:10px !important;
+		text-align:center;
+	 }
+</style>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'crud.list.title', type.modelName}</span>
+			</h1>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				#{crud.table fields:['CHOICE','imageName','OS_PATCH','WEB_PATCH','DB_PATCH','remark','IMAGE_STATUS']}
+				    #{crud.custom 'CHOICE'}
+				    	<input type="radio" name="choiceImageName" registe="${object.IS_REGISTER}" value="${object.id}" onclick="selectTDColor('choiceImageName');checkImageStatus('choiceImageName','registe')"/>
+				    #{/crud.custom}
+					#{crud.custom 'imageName'}
+						<a href="@{Images.view(object.id)}">${object.imageName}</a>
+					#{/crud.custom}
+					#{crud.custom 'IMAGE_STATUS'}
+						<!-- <a href="#" onclick="del(${object.id})" >&{"DELETE"} -->
+						<!--<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="del(${object.id})"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'DELETE'}</button> --><!-- 删除 -->
+							#{if object.IS_REGISTER == '1' }
+					       	    已注册
+							#{/if}
+							#{elseif object.IS_REGISTER == '0' }
+							    未注册
+							#{/elseif}
+					#{/crud.custom}
+				#{/crud.table}
+			</div>
+		</div>
+	</div>
+</div>
+<div style="text-align:center;">
+	<div class = "bottombutton">
+		<a class="btn box-collapse btn-xs btn-warning" href="#" onclick="get()">&{'Get'}</a>
+		&nbsp;
+		<a class="btn box-collapse btn-xs btn-warning" href="@{Images.blank()}">&{'NEW'}</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<button id="registrationImage" type="submit" class="btn btn-primary btn-sm" name="_save" onclick="registration();"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"registration"}</button><!--注册-->
+		<button id="cancelImage" type="submit" class="btn btn-primary btn-sm" name="_save" onclick="imageCancel();"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"cancel"}</button><!--取消-->
+	</div>
+</div>
+
+<script type="text/javascript">
+
+function del(id){
+	 //此处可做JQuery校验，看看是否能删除
+	if(confirm("删除之后不能恢复，真的要删除吗？")){
+		var queryString="deleteImage";
+	    $.post(queryString,{id:id,timeStamp:new Date().getTime()},delcallback);
+	}
+	 
+ }
+ 
+ function delcallback(redata){
+	if(redata=="1"){
+		alert("删除成功");
+		window.location="list";
+	}else if(redata=="0"){
+		alert("信息删除成功，文件删除失败：文件存储路径有问题");
+		window.location="list";
+	}else if(redata=="2"){
+		alert("信息删除成功，文件删除失败：镜像文件不存在或已移除");
+		window.location="list";
+	}else{
+		alert("删除失败");
+		window.location="list";
+	}
+ }
+function imageCancel(){
+	var imageId = $("input[name='choiceImageName']:checked").val();
+		 if(imageId == null || imageId == ''){
+		 		new $.msgbox({
+					width:300,
+					height:100,
+					title: '信息提醒',
+					content: '请选择要操作的项!',
+					bgOpacity: 0.8
+				}).show();
+			return;
+		  }
+	//定义一个确认消息窗口
+	new $.msgbox({
+		onClose: function(){
+			 r = this.getValue();
+		     cancel(imageId,r);
+		}, // with onclose plugin
+		title: '信息提醒',
+		type: 'confirm',
+		content: '您确认要取消吗？'
+	 }).show();
+}
+
+
+function cancel(imageId,r){
+	if(r){
+		var queryString="cancel";
+	    $.post(queryString,{id:imageId,timeStamp:new Date().getTime()},cancelcallback);
+	}
+	 
+ }
+ function cancelcallback(redata){
+ 	var message = "";
+	if(redata=="1"){
+		message = "取消成功";
+	}else if(redata=="0"){
+		message = "取消失败";
+	}else{
+		message = "取消失败";
+	}
+	
+    new $.msgbox({
+		width:300,
+		height:100,
+		title: '信息提醒',
+		content: ''+message,
+		bgOpacity: 0.8
+	}).show();
+	
+	window.location="list";
+ }
+
+function registration(id){
+		 var imageId = $("input[name='choiceImageName']:checked").val();
+		 if(imageId == null || imageId == ''){
+		 		new $.msgbox({
+					width:300,
+					height:100,
+					title: '信息提醒',
+					content: '请选择要操作的项!',
+					bgOpacity: 0.8
+				}).show();
+			return;
+		  }
+	   new $.msgbox({
+			width:300,
+			height:100,
+			title: '信息提醒',
+			content: '注册开始',
+			bgOpacity: 0.8
+	    }).show();
+		  var queryString="registration";
+	      $.post(queryString,{id:imageId,timeStamp:new Date().getTime()},registrationcallback);
+ }
+ 
+ function registrationcallback(redata){
+	var message = "";
+	if(redata=="1"){
+		message = "注册成功";
+	}else if(redata=="0"){
+		message = "注册失败";
+	}else{
+		message = "注册失败";
+	}
+    new $.msgbox({
+		width:300,
+		height:100,
+		title: '信息提醒',
+		content: ''+message,
+		bgOpacity: 0.8
+	}).show();
+	
+	window.location="list";
+ }
+
+function get(){
+	   new $.msgbox({
+			width:300,
+			height:100,
+			title: '信息提醒',
+			content: '获取开始',
+			bgOpacity: 0.8
+	    }).show();
+		var queryString="getFind";
+	    $.post(queryString,{id:0,timeStamp:new Date().getTime()},getcallback);
+ }
+ 
+ function getcallback(redata){
+	var message = "";
+	if(redata=="1"){
+		message = "获取成功";
+	}else if(redata=="0"){
+		message = "获取失败";
+	}else{
+		message = "获取失败";
+	}
+    new $.msgbox({
+		width:300,
+		height:100,
+		title: '信息提醒',
+		content: ''+message,
+		bgOpacity: 0.8
+	}).show();
+	
+	window.location="list";
+ }
+
+//镜像注销,方式2
+/*
+function writeOff2(id){
+if(confirm("注销之后不能恢复，真的要注销吗？")){
+	if(id==null||id==''){
+		alert("主键ID不能为空");
+		return false;
+	}else{
+		$.ajax({
+				type : 'POST',
+                url : '@{cancel()}',
+			 	data : {
+			 		id: id
+			 	},
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+			 		if(data=="0"){
+        				alert("注销失败");
+        				return false;
+        			}else if(data=="1"){
+        				alert("注销成功");
+        				window.location="list";
+        				return false;
+        			}else{
+        				alert("注销失败");
+        				return false;
+        			}
+			 	}
+		
+		});
+	
+	}
+}
+}*/
+
+</script>

@@ -1,0 +1,59 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'SYSTEM_MANAGE'}＞&{'crud.list.title', type.modelName}</span>
+			</h1>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				#{crud.table fields:['DIC_TYPE','DIC_TYPE_DESC','VALUE','DISPLAY_VALUE','DISPLAY_VALUE_DESC']}
+					#{crud.custom 'DIC_TYPE'}
+						<a href="@{DataDics.view(object.id)}">${object.DIC_TYPE}</a>
+					#{/crud.custom}
+				#{/crud.table}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div style="text-align:center;">
+	<div class = "bottombutton">
+		<a class="btn box-collapse btn-xs btn-warning" href="@{DataDics.blank()}">&{'new'}</a>
+	</div>
+</div>
+<script type="text/javascript">
+
+function del(id){
+	 //此处可做JQuery校验，看看是否能删除
+	if(confirm("删除之后不能恢复，真的要删除吗？")){
+		var queryString="deleteImage";
+	    $.post(queryString,{id:id,timeStamp:new Date().getTime()},delcallback);
+	}
+	 
+ }
+ 
+ function delcallback(redata){
+	if(redata=="1"){
+		alert("删除成功");
+		window.location="list";
+	}else if(redata=="0"){
+		alert("信息删除成功，文件删除失败：文件存储路径有问题");
+		window.location="list";
+	}else if(redata=="2"){
+		alert("信息删除成功，文件删除失败：镜像文件不存在或已移除");
+		window.location="list";
+	}else{
+		alert("删除失败");
+		window.location="list";
+	}
+ }
+
+</script>

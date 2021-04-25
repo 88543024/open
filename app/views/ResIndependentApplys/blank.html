@@ -1,0 +1,125 @@
+#{extends 'main.html' /}
+#{set title:'' /}
+
+#{form action:@manual(), enctype:'multipart/form-data', class:'form form-horizontal validate-form'}
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'count'}</label>
+			<div class="controls col-md-8">
+				<input type="text" id="count" name="count" class="form-control">
+				<input type="hidden" value="" id="submitType" name="submitType" class="form-control">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'PROJECT_NAME'}</label>
+			<div class="controls col-md-8">
+				<input type="text" id="projectName" name="projectName" class="form-control">
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'memory'}</label>
+			<div class="controls col-md-8">
+				#{select 'memory', items:memoryList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', class:'form-control', id:'memory' /}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'os'}</label>
+			<div class="controls col-md-8">
+				#{select 'os', items:osPatchList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', class:'form-control', id:'os' /}
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'dbsoft'}</label>
+			<div class="controls col-md-8">
+				#{select 'dbsoft', items:dbPatchList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', class:'form-control', id:'dbsoft' /}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'middleware'}</label>
+			<div class="controls col-md-8">
+				#{select 'middleware', items:webPatchList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', class:'form-control', id:'middleware' /}
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'disksize'}(GB)</label>
+			<div class="controls col-md-8">
+				<input type="text" id="disksize" name="disksize" class="form-control">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'vcpu'}</label>
+			<div class="controls col-md-8">
+				#{select 'vcpu', items:cpuList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', class:'form-control', id:'vcpu' /}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'ip'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="自动生成" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+		<div class="col-md-4">
+			<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'NETWORKSEGMENT'}</label>
+				<div class="controls col-md-8">
+					#{select 'segment', items:networkSegment, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', class:'form-control', id:'segment' }
+					#{/select}
+				</div>
+			</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+						<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="applyMark()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'VM_APPLY_BUTTON'}</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!-- 申请 -->
+			    		<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="cancelMark()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'CANCEL_BUTTON'}</button><!-- 取消 -->
+				</div>
+			</div>
+		</div>
+				    
+	</div>
+</div>
+#{/form}
+
+
+<script type="text/javascript">
+function applyMark(){
+	document.getElementById("submitType").value="1";
+}
+function cancelMark(){
+	document.getElementById("submitType").value="2";
+}
+
+</script>
+
+

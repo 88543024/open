@@ -1,0 +1,158 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.blank.title', type.modelName) /}
+
+<div id="crudBlank" class="${type.name}">
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'crud.blank.title', type.modelName}</span>
+			</h1>
+
+		</div>
+	</div>
+</div>
+    <div class="objectForm">
+		#{form action:@saveUser(), enctype:'multipart/form-data', class:'form
+		form-horizontal validate-form'}
+		
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'PERMISSION'}</label>
+						<div class="controls col-md-8">
+							<select class="form-control" name="permission" size="1" id="select1" >
+  								<option value="manager">管理员</option>
+  								<option value="operator" selected="selected">操作员</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'USER_NAME'}</label>
+						<div class="controls col-md-8">
+							<input type="text" name="userName" id="username" class="form-control">
+						</div>
+					</div>
+				</div>
+			</div>
+		
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'DISPLAY_NAME'}</label>
+						<div class="controls col-md-8">
+							<input type="text" name="displayName" id="displayname" class="form-control">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'DEPARTMENT'}</label>
+						<div class="controls col-md-8">
+							<input type="text" name="department" id="department" class="form-control">
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'TELPHONE'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="telephone" id="telephone" class="form-control">
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'EMAIL'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="email" id="email" class="form-control">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'PASSWORD'}</label>
+					<div class="controls col-md-8">
+						<input type="password" name="password" id="password" class="form-control">
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'CONFIRMPASSWORD'}</label>
+					<div class="controls col-md-8">
+						<input type="password" name="confirmpassword" id="confirmpassword" class="form-control">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+                    <button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="return checkIsNull()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'crud.save', type.modelName}</button>
+                    <button type="submit" class="btn btn-primary btn-sm" name="_saveAndContinue"><i class="fa fa-edit"></i>&nbsp;&nbsp;&{'crud.saveAndContinue', type.modelName}</button>
+                    <button type="submit" class="btn btn-primary btn-sm" name="_saveAndAddAnother"><i class="fa fa-plus"></i>&nbsp;&nbsp;&{'crud.saveAndAddAnother', type.modelName}</button>
+                </div>
+			</div>
+		</div>
+    #{/form}
+    </div>
+
+</div>
+<script type="text/javascript">
+//验证
+
+
+function checkIsNull(){
+	var username = document.getElementById("username").value;
+	var displayname = document.getElementById("displayname").value;
+	var department = document.getElementById("department").value;
+	var telephone = document.getElementById("telephone").value;
+	var email = document.getElementById("email").value;
+	var password = document.getElementById("password").value;
+	var confirmpassword = document.getElementById("confirmpassword").value;
+	if(username==null||username==''){
+		alert("用户名不能为空");
+		return false;
+	}else if(displayname==null||displayname==''){
+		alert("显示名不能为空");
+		return false;
+	}else if(department==null||department==''){
+		alert("部门不能为空");
+		return false;
+	}else if(telephone==null||telephone==''){
+		alert("手机号不能为空");
+		return false;
+	}else if(email==null||email==''){
+		alert("邮箱不能为空");
+		return false;
+	}else if(password==null||password==''){
+		alert("密码不能为空");
+		return false;
+	}else if(confirmpassword==null||confirmpassword==''){
+		alert("请确认密码");
+		return false;
+	}else{
+		if(confirmpassword!=password){
+			alert("两次密码输入不一致，请重新输入");
+			return false;
+		}
+	}
+	
+}
+
+</script>

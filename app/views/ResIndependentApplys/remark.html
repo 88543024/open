@@ -1,0 +1,31 @@
+#{extends 'main.html' /}
+#{set title:'' /}
+
+#{form action:@addRemark(obj._key()), enctype:'multipart/form-data', class:'form form-horizontal validate-form'}
+<div class="row">
+	<div class="col-md-8">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-8">&{'REMARK'}</label>
+			<div class="controls col-md-12">
+				<textarea rows="5" cols="20" id="remark" name="remark" class="form-control"/>
+				</textarea>
+				<input type="hidden" value="${id}" name="id" class="form-control">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+			    	<button type="submit" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'CONFIRM_BUTTON'}</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!-- 确定 -->
+			    	<button type="reset" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'CANCEL_BUTTON'}</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!-- 取消 -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+#{/form}

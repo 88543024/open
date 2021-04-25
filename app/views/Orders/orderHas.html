@@ -1,0 +1,172 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+<style type="text/css">
+	.sorting_asc{
+		width:10px !important;
+	 }
+</style>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+			#{if finishType =='0' }
+			   <i class="icon-ok"></i> <span>&{'TWorkorder'} ＞ &{'ORDER_UNFINISH_TITLE'}</span><!--未完成工单-->
+			#{/if}
+			#{elseif finishType == '1'}
+				<i class="icon-ok"></i> <span>&{'TWorkorder'} ＞ &{'ORDER_FINISH_TITLE'}</span><!--已完成工单-->
+			#{/elseif}
+			</h1>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				#{crud.table fields:['CHOICE','ELEMENT_ID','SYS_NAME','APPLY_PERSON','APPLY_TIME','STATUS']}
+				    #{crud.custom 'CHOICE'}
+						<input type="radio" name="orderName" objectSTATUS="${object.STATUS}" 
+				  		operatorPer="#{if object.OPERATOR == session.get("username")}1#{/if}
+				  					#{else}0#{/else}"
+						userPer="#{if session.get("permission") == 'supermanager' || session.get("permission") == 'manager' }1#{/if}
+						        #{else}0#{/else}"
+					    value="${object.id}" 
+					    onclick="selectTDColor('orderName');checkPower()"/>
+					#{/crud.custom}
+					#{crud.custom 'STATUS'}
+						#{if object.STATUS == '1' || object.STATUS == '' || object.STATUS ==null }
+							未处理
+						#{/if}
+						#{elseif object.STATUS == '2'}
+							配单中
+						#{/elseif}
+						#{elseif object.STATUS == '3'}
+							已配单
+						#{/elseif}
+						#{elseif object.STATUS == '4'}
+							处理中
+						#{/elseif}
+						#{elseif object.STATUS == '5'}
+							已处理
+						#{/elseif}
+					#{/crud.custom}
+					
+					#{crud.custom 'ELEMENT_ID'}
+						<a href="@{Orders.view(object.id)}">${object.ELEMENT_ID}</a>
+					#{/crud.custom}
+				#{/crud.table}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div style="text-align:center;">
+	<div class = "bottombutton">
+	    #{if finishType =='0' }
+	       <!--派单、执行操作-->
+    	  #{if session.get("permission") == 'operator' }
+			 <a id="orderASSIGN" href="javaScript:void(0);" name="" class="btn btn-sm unbtn" onclick=""><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ASSIGN"}</a>
+		   	 <a id="orderOperation" href="javaScript:void(0);" name="" class="btn btn-primary btn-sm" onclick="operationMesBox()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"OPERATION"}</a>
+		  #{/if}
+		  #{elseif session.get("permission") == 'supermanager' || session.get("permission") == 'manager' }
+		    <a id="orderASSIGN" href="javaScript:void(0);" name="" class="btn btn-primary btn-sm" onclick="assignMesBox()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ASSIGN"}</a>
+		 	<a id="orderOperation" href="javaScript:void(0);" name="" class="btn btn-primary btn-sm" onclick="operationMesBox()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"OPERATION"}</a>
+		  #{/elseif}
+		  <a id="orderRemark" href="javaScript:void(0);" name="" class="btn  btn-sm unbtn" onclick="" style="display:none;"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"REMARK"}</a>
+		#{/if}
+		#{elseif finishType =='1' }
+		 <!--备注-->
+		  #{if session.get("permission") == 'operator' || session.get("permission") == 'manager' || session.get("permission") == 'supermanager'}
+ 		   <a id="orderRemark" href="javaScript:void(0);" name="" class="btn btn-primary btn-sm" onclick="remarkMesBox()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"REMARK"}</a>
+ 		  #{/if}
+ 		  #{else}
+ 		  	 <a id="orderRemark" href="javaScript:void(0);" name="" class="btn btn-sm unbtn" onclick=""><i class="fa fa-save"></i>&nbsp;&nbsp;&{"REMARK"}</a>
+ 		  #{/else}
+ 		  <a id="orderASSIGN" href="javaScript:void(0);" name="" class="btn btn-primary btn-sm" onclick="assignMesBox()" style="display:none;"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ASSIGN"}</a>
+		 	<a id="orderOperation" href="javaScript:void(0);" name="" class="btn btn-primary btn-sm" onclick="operationMesBox()" style="display:none;"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"OPERATION"}</a>
+ 		#{/elseif}
+ 		
+ 	</div>
+</div>
+
+<div id="assignModal" class="modal fade modal-blur">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content" id="assignModalContent">
+			
+		</div>
+		<!-- / .modal-content -->
+	</div>
+	<!-- / .modal-dialog -->
+</div>
+<!-- / .modal -->
+<script type="text/javascript">
+
+//配单
+function assignMesBox(){
+  var orderId = $("input[name='orderName']:checked").val();
+  var status = $("input[name='orderName']:checked").attr("objectSTATUS");
+  if(orderId == null || orderId == ''){
+ 		new $.msgbox({
+			width:300,
+			height:100,
+			title: '信息提醒',
+			content: '请选择要操作的项!',
+			bgOpacity: 0.8
+		}).show();
+		 $("#assignModal").hide();
+	return;
+  }
+   if(status == '1' || status == '' || status == null){
+		   $("#assignModal").modal();
+  	       $("#assignModalContent").empty();
+  	       $("#assignModalContent").load("/orders/assign?id="+orderId);
+   }else{
+	   new $.msgbox({
+				width:300,
+				height:100,
+				title: '信息提醒',
+				content: '已经配单不可再操作!',
+				bgOpacity: 0.8
+			}).show();
+		return;
+   }
+ }
+ //执行
+ function operationMesBox(){
+  var orderId = $("input[name='orderName']:checked").val();
+  var status = $("input[name='orderName']:checked").attr("objectSTATUS");
+  if(orderId == null || orderId == ''){
+ 		new $.msgbox({
+			width:300,
+			height:100,
+			title: '信息提醒',
+			content: '请选择要操作的项!',
+			bgOpacity: 0.8
+		}).show();
+	return;
+  }
+   $("#assignModal").modal();
+   $("#assignModalContent").empty();
+   $("#assignModalContent").load("/orders/operate?id="+orderId);
+ }
+ 
+ //备注
+ function remarkMesBox(){
+  var orderId = $("input[name='orderName']:checked").val();
+  var status = $("input[name='orderName']:checked").attr("objectSTATUS");
+  if(orderId == null || orderId == ''){
+ 		new $.msgbox({
+			width:300,
+			height:100,
+			title: '信息提醒',
+			content: '请选择要操作的项!',
+			bgOpacity: 0.8
+		}).show();
+	return;
+  }
+   $("#assignModal").modal();
+   $("#assignModalContent").empty();
+   $("#assignModalContent").load("/orders/alertmemo?id="+orderId);
+ }
+</script>

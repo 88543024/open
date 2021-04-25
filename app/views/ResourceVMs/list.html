@@ -1,0 +1,230 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'crud.list.title', type.modelName}</span>
+			</h1>
+			<div class="pull-right">
+				<a class="btn box-collapse btn-xs btn-warning" onclick="manualTSAMInfoSynchron();" href="#">刷新</a>
+				&nbsp;&nbsp;
+				<a class="btn box-collapse btn-xs btn-warning" href="@{blank()}">&{'RESOURCE_REQUEST'}</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				#{crud.table fields:['IP','SYS_INFO','OS','NAME','MemoryUSERate','CpuUSERate','RootVgRate','DataVgRate','CREATE_TIME','PENDING_TIME','OPERATE']}
+					#{crud.custom 'IP'}
+						<a href="@{ResourceVMs.view(object.id)}">${object.IP}</a>
+					#{/crud.custom}
+					#{crud.custom 'OPERATE'}
+						#{if session.get("permission") == 'manager' || session.get("permission") == 'supermanager'}
+					  	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="delResMesBox(${object.VS_ID});"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"DELETE"}</button>
+				      	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="hangResMesBox(${object.VS_ID});"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"HANG"}</button>
+				      	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="restartResMesBox(${object.VS_ID});"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"RESTART"}</button>
+				      	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="adjustResMesBox(${object.id},${object.VS_ID});"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ADJUST"}</button>
+				     	<!--<a href="@{ResourceVMs.viewUp(object.id)}" name="" class="btn btn-mini operate">root确认</a>-->
+				     	 #{/if}
+				    #{/crud.custom}
+				    
+				#{/crud.table}
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+//删除
+function delResMesBox(vsId){
+   var r = false;
+   //定义一个确认消息窗口
+	new $.msgbox({
+		onClose: function(){
+			 r = this.getValue();
+		     delRes(vsId,r);
+		}, // with onclose plugin
+		title: '信息提醒',
+		type: 'confirm',
+		content: '您确认要删除吗？'
+	 }).show();
+}
+
+//删除
+function delRes(vsId,r){
+    if(r){
+		if(vsId==null||vsId==''){
+			alert("虚拟机ID不能为空");
+			return false;
+		}else{
+			$.ajax({
+					type : 'POST',
+	                url : '@{delRes()}',
+				 	data : {
+				 		vsId: $('#vsId').val()
+				 	},
+	                dataType : 'json',
+	                async : false,
+				 	success: function(data){
+				 		if(data=="0"){
+	        				alert("虚拟机删除提交失败");
+	        				return false;
+	        			}else if(data=="1"){
+	        				alert("虚拟机删除提交成功");
+	        				return false;
+	        			}else{
+	        				alert("虚拟机删除提交失败");
+	        				return false;
+	        			}
+				 	}
+			
+			});
+	  }
+	}else{
+		//alert(0);
+	}
+}
+
+
+//挂起
+function hangResMesBox(vsId){
+   var r = false;
+   //定义一个确认消息窗口
+	new $.msgbox({
+		onClose: function(){
+			 r = this.getValue();
+		     hangRes(vsId,r);
+		}, // with onclose plugin
+		title: '信息提醒',
+		type: 'confirm',
+		content: '您确认要挂起吗？'
+	 }).show();
+}
+
+//挂起
+function hangRes(vsId,r){
+  if(r){
+	if(vsId==null||vsId==''){
+		alert("虚拟机ID不能为空");
+		return false;
+	}else{
+		$.ajax({
+				type : 'POST',
+                url : '@{hangRes()}',
+			 	data : {
+			 		vsId: $('#vsId').val()
+			 	},
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+			 		if(data=="0"){
+        				alert("虚拟机挂起提交失败");
+        				return false;
+        			}else if(data=="1"){
+        				alert("虚拟机挂起提交成功");
+        				return false;
+        			}else{
+        				alert("虚拟机挂起提交失败");
+        				return false;
+        			}
+			 	}
+		});
+	}
+  }
+}
+
+//重启
+function restartResMesBox(vsId){
+   var r = false;
+   //定义一个确认消息窗口
+	new $.msgbox({
+		onClose: function(){
+			 r = this.getValue();
+			 restartRes(vsId,r);
+		}, // with onclose plugin
+		title: '信息提醒',
+		type: 'confirm',
+		content: '您确认要重启吗？'
+	 }).show();
+}
+
+//重启
+function restartRes(vsId,r){
+  if(r){
+	if(vsId==null||vsId==''){
+		alert("虚拟机ID不能为空");
+		return false;
+	}else{
+		$.ajax({
+				type : 'POST',
+                url : '@{restartRes()}',
+			 	data : {
+			 		vsId: $('#vsId').val()
+			 	},
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+			 		if(data=="0"){
+        				alert("虚拟机重启提交失败");
+        				return false;
+        			}else if(data=="1"){
+        				alert("虚拟机重启提交成功");
+        				return false;
+        			}else{
+        				alert("虚拟机重启提交失败");
+        				return false;
+        			}
+			 	}
+		
+		});
+	 }
+	}
+}
+
+function manualTSAMInfoSynchron(){
+		$.ajax({
+			 type : 'POST',
+             url : '@{Schedulings.manualTSAMInfoSynchronous()}',
+			 data : {
+                },
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+        			if(data==true){
+        				alert("刷新成功");
+        				 window.location.reload();
+        			}else {
+        				alert("刷新失败");
+        			}
+      			}
+      	});
+}
+
+
+//调整
+function adjustResMesBox(id,vsId){
+   var r = false;
+   //定义一个确认消息窗口
+	new $.msgbox({
+		onClose: function(){
+			 r = this.getValue();
+			 adjustRes(id,vsId,r);
+		}, // with onclose plugin
+		title: '信息提醒',
+		type: 'confirm',
+		content: '您确认要调整吗？'
+	 }).show();
+}
+
+//调整
+function adjustRes(id,vsId,r){
+	if(r){
+	   window.location="adjust"+"?id="+id+"&vsId="+vsId;
+	}
+}
+</script>

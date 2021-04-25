@@ -1,0 +1,33 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+<div id="crudList" class="">
+    <!-- <div id="crudListSearch">
+    	<div class="row-fluid">
+    		<div class="span9">
+    			#{crud.search /}
+    		</div>
+    		
+    	</div>
+    </div> -->
+
+    <div id="crudListTable" >
+      
+        #{crud.table fields:['资产类别', 'DMZ', '等保二级', '等保三级', '管理', '合计']}
+			 #{crud.custom '资产类别'}
+			    ${object.TypeName}
+			 #{/crud.custom}
+		 	 #{crud.custom '合计'}
+			    ${object.Amount}
+			 #{/crud.custom}
+		#{/crud.table}
+		<ul>
+	    #{list items:Objects, as:'obj'}
+	        <li>${obj.TypeName}</li>
+	    #{/list}
+</ul>
+    </div>
+
+    <div id="crudListPagination" class="pagination">
+    </div>
+
+</div>

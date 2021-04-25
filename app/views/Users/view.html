@@ -1,0 +1,82 @@
+#{extends 'main.html' /}
+#{set title:'' /}
+
+#{form action:@edit(object._key()), enctype:'multipart/form-data', class:'form form-horizontal validate-form'}
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'USER_NAME'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.USER_NAME}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'DISPLAY_NAME'}</label>
+			<div class="controls col-md-8">
+				<input type="text" name="displayName" id="displayName" value="${object.DISPLAY_NAME}" class="form-control">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'DEPARTMENT'}</label>
+			<div class="controls col-md-8">
+				<input type="text" name="department" id="department" value="${object.DEPARTMENT}" class="form-control">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'TELPHONE'}</label>
+			<div class="controls col-md-8">
+				<input type="text" name="telphone" id="telphone" value="${object.TELPHONE}" class="form-control">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'EMAIL'}</label>
+			<div class="controls col-md-8">
+				<input type="text" name="email" id="email" value="${object.EMAIL}" class="form-control">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'PERMISSION'}</label>
+			<div class="controls col-md-8">
+				#{select 'permission',class:'form-control', value:object.PERMISSION, id:'permission'}
+					#{option 'none'}无权限#{/option}
+					#{option 'supermanager'}超级管理员#{/option}
+					#{option 'manager'}管理员#{/option}
+					#{option 'operator'}操作员#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+					<button type="submit" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'MODIFY_BUTTON'}</button><!-- 修改 -->
+			    	<button type="submit" onclick="javascript:window.history.go(-1);" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'RETURN_BUTTON'}</button>&nbsp;&nbsp;<!-- 返回 -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+#{/form}
+<script language="javascript">
+
+</script>

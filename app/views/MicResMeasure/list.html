@@ -1,0 +1,93 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+<!-- 业务部门季度资源计量 -->
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'DepMetrological_TITLE'}</span><!--业务部门季度资源计量-->
+			</h1>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				<div class="table-info">
+				<table class="table table-bordered table-striped" style="margin-bottom: 0;" >
+				<thead>
+					<tr>
+						<th width="">
+							<strong>&{'SerialNumber'}</strong>
+						</th><!--
+						<th width="">
+							<strong>&{'Lead_Dep'}</strong>
+						</th>
+						--><th width="">
+							<strong>&{'MicSysName'}</strong>
+						</th>
+						<!--<th width="">
+							<strong>&{'ChangeTime'}</strong>
+						</th>
+						--><th width="">
+							<strong>&{'MicVCpuNum'}</strong>
+						</th><!--
+						<th width="">
+							<strong>&{'vCpuMet'}</strong>
+						</th>
+						  --><th width="">
+							<strong>&{'MemoryNum'}</strong>
+						</th>		<!--<th width="">
+							<strong>&{'MemoryMet'}</strong>
+						</th>		--><th width="">
+							<strong>&{'StorageNum'}</strong>
+						</th>		<!--<th width="">
+							<strong>&{'StorageMet'}</strong>
+						</th>		
+						<th width="">
+							<strong>&{'ServerNum'}</strong>
+						</th>
+						 <th width="">
+							<strong>&{'ServerMet'}</strong>
+						</th>
+						 <th width="">
+							<strong>&{'ResTime'}</strong>
+						</th>
+					--></tr>
+				</thead>
+				
+				<tbody>
+					#{list items:objects, as:'cb'}
+						<tr>
+							<td>${cb.num}</td>
+    						<!--<td></td>
+    						--><td>${cb.SystemName}</td><!--
+    						<td></td>
+    						--><td>${cb.CPU}</td><!--
+    						<td></td>
+    						--><td>${cb.Memory}</td><!--
+    						<td></td>
+    						--><td>${cb.StoreSize}</td><!--
+    						<td></td>
+    						<td></td>
+    						<td></td>
+    						<td></td>
+    					--></tr>
+					#{/list}
+				</tbody>
+				</table>
+			</div>
+				<div style="display: none">
+					#{crud.table fields:['TypeName']}
+						#{crud.custom 'TypeName'}
+						#{/crud.custom}
+					#{/crud.table}
+			   </div>
+		 </div>
+		</div>
+	</div>
+</div>
+  <div id="crudListPagination" class="pagination">
+    </div>

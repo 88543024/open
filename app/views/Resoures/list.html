@@ -1,0 +1,131 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+<style type="text/css">
+	.sorting_asc{
+		width:10px !important;
+	 }
+</style>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'crud.list.title', type.modelName}</span>
+			</h1>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				#{crud.table fields:['CHOICE','PRO_NAME','INTERNAL_NUMBER','RACK_NUMBER','IP','OS','BEGIN_DATE','DEPARTMENT']}
+				    #{crud.custom 'CHOICE'}
+				    	<input type="radio" name="resName" value="${object.id}" onclick="selectTDColor('resName');"/>
+				    #{/crud.custom}
+					#{crud.custom 'PRO_NAME'}
+						<a href="@{Resoures.view(object.id)}">${object.PRO_NAME}</a>
+					#{/crud.custom}
+				#{/crud.table}
+			</div>
+		</div>
+	</div>
+</div>
+<div style="text-align:center;">
+	<div class = "bottombutton">
+		<a class="btn box-collapse btn-xs btn-warning bottomAbtn" href="@{blank()}">&{'NEW'}</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		#{if session.get("permission") != 'operator'}
+	      	<a  href="javaScript:void(0);" class="btn btn-primary btn-sm" onclick="editRes()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"EDIT"}</a>
+	      	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="deleteRes()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"DELETE"}</button>
+         #{/if}
+	</div>
+</div>
+<script type = "text/javascript" language = "javascript">
+
+
+//编辑修改资源
+function editRes(){
+ var objId = $("input[name='resName']:checked").val();
+	 if(objId == null || objId == ''){
+	 		new $.msgbox({
+				width:300,
+				height:100,
+				title: '信息提醒',
+				content: '请选择要操作的项!',
+				bgOpacity: 0.8
+			}).show();
+		return;
+	  }
+	  window.location.href="edit?id="+objId;
+}
+
+//删除资源
+function deleteRes(){
+ var objId = $("input[name='resName']:checked").val();
+ if(objId == null || objId == ''){
+ 		new $.msgbox({
+			width:300,
+			height:100,
+			title: '信息提醒',
+			content: '请选择要操作的项!',
+			bgOpacity: 0.8
+		}).show();
+	return;
+  }
+   var r = false;
+   //定义一个确认消息窗口
+	new $.msgbox({
+		onClose: function(){
+			 r = this.getValue();
+		     delRes(objId,r);
+		}, // with onclose plugin
+		title: '信息提醒',
+		type: 'confirm',
+		content: '您确认要删除吗？'
+	 }).show();
+}
+
+function delRes(id,r){
+	if(r){
+		$.ajax({
+			type : 'POST',
+            url : '@{delete()}',
+			data : {
+                    id : id
+            },
+            dataType : 'json',
+            async : false,
+		    success: function(data){
+        		if(data==0){
+        			alert("删除成功");
+        			window.location.href="@{Resoures.list()}";
+        		}else{
+        			alert("删除失败");
+        		}
+      		}
+		});
+	}
+}
+/*
+function del2(id){
+	 //此处可做JQuery校验，看看是否能删除
+	 if(confirm("删除之后不能恢复，真的要删除吗？")){
+		 var reqString="@{Resoures.delete()}";
+	     $.post(reqString,{id:id,timeStamp:new Date().getTime()},delcallback);
+	 }
+	 
+ }
+ 
+function delcallback(redata){
+	var re = new Array();
+    re = redata.split(",");
+    if(re[0]=="0"){
+    	$("tr[id="+re[1]+"]").remove();
+     	alert("删除成功");
+    }else{
+    	alert("删除失败");
+    }
+}
+*/
+
+</script>

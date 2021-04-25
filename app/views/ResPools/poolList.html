@@ -1,0 +1,65 @@
+#{extends 'CRUD/layout.html' /}
+
+<title>&{'RES_POOL_SITUATION_TITLE'}</title><!-- 资源池情况 -->
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i><span>&{'REPORT_MANAGE'}＞&{'RES_REPORT'}＞&{'RES_POOL_SITUATION_TITLE'}</span><!-- 资源池情况 -->
+			</h1>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				<div class="table-info">
+				<table class="table table-bordered table-striped" style="margin-bottom: 0;" >
+				<thead>
+					<tr>
+						<th width="15%">
+							<strong>资源池名称</strong>
+						</th>
+						<th width="15%">
+							<strong>资源池总CPU数</strong>
+						</th>
+						<th width="15%">
+							<strong>已分配CPU数</strong>
+						</th>
+						<th width="15%">
+							<strong>资源池总内存数（G）</strong>
+						</th>
+						<th width="15%">
+							<strong>已分配内存数（G）</strong>
+						</th>
+						<th width="15%">
+							<strong>资源池总存储容量（G）</strong>
+						</th>
+						<th width="15%">
+							<strong>已分配存储容量（G)</strong>
+						</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					#{list items:entyList, as:'cb'}
+						<tr>
+							<td>新建资源池1</td>
+							<td>${cb.TOTAL_CPU}</td>
+    						<td>${cb.ALLOC_CPU}</td>
+    						<td>${cb.TOTAL_MEMORY}</td>
+    						<td>${cb.ALLOC_MEMORY}</td>
+    						<td>${cb.TOTAL_STORAGE}</td>
+    						<td>${cb.ALLOC_STORAGE}</td>
+    					</tr>
+					#{/list}
+				</tbody>
+				</table>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,265 @@
+#{extends 'main.html' /}
+#{set title:'' /}
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'count'}</label>
+			<div class="controls col-md-8">
+				<input type="text" id="mechineNum" name="mechineNum" class="form-control">
+				<input type="hidden" value="" id="submitType" name="submitType" class="form-control">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'PROJECT_NAME'}</label>
+			<div class="controls col-md-8">
+				<input type="text" id="projectName" name="projectName" class="form-control">
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			    &nbsp;&nbsp;&nbsp;&{'Surplus'}
+			    #{if vResP.Remain_Cpu > 20}
+			 	 <font color="green">${vResP.Remain_Cpu}</font>
+			 	#{/if}
+			 	#{else}
+			 	  <font color="red">${vResP.Remain_Cpu}</font>
+			 	#{/else}
+			<label class="control-label col-md-4">&{'vcpu'}</label>
+			<div class="controls col-md-8">
+				#{select 'vcpu', items:cpuList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', class:'form-control', id:'vcpu' /}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'memory'}</label>
+			<span>
+			    &nbsp;&nbsp;&nbsp;&{'Surplus'}
+			    #{if vResP.Remain_Memory > 128}
+			 	 <font color="green">${vResP.Remain_Memory}</font>
+			 	#{/if}
+			 	#{else}
+			 	  <font color="red">${vResP.Remain_Memory}</font>
+			 	#{/else}
+			 	G
+			</span>
+			<div class="controls col-md-8">
+				#{select 'memory', items:memoryList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', class:'form-control', id:'memory' /}
+			</div>
+		</div>
+	</div>
+</div>
+<!--<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'dbsoft'}</label>
+			<div class="controls col-md-8">
+				#{select 'dbsoft', items:dbPatchList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', class:'form-control', id:'dbsoft' /}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'middleware'}</label>
+			<div class="controls col-md-8">
+				#{select 'middleware', items:webPatchList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', class:'form-control', id:'middleware' /}
+			</div>
+		</div>
+	</div>
+</div>
+-->
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			    &nbsp;&nbsp;&nbsp;&{'Surplus'}
+			    #{if vResP.Remain_Storage > 200}
+			 	 <font color="green">${vResP.Remain_Storage}</font>
+			 	#{/if}
+			 	#{else}
+			 	  <font color="red">${vResP.Remain_Storage}</font>
+			 	#{/else}
+			 	G
+			<label class="control-label col-md-4">&{'disksize'}(GB)</label>
+			<div class="controls col-md-8">
+				<input type="text" id="disksize" name="disksize" value="100" class="form-control" />
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<span>&nbsp;</span>
+			<label class="control-label col-md-4">&{'IMAGECHIOCE'}</label>
+			<div class="controls col-md-8">
+				#{select 'os', items:osPatchList, valueProperty:'DISPLAY_VALUE_DESC', labelProperty:'DISPLAY_VALUE', class:'form-control', id:'os' /}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'ip'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="自动生成" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+			<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'NETWORKSEGMENT'}</label>
+				<div class="controls col-md-8">
+					#{select 'segment', items:networkSegment, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', class:'form-control', id:'segment' }
+					#{/select}
+				</div>
+			</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+					<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="applyMark()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'VM_APPLY_BUTTON'}</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!-- 申请 -->
+			    	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="javascript:window.history.go(-1);"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'CANCEL_BUTTON'}</button><!-- 取消 -->
+				</div>
+			</div>
+		</div>
+				    
+	</div>
+</div>
+
+<script type="text/javascript">
+
+var RemainMem;
+var RemainStorage; 
+var RemainVcpu;
+
+$(document).ready(function(){
+	try{
+		RemainMem = ${vResP.Remain_Memory};
+		RemainStorage = ${vResP.Remain_Storage};
+		RemainVcpu = ${vResP.Remain_Cpu};
+	}catch(e){
+	
+	}
+	
+    $('#memory').change(function(){
+        //alert($(this).children('option:selected').val());  //弹出select的值
+        var meval = $(this).children('option:selected').val();
+        if(meval>RemainMem){
+        	alert('剩余内存不足，请重新选择！');
+        	 $(this).focus();
+        }
+    });
+    
+     $('#disksize').change(function(){
+        //alert($(this).val());  //弹出值
+        var disval = $(this).val();
+        if(disval>RemainStorage){
+        	alert('剩余磁盘不足，请重新选择！');
+        	$(this).focus();
+        }
+    });
+    
+    $('#vcpu').change(function(){
+       ///alert($(this).children('option:selected').val());  //弹出select的值
+        var vcpuval = $(this).children('option:selected').val();
+        if(vcpuval>RemainVcpu){
+        	alert('剩余vCpu不足，请重新选择！');
+        	$(this).focus();
+        }
+    });
+})
+
+
+function applyMark(){
+	document.getElementById("submitType").value="1";
+	
+	var mechineNum = $("#mechineNum").val();
+	var projectName = $("#projectName").val();
+	var disksize = $("#disksize").val();
+	if(mechineNum==null||mechineNum==''){
+		alert("虚拟机数量不能为空");
+		return false;
+	}else if(projectName==null||projectName==''){
+		alert("项目名称不能为空");
+		return false;
+	}else if(disksize==null||disksize==''){
+		alert("磁盘大小不能为空");
+		return false;
+	}else if(disksize > 100){
+		alert("磁盘大小不能大于100");
+	}else{
+	   //alert('ajax 执行了');
+	    $.ajax({
+				type : 'POST',
+                url : '@{applyRes()}',
+			 	data : {
+			 		count: $('#mechineNum').val(),
+			 		projectName: $('#projectName').val(),
+			 		memory: $('#memory').val(),
+			 		os: $('#os').val(),
+			 		dbsoft: $('#dbsoft').val(),
+			 		middleware: $('#middleware').val(),
+			 		disksize: $('#disksize').val(),
+			 		vcpu: $('#vcpu').val(),
+			 		segment: $('#segment').val()
+			 	},
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+			 		if(data=="0"){
+        				alert("虚机申请失败");
+        				return false;
+        			}else if(data=="3"){
+        				alert("虚机申请成功");
+        				return false;
+        			}else if(data=="4"){
+        				alert("虚机申请失败");
+        				return false;
+        			}else{
+        				alert("虚机申请失败");
+        				return false;
+        			}
+			 	}
+		
+		});
+	}
+}
+//val 验证值, type 判断类型 ,return true 存在 false 不存在
+/*function ajaxVerifyHas(val,type){
+var flag = true;
+	$.ajax({
+				type : 'POST',
+                url : '@{verifyHas()}',
+			 	data : {
+			 		projectName: $('#projectName').val(),
+			 	},
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+			 	    if(data > 0){
+			 	       alert("项目名称已存在，请重新输入");
+			 	    }else{
+			 	       flag = false;
+			 	    }
+			 	}
+		   });
+	   return flag;
+}*/
+
+function cancelMark(){
+	document.getElementById("submitType").value="2";
+	window.location="list";
+}
+
+</script>
+

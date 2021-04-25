@@ -1,0 +1,152 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'crud.list.title', type.modelName}</span>
+			</h1>
+			<!-- 
+			<div class="pull-right">
+				<a class="btn box-collapse btn-xs btn-warning" href="@{blank()}">&{'new'}</a>
+			</div>
+			 -->
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				#{crud.table fields:['ELEMENT_ID','SYS_NAME','APPLY_PERSON','APPLY_TIME','STATUS','OPERATE']}
+					#{crud.custom 'STATUS'}
+						#{if object.STATUS == '1' || object.STATUS == '' || object.STATUS ==null }
+							未处理
+						#{/if}
+						#{elseif object.STATUS == '2'}
+							配单中
+						#{/elseif}
+						#{elseif object.STATUS == '3'}
+							已配单
+						#{/elseif}
+						#{elseif object.STATUS == '4'}
+							处理中
+						#{/elseif}
+						#{elseif object.STATUS == '5'}
+							已处理
+						#{/elseif}
+					#{/crud.custom}
+					
+					
+					#{crud.custom 'ELEMENT_ID'}
+						<a href="@{Orders.view(object.id)}">${object.ELEMENT_ID}</a>
+					#{/crud.custom}
+					
+					
+					#{crud.custom 'OPERATE'}
+						#{if object.STATUS == '1' || object.STATUS == '' || object.STATUS ==null }<!-- 订单状态为1未处理-->
+							#{if session.get("permission") == 'operator' }
+								<a href="#" name="@{Orders.assign(object.id)}" class="btn btn-primary btn-sm" disabled><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ASSIGN"}</a>
+								<a href="#" name="@{Orders.operate(object.id)}" class="btn btn-primary btn-sm" disabled><i class="fa fa-save"></i>&nbsp;&nbsp;&{"OPERATION"}</a>
+							#{/if}
+							#{elseif session.get("permission") == 'supermanager' || session.get("permission") == 'manager' }
+								<a href="#" name="@{Orders.assign(object.id)}" class="btn btn-primary btn-sm" ><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ASSIGN"}</a>
+								<a href="#" name="@{Orders.operate(object.id)}" class="btn btn-primary btn-sm" ><i class="fa fa-save"></i>&nbsp;&nbsp;&{"OPERATION"}</a>
+							#{/elseif}
+						#{/if}
+					  	#{elseif object.STATUS == '2'}<!-- 订单状态为2配单中 -->
+				      		<a href="#" name="@{Orders.assign(object.id)}" class="btn btn-primary btn-sm" disabled><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ASSIGN"}</a>
+							<a href="#" name="@{Orders.operate(object.id)}" class="btn btn-primary btn-sm" disabled><i class="fa fa-save"></i>&nbsp;&nbsp;&{"OPERATION"}</a>
+						#{/elseif}
+						#{elseif object.STATUS == '3'}<!-- 订单状态为3已配单-->
+							#{if session.get("permission") == 'operator' }
+								#{if session.get("username") == object.OPERATOR }
+				      				<a href="#" name="@{Orders.assign(object.id)}" class="btn btn-primary btn-sm" disabled><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ASSIGN"}</a>
+									<a href="#" name="@{Orders.operate(object.id)}" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"OPERATION"}</a>
+								#{/if}
+								#{else}
+				      				<a href="#" name="@{Orders.assign(object.id)}" class="btn btn-primary btn-sm" disabled><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ASSIGN"}</a>
+									<a href="#" name="@{Orders.operate(object.id)}" class="btn btn-primary btn-sm" disabled><i class="fa fa-save"></i>&nbsp;&nbsp;&{"OPERATION"}</a>
+								#{/else}
+							#{/if}
+							#{elseif session.get("permission") == 'supermanager' || session.get("permission") == 'manager' }
+				      			<a href="#" name="@{Orders.assign(object.id)}" class="btn btn-primary btn-sm" disabled><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ASSIGN"}</a>
+								<a href="#" name="@{Orders.operate(object.id)}" class="btn btn-primary btn-sm" ><i class="fa fa-save"></i>&nbsp;&nbsp;&{"OPERATION"}</a>
+							#{/elseif}
+						#{/elseif}
+						#{elseif object.STATUS == '4' }<!-- 订单状态为4处理中（工单执行中） -->
+							#{if session.get("username") == object.OPERATOR }
+				      			<a href="#" name="@{Orders.assign(object.id)}" class="btn btn-primary btn-sm" disabled><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ASSIGN"}</a>
+								<a href="#" name="@{Orders.operate(object.id)}" class="btn btn-primary btn-sm" ><i class="fa fa-save"></i>&nbsp;&nbsp;&{"OPERATION"}</a>
+							#{/if}
+							#{else}
+				      			<a href="#" name="@{Orders.assign(object.id)}" class="btn btn-primary btn-sm" disabled><i class="fa fa-save"></i>&nbsp;&nbsp;&{"ASSIGN"}</a>
+								<a href="#" name="@{Orders.operate(object.id)}" class="btn btn-primary btn-sm" disabled><i class="fa fa-save"></i>&nbsp;&nbsp;&{"OPERATION"}</a>
+							#{/else}
+						#{/elseif}
+						#{elseif object.STATUS == '5'}<!-- 订单状态为5已处理（工单执行完）-->
+							#{if session.get("permission") == 'operator' }
+								#{if session.get("username") == object.OPERATOR }
+									<a href="#" name="@{Orders.alertMemo(object.id)}" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"REMARK"}</a>
+								#{/if}
+								#{else}
+									<a href="#" name="@{Orders.alertMemo(object.id)}" class="btn btn-primary btn-sm" disabled><i class="fa fa-save"></i>&nbsp;&nbsp;&{"REMARK"}</a>
+								#{/else}
+							#{/if}
+							#{elseif session.get("permission") == 'supermanager' || session.get("permission") == 'manager' }
+								<a href="#" name="@{Orders.alertMemo(object.id)}" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp;&nbsp;&{"REMARK"}</a>
+							#{/elseif}
+						#{/elseif}
+						
+						#{if object.OPERATOR != null && object.OPERATOR != ''}
+							<a href="@{Orders.mslist(object.id)}">vm查看</a>
+						#{/if}
+				    #{/crud.custom}
+				#{/crud.table}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="assignModal" class="modal fade modal-blur">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content" id="assignModalContent">
+			
+		</div>
+		<!-- / .modal-content -->
+	</div>
+	<!-- / .modal-dialog -->
+</div>
+<!-- / .modal -->
+
+<script>
+$('.assign').on('click', function (e) {
+  	$("#assignModal").modal();
+  	$("#assignModalContent").empty();
+  	$("#assignModalContent").load(this.name);
+  
+})
+
+$('.operate').on('click', function (e) {
+  	$("#assignModal").modal();
+  	$("#assignModalContent").empty();
+  	$("#assignModalContent").load(this.name);
+  
+})
+
+$('.memo').on('click', function (e) {
+  	$("#assignModal").modal();
+  	$("#assignModalContent").empty();
+  	$("#assignModalContent").load(this.name);
+  
+})
+
+
+$('.btn-sm').on('click', function (e) {
+  	$("#assignModal").modal();
+  	$("#assignModalContent").empty();
+  	$("#assignModalContent").load(this.name);
+})
+</script>
+

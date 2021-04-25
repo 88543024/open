@@ -1,0 +1,1160 @@
+#{extends 'main.html' /}
+#{set title:'' /}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+			   <i class="icon-ok"></i> <span>&{'SYSTEM_MANAGE'}＞ &{'SCHEDULING_MANAGE'}</span>
+			</h1>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-8">用户信息同步</label>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">选项1：</label>
+			<div class="controls col-md-4">
+				<input type="text" value="每天" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">日期</label>
+			<div class="controls col-md-4">
+				<input type="text" value="" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">执行时间</label>
+			<div class="controls col-md-4">
+				#{select 'userInfoDay_hour',class:'form-control', value:userInfoDay.OPERATE_HOUR, id:'userInfoDay_hour'}
+					#{option '00'}00时#{/option}
+					#{option '01'}01时#{/option}
+					#{option '02'}02时#{/option}
+					#{option '03'}03时#{/option}
+					#{option '04'}04时#{/option}
+					#{option '05'}05时#{/option}
+					#{option '06'}06时#{/option}
+					#{option '07'}07时#{/option}
+					#{option '09'}09时#{/option}
+					#{option '10'}10时#{/option}
+					#{option '11'}11时#{/option}
+					#{option '12'}12时#{/option}
+					#{option '13'}13时#{/option}
+					#{option '14'}14时#{/option}
+					#{option '15'}15时#{/option}
+					#{option '16'}16时#{/option}
+					#{option '17'}17时#{/option}
+					#{option '18'}18时#{/option}
+					#{option '19'}19时#{/option}
+					#{option '20'}20时#{/option}
+					#{option '21'}21时#{/option}
+					#{option '22'}22时#{/option}
+					#{option '23'}23时#{/option}
+				#{/select}
+			</div>
+			<div class="controls col-md-4">
+				#{select 'userInfoDay_minute',class:'form-control', value:userInfoDay.OPERATE_MINUTE, id:'userInfoDay_minute'}
+					#{option '00'}00分#{/option}
+					#{option '05'}05分#{/option}
+					#{option '10'}10分#{/option}
+					#{option '15'}15分#{/option}
+					#{option '20'}20分#{/option}
+					#{option '25'}25分#{/option}
+					#{option '30'}30分#{/option}
+					#{option '35'}35分#{/option}
+					#{option '40'}40分#{/option}
+					#{option '45'}45分#{/option}
+					#{option '50'}50分#{/option}
+					#{option '55'}55分#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">选项2：</label>
+			<div class="controls col-md-4">
+				<input type="text" value="每周" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">日期</label>
+			<div class="controls col-md-4">
+				#{select 'userInfoWeek_day',class:'form-control', value:userInfoWeek.OPERATE_DAY, id:'userInfoWeek_day'}
+					#{option 1}周日#{/option}
+					#{option 2}周一#{/option}
+					#{option 3}周二#{/option}
+					#{option 4}周三#{/option}
+					#{option 5}周四#{/option}
+					#{option 6}周五#{/option}
+					#{option 7}周六#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">执行时间</label>
+			<div class="controls col-md-4">
+				#{select 'userInfoWeek_hour',class:'form-control', value:userInfoWeek.OPERATE_HOUR, id:'userInfoWeek_hour'}
+					#{option '00'}00时#{/option}
+					#{option '01'}01时#{/option}
+					#{option '02'}02时#{/option}
+					#{option '03'}03时#{/option}
+					#{option '04'}04时#{/option}
+					#{option '05'}05时#{/option}
+					#{option '06'}06时#{/option}
+					#{option '07'}07时#{/option}
+					#{option '09'}09时#{/option}
+					#{option '10'}10时#{/option}
+					#{option '11'}11时#{/option}
+					#{option '12'}12时#{/option}
+					#{option '13'}13时#{/option}
+					#{option '14'}14时#{/option}
+					#{option '15'}15时#{/option}
+					#{option '16'}16时#{/option}
+					#{option '17'}17时#{/option}
+					#{option '18'}18时#{/option}
+					#{option '19'}19时#{/option}
+					#{option '20'}20时#{/option}
+					#{option '21'}21时#{/option}
+					#{option '22'}22时#{/option}
+					#{option '23'}23时#{/option}
+				#{/select}
+			</div>
+			<div class="controls col-md-4">
+				#{select 'userInfoWeek_minute',class:'form-control', value:userInfoWeek.OPERATE_MINUTE, id:'userInfoWeek_minute'}
+					#{option '00'}00分#{/option}
+					#{option '05'}05分#{/option}
+					#{option '10'}10分#{/option}
+					#{option '15'}15分#{/option}
+					#{option '20'}20分#{/option}
+					#{option '25'}25分#{/option}
+					#{option '30'}30分#{/option}
+					#{option '35'}35分#{/option}
+					#{option '40'}40分#{/option}
+					#{option '45'}45分#{/option}
+					#{option '50'}50分#{/option}
+					#{option '55'}55分#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">选项3：</label>
+			<div class="controls col-md-4">
+				<input type="text" value="每月" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">日期</label>
+			<div class="controls col-md-6">
+				<input type="text" name="userInfoMonth_day" id="userInfoMonth_day" value="${userInfoMonth.OPERATE_DAY}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">执行时间</label>
+			<div class="controls col-md-4">
+				#{select 'userInfoMonth_hour',class:'form-control', value:userInfoMonth.OPERATE_HOUR, id:'userInfoMonth_hour'}
+					#{option '00'}00时#{/option}
+					#{option '01'}01时#{/option}
+					#{option '02'}02时#{/option}
+					#{option '03'}03时#{/option}
+					#{option '04'}04时#{/option}
+					#{option '05'}05时#{/option}
+					#{option '06'}06时#{/option}
+					#{option '07'}07时#{/option}
+					#{option '09'}09时#{/option}
+					#{option '10'}10时#{/option}
+					#{option '11'}11时#{/option}
+					#{option '12'}12时#{/option}
+					#{option '13'}13时#{/option}
+					#{option '14'}14时#{/option}
+					#{option '15'}15时#{/option}
+					#{option '16'}16时#{/option}
+					#{option '17'}17时#{/option}
+					#{option '18'}18时#{/option}
+					#{option '19'}19时#{/option}
+					#{option '20'}20时#{/option}
+					#{option '21'}21时#{/option}
+					#{option '22'}22时#{/option}
+					#{option '23'}23时#{/option}
+				#{/select}
+			</div>
+			<div class="controls col-md-4">
+				#{select 'userInfoMonth_minute',class:'form-control', value:userInfoMonth.OPERATE_MINUTE, id:'userInfoMonth_minute'}
+					#{option '00'}00分#{/option}
+					#{option '05'}05分#{/option}
+					#{option '10'}10分#{/option}
+					#{option '15'}15分#{/option}
+					#{option '20'}20分#{/option}
+					#{option '25'}25分#{/option}
+					#{option '30'}30分#{/option}
+					#{option '35'}35分#{/option}
+					#{option '40'}40分#{/option}
+					#{option '45'}45分#{/option}
+					#{option '50'}50分#{/option}
+					#{option '55'}55分#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr" style="text-align:right;">
+			<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="return manualUserInfoSynchron();"><i class="fa fa-save"></i>&nbsp;&nbsp;立即执行</button>&nbsp;&nbsp;
+		</div>
+	</div>
+</div>
+
+<hr/>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-8">TSAM信息同步</label>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">选项1：</label>
+			<div class="controls col-md-4">
+				<input type="text" value="每天" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">日期</label>
+			<div class="controls col-md-4">
+				<input type="text" value="" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">执行时间</label>
+			<div class="controls col-md-4">
+				#{select 'tsamInfoDay_hour',class:'form-control', value:tsamInfoDay.OPERATE_HOUR, id:'tsamInfoDay_hour'}
+					#{option '00'}00时#{/option}
+					#{option '01'}01时#{/option}
+					#{option '02'}02时#{/option}
+					#{option '03'}03时#{/option}
+					#{option '04'}04时#{/option}
+					#{option '05'}05时#{/option}
+					#{option '06'}06时#{/option}
+					#{option '07'}07时#{/option}
+					#{option '09'}09时#{/option}
+					#{option '10'}10时#{/option}
+					#{option '11'}11时#{/option}
+					#{option '12'}12时#{/option}
+					#{option '13'}13时#{/option}
+					#{option '14'}14时#{/option}
+					#{option '15'}15时#{/option}
+					#{option '16'}16时#{/option}
+					#{option '17'}17时#{/option}
+					#{option '18'}18时#{/option}
+					#{option '19'}19时#{/option}
+					#{option '20'}20时#{/option}
+					#{option '21'}21时#{/option}
+					#{option '22'}22时#{/option}
+					#{option '23'}23时#{/option}
+				#{/select}
+			</div>
+			<div class="controls col-md-4">
+				#{select 'tsamInfoDay_minute',class:'form-control', value:tsamInfoDay.OPERATE_MINUTE, id:'tsamInfoDay_minute'}
+					#{option '00'}00分#{/option}
+					#{option '05'}05分#{/option}
+					#{option '10'}10分#{/option}
+					#{option '15'}15分#{/option}
+					#{option '20'}20分#{/option}
+					#{option '25'}25分#{/option}
+					#{option '30'}30分#{/option}
+					#{option '35'}35分#{/option}
+					#{option '40'}40分#{/option}
+					#{option '45'}45分#{/option}
+					#{option '50'}50分#{/option}
+					#{option '55'}55分#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">选项2：</label>
+			<div class="controls col-md-4">
+				<input type="text" value="每周" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">日期</label>
+			<div class="controls col-md-4">
+				#{select 'tsamInfoWeek_day',class:'form-control', value:tsamInfoWeek.OPERATE_DAY, id:'tsamInfoWeek_day'}
+					#{option 1}周日#{/option}
+					#{option 2}周一#{/option}
+					#{option 3}周二#{/option}
+					#{option 4}周三#{/option}
+					#{option 5}周四#{/option}
+					#{option 6}周五#{/option}
+					#{option 7}周六#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">执行时间</label>
+			<div class="controls col-md-4">
+				#{select 'tsamInfoWeek_hour',class:'form-control', value:tsamInfoWeek.OPERATE_HOUR, id:'tsamInfoWeek_hour'}
+					#{option '00'}00时#{/option}
+					#{option '01'}01时#{/option}
+					#{option '02'}02时#{/option}
+					#{option '03'}03时#{/option}
+					#{option '04'}04时#{/option}
+					#{option '05'}05时#{/option}
+					#{option '06'}06时#{/option}
+					#{option '07'}07时#{/option}
+					#{option '09'}09时#{/option}
+					#{option '10'}10时#{/option}
+					#{option '11'}11时#{/option}
+					#{option '12'}12时#{/option}
+					#{option '13'}13时#{/option}
+					#{option '14'}14时#{/option}
+					#{option '15'}15时#{/option}
+					#{option '16'}16时#{/option}
+					#{option '17'}17时#{/option}
+					#{option '18'}18时#{/option}
+					#{option '19'}19时#{/option}
+					#{option '20'}20时#{/option}
+					#{option '21'}21时#{/option}
+					#{option '22'}22时#{/option}
+					#{option '23'}23时#{/option}
+				#{/select}
+			</div>
+			<div class="controls col-md-4">
+				#{select 'tsamInfoWeek_minute',class:'form-control', value:tsamInfoWeek.OPERATE_MINUTE, id:'tsamInfoWeek_minute'}
+					#{option '00'}00分#{/option}
+					#{option '05'}05分#{/option}
+					#{option '10'}10分#{/option}
+					#{option '15'}15分#{/option}
+					#{option '20'}20分#{/option}
+					#{option '25'}25分#{/option}
+					#{option '30'}30分#{/option}
+					#{option '35'}35分#{/option}
+					#{option '40'}40分#{/option}
+					#{option '45'}45分#{/option}
+					#{option '50'}50分#{/option}
+					#{option '55'}55分#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">选项3：</label>
+			<div class="controls col-md-4">
+				<input type="text" value="每月" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">日期</label>
+			<div class="controls col-md-6">
+				<input type="text" name="tsamInfoMonth_day" id="tsamInfoMonth_day" value="${tsamInfoMonth.OPERATE_DAY}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">执行时间</label>
+			<div class="controls col-md-4">
+				#{select 'tsamInfoMonth_hour',class:'form-control', value:tsamInfoMonth.OPERATE_HOUR, id:'tsamInfoMonth_hour'}
+					#{option '00'}00时#{/option}
+					#{option '01'}01时#{/option}
+					#{option '02'}02时#{/option}
+					#{option '03'}03时#{/option}
+					#{option '04'}04时#{/option}
+					#{option '05'}05时#{/option}
+					#{option '06'}06时#{/option}
+					#{option '07'}07时#{/option}
+					#{option '09'}09时#{/option}
+					#{option '10'}10时#{/option}
+					#{option '11'}11时#{/option}
+					#{option '12'}12时#{/option}
+					#{option '13'}13时#{/option}
+					#{option '14'}14时#{/option}
+					#{option '15'}15时#{/option}
+					#{option '16'}16时#{/option}
+					#{option '17'}17时#{/option}
+					#{option '18'}18时#{/option}
+					#{option '19'}19时#{/option}
+					#{option '20'}20时#{/option}
+					#{option '21'}21时#{/option}
+					#{option '22'}22时#{/option}
+					#{option '23'}23时#{/option}
+				#{/select}
+			</div>
+			<div class="controls col-md-4">
+				#{select 'tsamInfoMonth_minute',class:'form-control', value:tsamInfoMonth.OPERATE_MINUTE, id:'tsamInfoMonth_minute'}
+					#{option '00'}00分#{/option}
+					#{option '05'}05分#{/option}
+					#{option '10'}10分#{/option}
+					#{option '15'}15分#{/option}
+					#{option '20'}20分#{/option}
+					#{option '25'}25分#{/option}
+					#{option '30'}30分#{/option}
+					#{option '35'}35分#{/option}
+					#{option '40'}40分#{/option}
+					#{option '45'}45分#{/option}
+					#{option '50'}50分#{/option}
+					#{option '55'}55分#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr" style="text-align:right;" >
+			<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="return manualTSAMInfoSynchron();"><i class="fa fa-save"></i>&nbsp;&nbsp;立即执行</button>&nbsp;&nbsp;
+		</div>
+	</div>
+</div>
+
+<!-- <hr/> -->
+
+
+
+
+
+<!-- 
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-8">读取X86的资产信息</label>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">选项1：</label>
+			<div class="controls col-md-4">
+				<input type="text" value="每天" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">日期</label>
+			<div class="controls col-md-4">
+				<input type="text" value="" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">执行时间</label>
+			<div class="controls col-md-4">
+			 #{select 'resourceDay_hour',class:'form-control', value:x86ResourceDay.OPERATE_HOUR, id:'resourceDay_hour'}
+				    #{option '00'}00时#{/option}
+					#{option '01'}01时#{/option}
+					#{option '02'}02时#{/option}
+					#{option '03'}03时#{/option}
+					#{option '04'}04时#{/option}
+					#{option '05'}05时#{/option}
+					#{option '06'}06时#{/option}
+					#{option '07'}07时#{/option}
+					#{option '09'}09时#{/option}
+					#{option '10'}10时#{/option}
+					#{option '11'}11时#{/option}
+					#{option '12'}12时#{/option}
+					#{option '13'}13时#{/option}
+					#{option '14'}14时#{/option}
+					#{option '15'}15时#{/option}
+					#{option '16'}16时#{/option}
+					#{option '17'}17时#{/option}
+					#{option '18'}18时#{/option}
+					#{option '19'}19时#{/option}
+					#{option '20'}20时#{/option}
+					#{option '21'}21时#{/option}
+					#{option '22'}22时#{/option}
+					#{option '23'}23时#{/option}
+				#{/select} 
+			</div>
+			<div class="controls col-md-4">
+				#{select 'resourceDay_minute',class:'form-control', value:x86ResourceDay.OPERATE_MINUTE, id:'resourceDay_minute'}
+					#{option '00'}00分#{/option}
+					#{option '05'}05分#{/option}
+					#{option '10'}10分#{/option}
+					#{option '15'}15分#{/option}
+					#{option '20'}20分#{/option}
+					#{option '25'}25分#{/option}
+					#{option '30'}30分#{/option}
+					#{option '35'}35分#{/option}
+					#{option '40'}40分#{/option}
+					#{option '45'}45分#{/option}
+					#{option '50'}50分#{/option}
+					#{option '55'}55分#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">选项2：</label>
+			<div class="controls col-md-4">
+				<input type="text" value="每周" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">日期</label>
+			<div class="controls col-md-4">
+				#{select 'resourceWeek_day',class:'form-control', value:x86ResourceWeek.OPERATE_DAY, id:'resourceWeek_day'}
+					#{option 1}周日#{/option}
+					#{option 2}周一#{/option}
+					#{option 3}周二#{/option}
+					#{option 4}周三#{/option}
+					#{option 5}周四#{/option}
+					#{option 6}周五#{/option}
+					#{option 7}周六#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">执行时间</label>
+			<div class="controls col-md-4">
+				#{select 'resourceWeek_hour',class:'form-control', value:x86ResourceWeek.OPERATE_HOUR, id:'resourceWeek_hour'}
+					#{option '00'}00时#{/option}
+					#{option '01'}01时#{/option}
+					#{option '02'}02时#{/option}
+					#{option '03'}03时#{/option}
+					#{option '04'}04时#{/option}
+					#{option '05'}05时#{/option}
+					#{option '06'}06时#{/option}
+					#{option '07'}07时#{/option}
+					#{option '09'}09时#{/option}
+					#{option '10'}10时#{/option}
+					#{option '11'}11时#{/option}
+					#{option '12'}12时#{/option}
+					#{option '13'}13时#{/option}
+					#{option '14'}14时#{/option}
+					#{option '15'}15时#{/option}
+					#{option '16'}16时#{/option}
+					#{option '17'}17时#{/option}
+					#{option '18'}18时#{/option}
+					#{option '19'}19时#{/option}
+					#{option '20'}20时#{/option}
+					#{option '21'}21时#{/option}
+					#{option '22'}22时#{/option}
+					#{option '23'}23时#{/option}
+				#{/select}
+			</div>
+			<div class="controls col-md-4">
+				#{select 'resourceWeek_minute',class:'form-control', value:x86ResourceWeek.OPERATE_MINUTE, id:'resourceWeek_minute'}
+					#{option '00'}00分#{/option}
+					#{option '05'}05分#{/option}
+					#{option '10'}10分#{/option}
+					#{option '15'}15分#{/option}
+					#{option '20'}20分#{/option}
+					#{option '25'}25分#{/option}
+					#{option '30'}30分#{/option}
+					#{option '35'}35分#{/option}
+					#{option '40'}40分#{/option}
+					#{option '45'}45分#{/option}
+					#{option '50'}50分#{/option}
+					#{option '55'}55分#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">选项3：</label>
+			<div class="controls col-md-4">
+				<input type="text" value="每月" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">日期</label>
+			<div class="controls col-md-6">
+				<input type="text" name="resourceMonth_day" id="resourceMonth_day" value="${x86ResourceMonth.OPERATE_DAY}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">执行时间</label>
+			<div class="controls col-md-4">
+				#{select 'resourceMonth_hour',class:'form-control', value:x86ResourceMonth.OPERATE_HOUR, id:'resourceMonth_hour'}
+					#{option '00'}00时#{/option}
+					#{option '01'}01时#{/option}
+					#{option '02'}02时#{/option}
+					#{option '03'}03时#{/option}
+					#{option '04'}04时#{/option}
+					#{option '05'}05时#{/option}
+					#{option '06'}06时#{/option}
+					#{option '07'}07时#{/option}
+					#{option '09'}09时#{/option}
+					#{option '10'}10时#{/option}
+					#{option '11'}11时#{/option}
+					#{option '12'}12时#{/option}
+					#{option '13'}13时#{/option}
+					#{option '14'}14时#{/option}
+					#{option '15'}15时#{/option}
+					#{option '16'}16时#{/option}
+					#{option '17'}17时#{/option}
+					#{option '18'}18时#{/option}
+					#{option '19'}19时#{/option}
+					#{option '20'}20时#{/option}
+					#{option '21'}21时#{/option}
+					#{option '22'}22时#{/option}
+					#{option '23'}23时#{/option}
+				#{/select}
+			</div>
+			<div class="controls col-md-4">
+				#{select 'resourceMonth_minute',class:'form-control', value:x86ResourceMonth.OPERATE_MINUTE, id:'resourceMonth_minute'}
+					#{option '00'}00分#{/option}
+					#{option '05'}05分#{/option}
+					#{option '10'}10分#{/option}
+					#{option '15'}15分#{/option}
+					#{option '20'}20分#{/option}
+					#{option '25'}25分#{/option}
+					#{option '30'}30分#{/option}
+					#{option '35'}35分#{/option}
+					#{option '40'}40分#{/option}
+					#{option '45'}45分#{/option}
+					#{option '50'}50分#{/option}
+					#{option '55'}55分#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="return manualX86ResSynchron();"><i class="fa fa-save"></i>&nbsp;&nbsp;立即执行</button>&nbsp;&nbsp;
+		</div>
+	</div>
+</div>
+
+<hr/>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-8">读取X86的性能信息</label>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">选项1：</label>
+			<div class="controls col-md-4">
+				<input type="text" value="每天" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">日期</label>
+			<div class="controls col-md-4">
+				<input type="text" value="" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">执行时间</label>
+			<div class="controls col-md-4">
+				#{select 'performanceDay_hour',class:'form-control', value:x86PerformanceDay.OPERATE_HOUR, id:'performanceDay_hour'}
+					#{option '00'}00时#{/option}
+					#{option '01'}01时#{/option}
+					#{option '02'}02时#{/option}
+					#{option '03'}03时#{/option}
+					#{option '04'}04时#{/option}
+					#{option '05'}05时#{/option}
+					#{option '06'}06时#{/option}
+					#{option '07'}07时#{/option}
+					#{option '09'}09时#{/option}
+					#{option '10'}10时#{/option}
+					#{option '11'}11时#{/option}
+					#{option '12'}12时#{/option}
+					#{option '13'}13时#{/option}
+					#{option '14'}14时#{/option}
+					#{option '15'}15时#{/option}
+					#{option '16'}16时#{/option}
+					#{option '17'}17时#{/option}
+					#{option '18'}18时#{/option}
+					#{option '19'}19时#{/option}
+					#{option '20'}20时#{/option}
+					#{option '21'}21时#{/option}
+					#{option '22'}22时#{/option}
+					#{option '23'}23时#{/option}
+				#{/select}
+			</div>
+			<div class="controls col-md-4">
+				#{select 'performanceDay_minute',class:'form-control', value:x86PerformanceDay.OPERATE_MINUTE, id:'performanceDay_minute'}
+					#{option '00'}00分#{/option}
+					#{option '05'}05分#{/option}
+					#{option '10'}10分#{/option}
+					#{option '15'}15分#{/option}
+					#{option '20'}20分#{/option}
+					#{option '25'}25分#{/option}
+					#{option '30'}30分#{/option}
+					#{option '35'}35分#{/option}
+					#{option '40'}40分#{/option}
+					#{option '45'}45分#{/option}
+					#{option '50'}50分#{/option}
+					#{option '55'}55分#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">选项2：</label>
+			<div class="controls col-md-4">
+				<input type="text" value="每周" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">日期</label>
+			<div class="controls col-md-4">
+				#{select 'performanceWeek_day',class:'form-control', value:x86PerformanceWeek.OPERATE_DAY, id:'performanceWeek_day'}
+					#{option 1}周日#{/option}
+					#{option 2}周一#{/option}
+					#{option 3}周二#{/option}
+					#{option 4}周三#{/option}
+					#{option 5}周四#{/option}
+					#{option 6}周五#{/option}
+					#{option 7}周六#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">执行时间</label>
+			<div class="controls col-md-4">
+				#{select 'performanceWeek_hour',class:'form-control', value:x86PerformanceWeek.OPERATE_HOUR, id:'performanceWeek_hour'}
+					#{option '00'}00时#{/option}
+					#{option '01'}01时#{/option}
+					#{option '02'}02时#{/option}
+					#{option '03'}03时#{/option}
+					#{option '04'}04时#{/option}
+					#{option '05'}05时#{/option}
+					#{option '06'}06时#{/option}
+					#{option '07'}07时#{/option}
+					#{option '09'}09时#{/option}
+					#{option '10'}10时#{/option}
+					#{option '11'}11时#{/option}
+					#{option '12'}12时#{/option}
+					#{option '13'}13时#{/option}
+					#{option '14'}14时#{/option}
+					#{option '15'}15时#{/option}
+					#{option '16'}16时#{/option}
+					#{option '17'}17时#{/option}
+					#{option '18'}18时#{/option}
+					#{option '19'}19时#{/option}
+					#{option '20'}20时#{/option}
+					#{option '21'}21时#{/option}
+					#{option '22'}22时#{/option}
+					#{option '23'}23时#{/option}
+				#{/select}
+			</div>
+			<div class="controls col-md-4">
+				#{select 'performanceWeek_minute',class:'form-control', value:x86PerformanceWeek.OPERATE_MINUTE, id:'performanceWeek_minute'}
+					#{option '00'}00分#{/option}
+					#{option '05'}05分#{/option}
+					#{option '10'}10分#{/option}
+					#{option '15'}15分#{/option}
+					#{option '20'}20分#{/option}
+					#{option '25'}25分#{/option}
+					#{option '30'}30分#{/option}
+					#{option '35'}35分#{/option}
+					#{option '40'}40分#{/option}
+					#{option '45'}45分#{/option}
+					#{option '50'}50分#{/option}
+					#{option '55'}55分#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">选项3：</label>
+			<div class="controls col-md-4">
+				<input type="text" value="每月" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">日期</label>
+			<div class="controls col-md-6">
+				<input type="text" name="performanceMonth_day" id="performanceMonth_day" value="${x86PerformanceMonth.OPERATE_DAY}" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">执行时间</label>
+			<div class="controls col-md-4">
+				#{select 'performanceMonth_hour',class:'form-control', value:x86PerformanceMonth.OPERATE_HOUR, id:'performanceMonth_hour'}
+					#{option '00'}00时#{/option}
+					#{option '01'}01时#{/option}
+					#{option '02'}02时#{/option}
+					#{option '03'}03时#{/option}
+					#{option '04'}04时#{/option}
+					#{option '05'}05时#{/option}
+					#{option '06'}06时#{/option}
+					#{option '07'}07时#{/option}
+					#{option '09'}09时#{/option}
+					#{option '10'}10时#{/option}
+					#{option '11'}11时#{/option}
+					#{option '12'}12时#{/option}
+					#{option '13'}13时#{/option}
+					#{option '14'}14时#{/option}
+					#{option '15'}15时#{/option}
+					#{option '16'}16时#{/option}
+					#{option '17'}17时#{/option}
+					#{option '18'}18时#{/option}
+					#{option '19'}19时#{/option}
+					#{option '20'}20时#{/option}
+					#{option '21'}21时#{/option}
+					#{option '22'}22时#{/option}
+					#{option '23'}23时#{/option}
+				#{/select}
+				<input type="hidden" name="buttonType" id="buttonType" value="" class="form-control">
+			</div>
+			<div class="controls col-md-4">
+				#{select 'performanceMonth_minute',class:'form-control', value:x86PerformanceMonth.OPERATE_MINUTE, id:'performanceMonth_minute'}
+					#{option '00'}00分#{/option}
+					#{option '05'}05分#{/option}
+					#{option '10'}10分#{/option}
+					#{option '15'}15分#{/option}
+					#{option '20'}20分#{/option}
+					#{option '25'}25分#{/option}
+					#{option '30'}30分#{/option}
+					#{option '35'}35分#{/option}
+					#{option '40'}40分#{/option}
+					#{option '45'}45分#{/option}
+					#{option '50'}50分#{/option}
+					#{option '55'}55分#{/option}
+				#{/select}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="return manualX86PerfSynchron();"><i class="fa fa-save"></i>&nbsp;&nbsp;立即执行</button>&nbsp;&nbsp;
+		</div>
+	</div>
+</div>
+ -->
+<hr/>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div align="center" style="width:100%">
+					<button type="submit" class="btn btn-primary btn-sm" name="_sub" onclick="return autoSynchron();" ><i class="fa fa-save"></i>&nbsp;&nbsp;确定</button>&nbsp;&nbsp;
+			    	<button type="submit" onclick="javascript:window.history.go(-1);" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;返回</button>&nbsp;&nbsp;
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script language="javascript">
+function autoSynchron(){
+
+	var tsamInfoDay_hour = $('#tsamInfoDay_hour').val();
+	var tsamInfoDay_minute = $('#tsamInfoDay_minute').val();
+  	var tsamInfoWeek_day = $('#tsamInfoWeek_day').val();
+	var tsamInfoWeek_hour = $('#tsamInfoWeek_hour').val();
+	var tsamInfoWeek_minute = $('#tsamInfoWeek_minute').val();
+	var tsamInfoMonth_day = $('#tsamInfoMonth_day').val();
+	var tsamInfoMonth_hour = $('#tsamInfoMonth_hour').val();
+	var tsamInfoMonth_minute = $('#tsamInfoMonth_minute').val();
+	
+	var userInfoDay_hour = $('#userInfoDay_hour').val();
+	var userInfoDay_minute = $('#userInfoDay_minute').val();
+	var userInfoWeek_day = $('#userInfoWeek_day').val();
+	var userInfoWeek_hour = $('#userInfoWeek_hour').val();
+	var userInfoWeek_minute = $('#userInfoWeek_minute').val();
+	var userInfoMonth_day = $('#userInfoMonth_day').val();
+	var userInfoMonth_hour = $('#userInfoMonth_hour').val();
+	var userInfoMonth_minute = $('#userInfoMonth_minute').val();
+
+//-----------------------
+	var resourceDay_hour = $('#resourceDay_hour').val();
+	var resourceDay_minute = $('#resourceDay_minute').val();
+	var resourceWeek_day = $('#resourceWeek_day').val();
+	var resourceWeek_hour = $('#resourceWeek_hour').val();
+	var resourceWeek_minute = $('#resourceWeek_minute').val();
+	var resourceMonth_day = $('#resourceMonth_day').val();
+	var resourceMonth_hour = $('#resourceMonth_hour').val();
+	var resourceMonth_minute = $('#resourceMonth_minute').val();
+
+	var performanceDay_hour = $('#performanceDay_hour').val();
+	var performanceDay_minute = $('#performanceDay_minute').val();
+	var performanceWeek_day = $('#performanceWeek_day').val();
+	var performanceWeek_hour = $('#performanceWeek_hour').val();
+	var performanceWeek_minute = $('#performanceWeek_minute').val();
+	var performanceMonth_day = $('#performanceMonth_day').val();
+	var performanceMonth_hour = $('#performanceMonth_hour').val();
+	var performanceMonth_minute = $('#performanceMonth_minute').val();
+
+	if(ifNull(tsamInfoDay_hour,'TSAMINFO')){return false;}
+	else if (ifNull(tsamInfoDay_minute,'TSAMINFO')){return false;}
+    else if (ifNull(tsamInfoWeek_day,'TSAMINFO')){return false;}
+    else if (ifNull(tsamInfoWeek_hour,'TSAMINFO')){return false;}
+  	else if (ifNull(tsamInfoWeek_minute,'TSAMINFO')){return false;}
+    else if (ifNull(tsamInfoMonth_day,'TSAMINFO')){return false;}
+    else if (ifNull(tsamInfoMonth_hour,'TSAMINFO')){return false;}
+    else if (ifNull(tsamInfoMonth_minute,'TSAMINFO')){return false;}
+    else if (ifNull(userInfoDay_hour,'USERINFO')){return false;}
+    else if (ifNull(userInfoDay_minute,'TSAMINFO')){return false;}
+    else if (ifNull(userInfoWeek_day,'TSAMINFO')){return false;}
+  	else if (ifNull(userInfoWeek_hour,'TSAMINFO')){return false;}
+    else if (ifNull(userInfoWeek_minute,'TSAMINFO')){return false;}
+    else if (ifNull(userInfoMonth_day,'TSAMINFO')){return false;}
+    else if (ifNull(userInfoMonth_hour,'TSAMINFO')){return false;}
+    else if (ifNull(userInfoMonth_minute,'TSAMINFO')){return false;}
+    else{
+		$.ajax({
+			 	type : 'POST',
+                url : '@{autoSynchronous()}',
+			 	data : {
+			 		
+ 			 		tsamInfoDay_hour: $('#tsamInfoDay_hour').val(),
+                    tsamInfoDay_minute: $('#tsamInfoDay_minute').val(),
+                    tsamInfoWeek_day: $('#tsamInfoWeek_day').val(),
+                    tsamInfoWeek_hour: $('#tsamInfoWeek_hour').val(),
+                    tsamInfoWeek_minute: $('#tsamInfoWeek_minute').val(),
+                    tsamInfoMonth_day: $('#tsamInfoMonth_day').val(),
+                    tsamInfoMonth_hour: $('#tsamInfoMonth_hour').val(),
+                    tsamInfoMonth_minute: $('#tsamInfoMonth_minute').val(),
+			 		
+			 		userInfoDay_hour: $('#userInfoDay_hour').val(),
+                    userInfoDay_minute: $('#userInfoDay_minute').val(),
+                    userInfoWeek_day: $('#userInfoWeek_day').val(),
+                    userInfoWeek_hour: $('#userInfoWeek_hour').val(),
+                    userInfoWeek_minute: $('#userInfoWeek_minute').val(),
+                    userInfoMonth_day: $('#userInfoMonth_day').val(),
+                    userInfoMonth_hour: $('#userInfoMonth_hour').val(),
+                    userInfoMonth_minute: $('#userInfoMonth_minute').val(),
+			 	   
+                    resourceDay_hour: $('#resourceDay_hour').val(),
+                    resourceDay_minute: $('#resourceDay_minute').val(),
+                    resourceWeek_day: $('#resourceWeek_day').val(),
+                    resourceWeek_hour: $('#resourceWeek_hour').val(),
+                    resourceWeek_minute: $('#resourceWeek_minute').val(),
+                    resourceMonth_day: $('#resourceMonth_day').val(),
+                    resourceMonth_hour: $('#resourceMonth_hour').val(),
+                    resourceMonth_minute: $('#resourceMonth_minute').val(),
+                    
+                    performanceDay_hour: $('#performanceDay_hour').val(),
+                    performanceDay_minute: $('#performanceDay_minute').val(),
+                    performanceWeek_day: $('#performanceWeek_day').val(),
+                    performanceWeek_hour: $('#performanceWeek_hour').val(),
+                    performanceWeek_minute: $('#performanceWeek_minute').val(),
+                    performanceMonth_day: $('#performanceMonth_day').val(),
+                    performanceMonth_hour: $('#performanceMonth_hour').val(),
+                    performanceMonth_minute: $('#performanceMonth_minute').val()
+                    
+                },
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+        			if(data==true){
+        				alert("设置已生效");
+        			}else{
+        				alert("设置失败");
+        			}
+        			
+      			}
+      		});
+	
+	}
+}
+
+function ifNull(val,type){
+ 	if(val==null || val==""){
+ 	    if(type == 'TSAMINFO'){
+	       alert('TSAM信息同步时间为空,请选择时间');
+	       return true;
+	     }else if (type == 'USERINFO'){
+	       alert('TSAM信息同步时间为空,请选择时间');
+	       return true;
+	     }
+	}
+	return false;
+}
+function manualTSAMInfoSynchron(){
+	var tsamInfoDay_hour = $('#tsamInfoDay_hour').val();
+	if(tsamInfoDay_hour==null||tsamInfoDay_hour==""){
+		return false;
+	}else{
+		$.ajax({
+			 type : 'POST',
+             url : '@{manualTSAMInfoSynchronous()}',
+			 data : {
+                	buttonType: $('#buttonType').val()
+                },
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+        			if(data==true){
+        				alert("同步成功");
+        			}else {
+        				alert("同步失败");
+        			}
+      			}
+      	});
+	
+	}
+}
+
+function manualUserInfoSynchron(){
+	var userInfoDay_hour = $('#userInfoDay_hour').val();
+	if(userInfoDay_hour==null||userInfoDay_hour==""){
+		return false;
+	}else{
+		$.ajax({
+			 type : 'POST',
+             url : '@{manualUserInfoSynchronous()}',
+			 data : {
+                	buttonType: $('#buttonType').val()
+                },
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+        			if(data==true){
+        				alert("同步成功");
+        			}else {
+        				alert("同步失败");
+        			}
+      			}
+      	});
+	
+	}
+
+}
+
+function manualX86ResSynchron(){
+	var resourceDay_hour = $('#resourceDay_hour').val();
+	if(resourceDay_hour==null||resourceDay_hour==""){
+		return false;
+	}else{
+		$.ajax({
+			 type : 'POST',
+             url : '@{manualX86ResSynchronous()}',
+			 data : {
+                	buttonType: $('#buttonType').val()
+                },
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+        			if(data==true){
+        				alert("同步成功");
+        			}else {
+        				alert("同步失败");
+        			}
+      			}
+      	});
+	
+	}
+
+}
+
+function manualX86PerfSynchron(){
+	var resourceDay_hour = $('#resourceDay_hour').val();
+	if(resourceDay_hour==null||resourceDay_hour==""){
+		return false;
+	}else{
+		$.ajax({
+			 type : 'POST',
+             url : '@{manualX86PerfSynchronous()}',
+			 data : {
+                	buttonType: $('#buttonType').val()
+                },
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+        			if(data==true){
+        				alert("同步成功");
+        			}else {
+        				alert("同步失败");
+        			}
+      			}
+      	});
+	
+	}
+
+}
+
+</script>

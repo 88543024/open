@@ -1,0 +1,93 @@
+#{extends 'main.html' /}
+#{set title:'' /}
+
+<form id="PasVm" class="form form-horizontal validate-form"  action="" encType="multipart/form-data" method="post" accept-charset="utf-8">
+  <input id="vmId" type="hidden" value="${obj.id}" name="vmId" class="form-control">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'SYS_INFO'}</label>
+						<div class="controls col-md-8">
+							<input type="text" value="${obj.SYS_INFO}" name="SYS_INFO" class="form-control" readonly="readonly">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">IP</label>
+						<div class="controls col-md-8">
+							<input type="text" value="${obj.IP}" name="memory" class="form-control" readonly="readonly">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'NAME'}</label>
+						<div class="controls col-md-8">
+							<input type="text" value="${obj.NAME}" name="NAMEVM" class="form-control" readonly="readonly">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'USER_NAME'}</label>
+						<div class="controls col-md-8">
+							<input type="text" value="${obj.v_UserName}" name="v_UserName" class="form-control" readonly="readonly">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group no-margin-hr">
+						<label class="control-label col-md-4">&{'PASSWORD'}</label>
+						<div class="controls col-md-8">
+								<input id="v_PassWord" type="text" value="${obj.v_UserName}" name="v_PassWord" class="form-control" >
+						</div>
+					</div>
+				</div>
+			</div>
+			<hr/>
+	   <div class="row">
+		<div class="col-sm-12">
+			<div class="form-actions" style="margin-bottom: 0">
+				<div class="row">
+					<div class="col-sm-9 col-sm-offset-3" style="padding-left:20%;">
+				    	<button type="button" onclick="modifyPasVm()" class="btn btn-primary btn-sm"  name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'CONFIRMPASSWORD'}</button>&nbsp;&nbsp;<!-- 确认 -->
+				    	<button type="button" onclick="javascript:window.history.go(-1);" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'RETURN_BUTTON'}</button>&nbsp;&nbsp;<!-- 返回 -->
+					</div>
+				</div>
+			 </div>
+			</div>
+		</div>
+</form>
+
+<script type="text/javascript">
+function modifyPasVm(){
+	$.ajax({
+				type : 'POST',
+				url:'@{modifypas()}',
+			 	data : {
+			 		vmId: $('#vmId').val(),
+			 		v_PassWord: $('#v_PassWord').val()
+			 	},
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+			 	   alert(data);
+			 		if(data){
+        				alert("虚拟机密码重置失败");
+        				return false;
+        			}else if(data){
+        				alert("虚拟机密码重置成功");
+        				return false;
+        			}else{
+        				alert("虚拟机密码重置成功");
+        				return false;
+        			}
+			 	}
+		
+		});	
+	}
+</script>
+

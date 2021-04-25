@@ -1,0 +1,154 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.blank.title', type.modelName) /}
+<link href="@{'/public/stylesheets/uploadify.css'}" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="@{'/public/javascripts/uploadify3.2/jquery.uploadify.min.js'}"></script>
+
+<div id="crudBlank" class="${type.name}">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="page-header">
+				<h1 class="pull-left">
+					<i class="icon-ok"></i> <span>&{'crud.blank.title', type.modelName}</span>
+				</h1>
+			</div>
+		</div>
+	</div>
+
+	<div class="objectForm">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'IMAGE_NAME'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="imageName" id="imageName" value="" class="form-control">
+						<input type="hidden" name="fla" id="fla" class="form-control">
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'PATH'}</label>
+					<div class="controls col-md-8">
+						<input type="file" id="file_upload" name="file_upload" value="" class="form-control"/>
+					</div>
+					<div id="fileQueue"></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'OS_PATCH'}</label>
+					<div class="controls col-md-8">
+						#{select 'osPatch', items:osPatchList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', value:1, class:'form-control', id:'osPatch' /}
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'DB_PATCH'}</label>
+					<div class="controls col-md-8">
+						#{select 'dbPatch', items:dbPatchList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', value:1, class:'form-control', id:'dbPatch' /}
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'WEB_PATCH'}</label>
+					<div class="controls col-md-8">
+						#{select 'webPatch', items:webPatchList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', value:1, class:'form-control', id:'webPatch' /}
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'IMAGE_REMARK'}</label>
+					<div class="controls col-md-8">
+						<textarea rows="3" cols="5" id="remark" name="remark" class="form-control" >
+						</textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+        			<input type="button" value="&nbsp;&nbsp;上&nbsp;传&nbsp;&nbsp;" class="btn btn-primary btn-sm"/>
+        			<button type="submit" onclick="javascript:window.history.go(-1);" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'RETURN_BUTTON'}</button>&nbsp;&nbsp;<!-- 返回 -->
+        		</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+$(function() {
+	$('#file_upload').uploadify({
+		width : 120,
+		height : 30,
+		fileObjName:'imag',
+		progressData: 'speed',
+		buttonText:"选择镜像文件",
+		fileTypeExts:"*.zip;*.iso",
+		multi:true,
+		auto:false,
+		swf:"@{'/public/javascripts/uploadify3.2/uploadify.swf'}",
+        uploader:'upload',//上传处理程序
+        queueSizeLimit:1,
+        onSelect : function(file) {
+        	$("#fla").val(true);
+        },
+    	onUploadSuccess:function(file, data, response) {
+		},
+    	onQueueComplete:function(queueData){
+			alert("成功导入" + queueData.uploadsSuccessful + "个文件！");
+			window.location="blank";
+		},
+		onUploadStart:function(file){
+			var formData = {
+				imageName:$("#imageName").val(),
+				osPatch:$("#osPatch").val(),
+				dbPatch:$("#dbPatch").val(),
+				webPatch:$("#webPatch").val(),
+				remark:$("#remark").val()
+			};
+			$('#file_upload').uploadify('settings','formData',formData);
+		}
+		
+	});
+	$(".uploadify").height("16px");
+	function subImport() {
+		var imageName = $("#imageName").val();
+		var file_upload = $("#file_upload").val();
+		if(imageName == ""||imageName==null) {
+			alert("请输入镜像名");
+			return false;
+		}else{
+			var fla = $("#fla").val();
+			if(fla){
+				$("input[type=button]").attr("disabled","disabled").val("正在导入,请不要退出该页面...");
+				$('#file_upload').uploadify('upload','*');
+				$("#fla").val(false);
+			}else{
+				alert("请选择文件后再上传！");
+				$("#fla").val(false);
+			}
+			
+		}
+		
+	}
+			
+	$("input[type=button]").click(subImport);
+	
+});
+
+
+
+
+</script>

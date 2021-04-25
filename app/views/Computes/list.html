@@ -1,0 +1,103 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header">
+            <h1 class="pull-left">
+                <i class="icon-ok"></i> <span>&{'crud.list.title', type.modelName}</span>
+            </h1>
+            <div class="pull-right">
+                <a class="btn btn-info btn-sm" href="javascript:insNode()">&{'new'}</a>
+                <a class="btn btn-info btn-sm" href="javascript:updNode()"><i class="fa fa-save"></i>&nbsp;&nbsp;修改</a>
+                <a class="btn btn-danger btn-sm" href="javascript:delNode()"><i class="fa fa-remove"></i>&{'crud.delete', type.modelName}</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="box">
+            <div class="box-content box-padding">
+                <div class="panel panel-info panel-dark">
+                    <div class="panel-heading">
+                        <span class="panel-title">组织机构</span>
+                        <div class="panel-heading-controls">
+                            <div class="panel-heading-icon"><i class="fa fa-inbox"></i></div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="department"></div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    var id = '';
+                    var level = '';
+                    
+                    var insNode = function() {
+                        self.location = '@{blank()}?parent_id=' + id + '&level=' + level;
+                    }
+                    
+                    var updNode = function() {
+                        if (id == null || id == '') {
+                            bootbox.alert({
+                                message: "请选择要修改的节点!",
+                                callback: function() {
+                                },
+                                className: "bootbox-sm"
+                            });
+                        } else {
+                            self.location = '@{show()}?id=' + id;
+                        }
+                    }
+                    
+                    var delNode = function() {
+                        if (id == null || id == '') {
+                            bootbox.alert({
+                                message: "请选择要删除的节点!",
+                                callback: function() {
+                                },
+                                className: "bootbox-sm"
+                            });
+                        } else {
+                            bootbox.confirm({
+                                message: "确定删除当前节点以及所有子节点?",
+                                callback: function(result) {
+                                    if (result) {
+                                        self.location = '@{delete()}?id=' + id;
+                                    }
+                                },
+                                className: "bootbox-sm"
+                            });
+                        }
+                    }
+                    
+                    $(function () {
+                        var result;
+                        $.ajax({
+                            type: 'GET',
+                            url: '@{Computes.buildTree()}',
+                            dataType: 'json',
+                            async: false,
+                            success: function(data) {
+                                result = data;
+                            }
+                        });
+                        
+                        $('#department').jstree({'plugins':["wholerow"], 'core' : {
+                            'data' : result
+                        }}).on('select_node.jstree', function (e, data) {
+                            console.log(data.node);
+                            id = data.node.id;
+                            level = data.node.original.level + 1; // 增加时使用
+                            $.get('?operation=delete_node', { 'id' : data.node.id })
+                            .fail(function () {
+                                data.instance.refresh();
+                            });
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

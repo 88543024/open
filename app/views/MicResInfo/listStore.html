@@ -1,0 +1,65 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+<!-- 存储资源 -->
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'StorageResources_TITLE'}</span><!--存储资源-->
+			</h1>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				<div class="table-info">
+				<table class="table table-bordered table-striped" style="margin-bottom: 0;" >
+				<thead>
+					<tr>
+						<th width="10%">
+							<strong></strong>
+						</th><!--
+						<th width="15%">
+							<strong></strong>
+						</th>
+						--><!--
+						<th width="5%">
+							<strong>&{'Available'}</strong>
+						</th>
+						--><th width="10%">
+							<strong>&{'Used'}</strong>
+						</th>
+						<th width="10%">
+							<strong>&{'Surplus'}</strong>
+						</th>
+					 </tr>
+				</thead>
+				
+				<tbody>
+					#{list items:objects, as:'cb'}
+						<tr>
+    						<td>Store</td>
+    						<!--<td></td>
+    						<td></td>-->
+    						<td>${cb.StoreUse}</td>
+    					    <td>${cb.StoreRemain}</td>
+    					  </tr>
+					#{/list}
+				</tbody>
+				</table>
+			</div>
+				<div style="display: none">
+					#{crud.table fields:['TypeName']}
+						#{crud.custom 'TypeName'}
+						#{/crud.custom}
+					#{/crud.table}
+			   </div>
+		 </div>
+		</div>
+	</div>
+</div>
+  <div id="crudListPagination" class="pagination">
+    </div>

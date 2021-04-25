@@ -1,0 +1,134 @@
+#{extends 'main.html' /}
+#{set title:'' /}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>虚拟机列表</span>
+			</h1>
+			<!-- 
+			<div class="pull-right">
+				<a class="btn box-collapse btn-xs btn-warning" href="@{blank()}">&{'new'}</a>
+			</div>
+			 -->
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				<table class="table table-bordered table-striped" style="margin-bottom: 0;" >
+				<thead>
+					<tr>
+						<th width="15%">
+							<strong>ID</strong>
+						</th>
+						<th width="15%">
+							<strong>hostname</strong>
+						</th>
+						<th width="15%">
+							<strong>ip</strong>
+						</th>
+						<th width="15%">
+							<strong>username</strong>
+						</th>
+						<th width="15%">
+							<strong>password</strong>
+						</th>
+					    <th width="15%">
+							<strong>操作</strong>
+						</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					#{list items:objects, as:'cb'}
+						<tr>
+    						<td>${cb.id}</td>
+    						<td>${cb.hostname}</td>
+    						<td>${cb.ip}</td>
+    						<td>${cb.username}</td>
+    						<td><input name="rootPas" value="${cb.password}" disabled="disabled"/></td>
+   							<td>	<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="viewUp(${cb.id},${cb.ELEMENT_ID});"><i class="fa fa-save"></i>&nbsp;&nbsp;root确认</button></td>
+    					</tr>
+					#{/list}
+				</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+					<button type="submit" onclick="sendMs(${object.id})" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;发送</button>&nbsp;&nbsp;
+			    	<button type="submit" onclick="javascript:window.history.go(-1);" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'RETURN_BUTTON'}</button>&nbsp;&nbsp;<!-- 返回 -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script language="javascript">
+
+function viewUp(id,elementId){
+	window.location="viewUp"+"?id="+id+"&elementId="+elementId;
+}
+
+
+//发送虚拟机信息
+function sendMs(id){
+	//var rootPas = $("input[name='rootPas']").val();
+	var sedms = false;
+	var count = 0;
+	var fcount = 0;
+	$("input[name='rootPas']").each(  
+		function(){  
+			//alert($(this).val());  
+			var val = $(this).val();
+			if(val == null || val == ''){
+				//alert(1);
+				fcount = ++fcount;
+			}else if(count==0){
+				count = 1;
+				sedms = true;
+			}
+		}  
+	) 
+	 if(!sedms){
+	    alert("虚拟机密码不能为空");
+		return false;
+	 }else if(fcount>0){
+	 	 var resut= window.confirm("有"+fcount+"台虚拟机密码为空,确定要发送吗？");
+	 	 if(!resut){
+	 	 	return false;
+	 	 }
+	 }else{
+		$.ajax({
+				type : 'POST',
+	               url : '@{sendMs()}',
+			 	data : {
+			 		id: id
+			 	},
+	               dataType : 'json',
+	               async : false,
+			 	   success: function(data){
+			 		if(data){
+	       				alert("工单信息发送成功!!!");
+	       				return false;
+	       			}else{
+	       				alert("工单信息发送失败!!!");
+	       				return false;
+	       			}
+			 	}
+		
+		});
+	}
+}
+</script>
+
+

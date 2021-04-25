@@ -1,0 +1,76 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+<!--计算资源分配情况 -->
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'CountDistribuOfRes_TITLE'}</span><!--计算资源分配情况 -->
+			</h1>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				<div class="table-info">
+				<table class="table table-bordered table-striped" style="margin-bottom: 0;" >
+				<thead>
+					<tr>
+						<th width="15%">
+							<strong>&{'AssetClasses'}</strong>
+						</th>
+						<!--<th width="15%">
+							<strong>&{'Regional'}</strong>
+						</th>
+					    <th width="15%">
+							<strong>&{'FunctionalDomain'}</strong>
+						</th>
+						--><th width="15%">
+							<strong>&{'count_Total'}</strong>
+						</th>
+						<th width="15%">
+							<strong>&{'Used'}</strong>
+						</th>
+						<th width="15%">
+							<strong>&{'Available'}</strong>
+						</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					#{list items:objects, as:'cb'}
+						<tr>
+							<td>vCup</td><!--
+    						<td></td>
+    						<td></td>
+    						--><td>${cb.CPU}</td>
+    						<td>${cb.CPUUse}</td>
+   							<td>${cb.CPURemain}</td>
+    					</tr>
+    						<tr>
+							<td>Memory</td><!--
+    						<td></td>
+    						<td></td>
+    						--><td>${cb.Memory}</td>
+    						<td>${cb.MemoryUse}</td>
+   							<td>${cb.MemoryRemain}</td>
+    					</tr>
+					#{/list}
+				</tbody>
+				</table>
+			</div>
+				<div style="display: none">
+					#{crud.table fields:['TypeName']}
+						#{crud.custom 'TypeName'}
+						#{/crud.custom}
+					#{/crud.table}
+			   </div>
+		 </div>
+		</div>
+	</div>
+</div>
+  <div id="crudListPagination" class="pagination">
+    </div>

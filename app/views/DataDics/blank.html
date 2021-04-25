@@ -1,0 +1,135 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.blank.title', type.modelName) /}
+
+<div id="crudBlank" class="${type.name}">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="page-header">
+				<h1 class="pull-left">
+					<i class="icon-ok"></i> <span>&{'crud.blank.title', type.modelName}</span>
+				</h1>
+			</div>
+		</div>
+	</div>
+    <div class="objectForm">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'DIC_TYPE'}</label>
+					<div class="controls col-md-8">
+						#{select 'dicType',class:'form-control', value:1, id:'dicType'}
+							#{option 'OSPATCH'}操作系统数据字典#{/option}
+							#{option 'DBPATCH'}数据库数据字典 #{/option}
+							#{option 'WEBPATCH'}中间件数据字典 #{/option}
+							#{option 'VCPU_NUM'}CPU核数数据字典 #{/option}
+							#{option 'MEMORY_SIZE'}内存大小数据字典 #{/option}
+							#{option 'RES_Expire_Remind'}资源到期提前预警天数 #{/option}
+							#{option 'REPORT_TopN'}报表查询TopN#{/option}
+						#{/select}
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'VALUE'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="value" id="value" class="form-control">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'DISPLAY_VALUE'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="displayValue" id="displayValue" class="form-control">
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group no-margin-hr">
+					<label class="control-label col-md-4">&{'DISPLAY_VALUE_DESC'}</label>
+					<div class="controls col-md-8">
+						<input type="text" name="desc" id="desc" class="form-control">
+						<input type="hidden" name="buttonType" id="buttonType" class="form-control">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+                    <button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="addType();return checkIsNull()"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'crud.save', type.modelName}</button>
+                    <button type="submit" class="btn btn-primary btn-sm" name="_saveAndAddAnother" onclick="saveAndAddAnotherType();return checkIsNull()"><i class="fa fa-plus"></i>&nbsp;&nbsp;&{'crud.saveAndAddAnother', type.modelName}</button>
+                </div>
+			</div>
+		</div>
+    </div>
+
+</div>
+<script type="text/javascript">
+function addType(){
+	$("#buttonType").val("1");
+}
+function saveAndAddAnotherType(){
+	$("#buttonType").val("2");
+}
+
+function checkIsNull(){
+	var value = $("#value").val();
+	var displayValue = $("#displayValue").val();
+	if(value==null||value==''){
+		alert("数据字典值不能为空");
+		return false;
+	}else if(displayValue==null||displayValue==''){
+		alert("数据字典显示值不能为空");
+		return false;
+	}else {
+		$.ajax({
+			 	type : 'POST',
+                url : '@{addDataDic()}',
+			 	data : {
+                    dicType: $('#dicType').val(),
+                    value: $('#value').val(),
+                    displayValue: $('#displayValue').val(),
+                    desc: $('#desc').val()
+                },
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+        			if(data=="1"){
+        				alert("数据字典value值不能为空");
+        				return false;
+        			}else if(data=="2"){
+        				alert("此种类型的数据字典值已存在，请重填");
+        				return false;
+        			}else if(data=="3"){
+        				alert("添加成功");
+        				var buttonType = $('#buttonType').val();
+        				if(buttonType=="1"){
+        					window.location="list";
+        					$('#buttonType').val("");
+        					return true;
+        				}else if(buttonType=="2"){
+        					window.location="blank";
+        					$('#buttonType').val("");
+        					return true;
+        				}else{
+        					window.location="list";
+        					$('#buttonType').val("");
+        					return true;
+        				}
+        			}else{
+        				alert("未知错误");
+        				return false;
+        			}
+      			}
+      		});
+	}
+	
+}
+
+</script>

@@ -1,0 +1,63 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'ALARM_INFO'}</span>
+			</h1>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+		   <div class="table-info">
+			<table class="table table-bordered table-striped" style="margin-bottom: 0;" >
+				<thead>
+					<tr>
+						<th width="15%">
+							<strong>DEVICE_NAME</strong>
+						</th>
+						<th width="15%">
+							<strong>DEVICE_ORIGINAL_SEVERITY</strong>
+						</th>
+						<th width="15%">
+							<strong>ALARM_CODE</strong>
+						</th>
+						<th width="15%">
+							<strong>ALARM_DESCRIPTION</strong>
+						</th>
+						<th width="15%">
+							<strong>LAST_OCCURENCE</strong>
+						</th>
+					    <th width="10%">
+							<strong>SUBDEVICE_NAME</strong>
+						</th>
+					    <th width="10%">
+							<strong>DEVICE_TYPE</strong>
+						</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					#{list items:objects, as:'cb'}
+						<tr style="background-color: red">
+							<td>${cb.DEVICE_NAME}</td>
+    						<td>${cb.DEVICE_ORIGINAL_SEVERITY}</td>
+    						<td>${cb.ALARM_CODE}</td>
+    						<td>${cb.ALARM_DESCRIPTION}</td>
+    						<td>${cb.LAST_OCCURENCE}</td>
+    						<td>${cb.SUBDEVICE_NAME}</td>
+    						<td>${cb.DEVICE_TYPE}</td>
+    					</tr>
+					#{/list}
+				</tbody>
+				</table>
+			</div>
+         </div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,143 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'SYSTEM_MANAGE'}＞&{'crud.list.title', type.modelName}</span>
+			</h1>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				#{crud.table fields:['USER_NAME','DISPLAY_NAME','DEPARTMENT','TELPHONE','EMAIL','PERMISSION']}
+					#{crud.custom 'USER_NAME'}
+						#{if object.PERMISSION == 'supermanager'}
+							#{if (session.get("permission") == 'supermanager')}
+								#{if (session.get("username") == object.USER_NAME)}
+									<a href="@{Users.view(object.id)}">${object.USER_NAME}</a>
+								#{/if}
+								#{else}
+									${object.USER_NAME}
+								#{/else}
+							#{/if}
+							#{else}
+								${object.USER_NAME}
+							#{/else}
+						#{/if}
+						#{elseif object.PERMISSION == 'manager'}
+							#{if (session.get("permission") == 'manager')}
+								#{if (session.get("username") == object.USER_NAME)}
+									<a href="@{Users.view(object.id)}">${object.USER_NAME}</a>
+								#{/if}
+								#{else}
+									${object.USER_NAME}
+								#{/else}
+							#{/if}
+							#{else}
+								${object.USER_NAME}
+							#{/else}
+						#{/elseif}
+						#{else}
+							${object.USER_NAME}
+						#{/else}
+					#{/crud.custom}
+					
+					
+					
+					#{crud.custom 'PERMISSION'}
+						#{if object.PERMISSION == 'supermanager'}
+							超级管理员
+						#{/if}
+						#{elseif object.PERMISSION == 'manager'}
+							#{if (session.get("permission") == 'supermanager')}
+								<select onchange="grantPermission(this.value,${object.id})">
+									<option value="supermanager">超级管理员</option>
+									<option value="manager" selected="selected">管理员</option>
+									<option value="operator">操作员</option>
+									<option value="none">无权限</option>
+								</select>
+							#{/if}
+							#{else}
+								管理员
+							#{/else}
+						#{/elseif}
+						#{elseif object.PERMISSION == 'operator'}
+							#{if (session.get("permission") == 'supermanager') || (session.get("permission") == 'manager')}
+								<select onchange="grantPermission(this.value,${object.id})">
+									<option value="supermanager">超级管理员</option>
+									<option value="manager">管理员</option>
+									<option value="operator" selected="selected">操作员</option>
+									<option value="none">无权限</option>
+								</select>
+							#{/if}
+							#{else}
+								操作员
+							#{/else}
+						#{/elseif}
+						#{else}
+							#{if (session.get("permission") == 'supermanager') || (session.get("permission") == 'manager')}
+								<select onchange="grantPermission(this.value,${object.id})">
+									<option value="supermanager">超级管理员</option>
+									<option value="manager">管理员</option>
+									<option value="operator">操作员</option>
+									<option value="none" selected="selected">无权限</option>
+								</select>
+							#{/if}
+							#{else}
+								无权限
+							#{/else}
+						#{/else}
+					#{/crud.custom}
+					
+				#{/crud.table}	
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="assignModal" class="modal fade modal-blur">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content" id="assignModalContent">
+			
+		</div>
+		<!-- / .modal-content -->
+	</div>
+	<!-- / .modal-dialog -->
+</div>
+<!-- / .modal -->
+<script>
+$('.assign').on('click', function (e) {
+  // do something...
+  $("#assignModal").modal();
+  $("#assignModalContent").empty();
+  $("#assignModalContent").load(this.name);
+  
+})
+
+function grantPermission(value,pk){
+	$.ajax({
+			type : 'POST',
+            url : '@{assignPermissionAjax()}',
+			data : {
+                    permission : value,
+                    id : pk
+            },
+            dataType : 'json',
+            async : false,
+		    success: function(data){
+        		if(data=="0"){
+        			alert("授权成功");
+        		}else{
+        			alert("授权失败");
+        		}
+      		}
+		});
+}
+
+
+</script>

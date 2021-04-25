@@ -1,0 +1,25 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.list.title', type.name) /}
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<h1 class="pull-left">
+				<i class="icon-ok"></i> <span>&{'SYSTEM_MANAGE'}＞&{'crud.list.title', type.modelName}</span>
+			</h1>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-content box-padding">
+				#{crud.table fields:['LOG_TYPE','OPERATION_MAN','LOG_CONTENT','CREATE_LOG_TIME']}
+					#{crud.custom 'LOG_TYPE'}
+						<a href="@{SystemLogs.view(object.id)}">${object.LOG_TYPE}</a>
+					#{/crud.custom}
+				#{/crud.table}
+			</div>
+		</div>
+	</div>
+</div>

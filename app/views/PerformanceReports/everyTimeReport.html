@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>&{'SERVER_PERFORMANCE_DAILY_REPORT'}</title><!-- 服务器性能日报 -->
+<link href="@{'/public/stylesheets/easyUI/themes/metro/easyui.css'}" media="all" rel="stylesheet" type="text/css" />
+<link href="@{'/public/stylesheets/easyUI/themes/icon.css'}" media="all" rel="stylesheet" type="text/css" />
+
+<script src="@{'/public/theme/ace/js/jquery-1.10.2.min.js'}" type="text/javascript"></script>
+<script src="@{'/public/javascripts/easyUI/jquery.easyui.min.js'}" type="text/javascript"></script>
+
+<script src="@{'/public/javascripts/echarts/esl.js'}"></script>
+<script src="@{'/public/javascripts/echarts/echarts.js'}"></script>
+<script src="@{'/public/javascripts/echarts/echarts-map.js'}"></script>
+
+</head>
+<body>
+	<!-- echarts图形 -->
+	<div id="chart" style="height:350px;border:1px solid #ccc;padding:10px;"></div>
+	<!-- 表格 -->
+	<div id="grid"></div>
+	<!-- 查询窗口 -->
+	<div id="queryWindow" class="easyui-dialog" title="查询" data-options="closed:true,modal:true" style="width:550px;height:210px;padding:5px;">
+        <div class="easyui-layout" data-options="fit:true">
+            <form id="queryForm" action = "" method="post">
+                <table cellpadding="5">
+                	<tr>
+                        <td>日报类别：</td>
+                        <td style="display:none;"><input class="easyui-validatebox" type="text" name="id"></input></td>
+                        <td><input id="modelName" class="easyui-combobox" type="text" name="modelName" data-options="editable:false,multiple:false,panelHeight:'auto',valueField:'id',textField:'text',value:'${modelName}'"></input></td>
+                        <td>性能KPI：</td>
+                        <td><input id="businessSys" class="easyui-combobox" type="text" name="businessSys" data-options="editable:false,multiple:false,panelHeight:'auto',valueField:'id',textField:'text'"></input></td>
+                    </tr>
+                    <tr>
+                        <td>服务器名称或IP：</td>
+                        <td><input class="easyui-validatebox" type="text" id="ipAddress" name="ipAddress" data-options=""></input></td>
+                    </tr>
+                    <tr>
+                        <td>开始时间：</td>
+                        <td><input id="beginDate" name="beginDate" class="easyui-datebox" ></input></td>
+                        <td>结束时间：</td>
+                        <td><input id="endDate" name="endDate" class="easyui-datebox" ></input></td>
+                    </tr>
+                </table>
+            </form>
+            <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onClick="queryReport()" style="width:80px">Search</a>
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-clear'" href="javascript:void(0)" onClick="javascript:$('#queryWindow').form('clear');" style="width:80px">Reset</a>
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onClick="javascript:$('#queryWindow').dialog('close');" style="width:80px">Cancel</a>
+            </div>
+        </div>
+    </div>
+	
+	<script type="text/javascript">
+		Date.prototype.Format = function (fmt) { //author: meizz 
+		    var o = {
+		        "M+": this.getMonth() + 1,//月份
+		        "d+": this.getDate(),//日
+		        "h+": this.getHours(),//小时
+		        "m+": this.getMinutes(),//分
+		        "s+": this.getSeconds(),//秒
+		        "q+": Math.floor((this.getMonth() + 3) / 3),//季度 
+		        "S": this.getMilliseconds()//毫秒
+		    };
+		    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+		    for (var k in o)
+		    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		    return fmt;
+		}
+	
+	    // 日期格式化
+	    $('.easyui-datebox').datebox({
+	        closeText:'关闭',
+	        currentText: '今天',
+	        formatter: function(date){
+	            var y = date.getFullYear();
+	            var m = date.getMonth() + 1;
+	            var d = date.getDate();
+	            return y + '-' + m + '-' + d;
+	       },
+	       parser: function(s){
+	            s = s.replace(/-/g, "/");
+	            var t = Date.parse(s);
+	            if (!isNaN(t)){
+	                return new Date(t);
+	            } else {
+	                return new Date();
+	            }
+	        }  
+	   });
+    
+	    function strSort(a, b) {
+	        $('#grid').datagrid('clearSelections'); // 清空选择行
+	        if (a == null) {
+	            a = "";
+	        }
+	        if (b == null) {
+	            b = "";
+	        }
+	        a = a.toUpperCase();
+	        b = b.toUpperCase();
+	        return a > b ? 1 : -1;
+	    }
+	    
+        // 查询服务器性能日报
+        function queryReport() {
+        	
+            var mn = "";
+            if ($('#modelName').combobox("getValues").toString() == "") {
+                mn = '${modelName}';
+            } else {
+                mn = $('#modelName').combobox("getValues").toString();
+            }
+            $.ajax({
+                type : 'POST',
+                url : '@{PerformanceReports.show()}',
+                data : {
+                    modelName: mn,
+                    business: $('#businessSys').combobox("getValues").toString(),
+                    ipAddress: $('#ipAddress').val(),
+                    beginDate: $('#queryForm').find("input[name=beginDate]").val(),
+                    endDate: $('#queryForm').find("input[name=endDate]").val()
+                },
+                dataType : 'json',
+                async : false,
+                success : function(data) {
+                	// 用来显示图形
+                	var legendData= new Array();
+                	var xData = new Array();
+                	var series = new Array();
+                    var tmpmax = new Array();
+                    var tmpavg = new Array();
+                    var tmpmin = new Array();
+                    $.each(data, function(index, el) {
+                    	if(index=='grid'){
+                    		$('#grid').datagrid('loadData', el);
+                    	}else{
+                    		$.each(el, function(id, va) {
+                    			if(id=='max'){
+                    				tmpmax = [];
+                    				$.each(va, function(indx, valu) {
+	                    				if(xData.indexOf(valu.id)==-1){
+	                    					xData.push(valu.id);
+	                    				}
+                    					tmpmax.push(valu.text);
+                    				})
+                    			}else if(id=='avg'){
+                    				tmpavg = [];
+                    				$.each(va, function(indx, valu) {
+	                    				if(xData.indexOf(valu.id)==-1){
+	                    					xData.push(valu.id);
+	                    				}
+                    					tmpavg.push(valu.text);
+                    				})
+                    			}
+                    		})
+                    		
+                    		if(tmpmax!=null&&tmpmax!=""){
+                    			legendData.push(index+' max');
+                    			series.push({
+                        			name: index+' max',
+                        			type: 'line',
+                        			data: tmpmax
+                    			});
+                    		}
+                    		if(tmpavg!=null&&tmpavg!=""){
+                    			legendData.push(index+' avg');
+                    			series.push({
+                        			name: index+' avg',
+                        			type: 'line',
+                        			data: tmpavg
+                    			});
+                    		}
+                    		
+                    		initChart(legendData, xData, series);
+                    	}
+                    	
+                    	
+                    		
+                    })
+                    
+                }
+            });
+            $('#queryWindow').dialog('close');
+        }
+        
+		$('#grid').datagrid({
+	        queryParams:{
+	            modelName: "${modelName}"
+	        },
+	        border : false,
+	        method : 'get',
+	        fit: true,
+	        region : 'center',
+	        rownumbers: true,
+	        singleSelect : true,
+	        pagination : false,
+	        striped: true,
+	        pageSize : 30,
+	        idField : 'id',
+	        remoteSort: false,
+	        multiSort :true,
+	        columns : [[
+                {field : 'businessSys', title : '性能KPI', width : 130, sortable: true, sorter: strSort},
+                {field : 'modelName', title : '颗粒度', width : 130, sortable: true, sorter: strSort},
+	            {field : 'ipAddress', title : '服务器名称或IP', width : 130, sortable: true, sorter: strSort},
+	            {field : 'max', title : '最大值', width : 130, sortable: true, sorter: strSort},
+	            {field : 'avg', title : '平均值', width : 130, sortable: true, sorter: strSort},
+	            {field : 'hapDate', title : '时间', width : 160, sortable: true, sorter: strSort}
+	        ]],
+	        toolbar : [{
+	            id : 'btnExpExcel',
+	            text : '导出',
+	            iconCls : 'icon-excel',
+	            handler : function() {
+	            	exportExcel();
+	            }
+	        }, '-', {
+	            id : 'btnSearch',
+	            text : '查询',
+	            iconCls : 'icon-search',
+	            handler : function() {
+	            	$('#queryForm').form('clear');
+                	$('#businessSys').combobox('reload', '@{PerformanceReports.getBusinessList()}');
+                    $('#modelName').combobox('reload', '@{PerformanceReports.getModelNameList()}');
+                    $('#beginDate').datebox('setValue', new Date().Format('yyyyMMdd'));
+                    $('#endDate').datebox('setValue', new Date().Format('yyyyMMdd'));
+                    $('#queryWindow').dialog('open');
+	            }
+	        }]
+	    });
+	
+        var myChart = {};
+        
+        function exportExcel() {
+       		alert("aaa");
+        }
+        
+	    // Step:3 conifg ECharts's path, link to echarts.js from current page.
+	    // Step:3 为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
+	    require.config({
+	        paths:{ 
+	            echarts:'./js/echarts',
+	            'echarts/chart/bar' : './js/echarts-map',
+	            'echarts/chart/line': './js/echarts-map',
+	            'echarts/chart/map' : './js/echarts-map'
+	        }
+	    });
+	    
+        function initChart(legendData, xData, series) {
+		    // Step:4 require echarts and use it in the callback.
+		    // Step:4 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
+		    require(
+		        [
+		            'echarts',
+		            'echarts/chart/bar',
+		            'echarts/chart/line',
+		            'echarts/chart/map'
+		        ],
+		        function (ec) {
+		            //--- 折柱 ---
+		            myChart = ec.init(document.getElementById('chart'));
+		            myChart.setOption({
+		            	title : {
+		                    text: '服务器性能查询日报',
+		                    x: 'center'//TODO
+		                },
+		                tooltip : {
+		                    trigger: 'axis'
+		                },
+		                legend: {
+		                    data: legendData,//TODO
+		                    y: 'bottom'//TODO
+		                },
+		                toolbox: {
+		                    show : true,
+		                    feature : {
+		                        saveAsImage : {show: true},//TODO
+		                        magicType : {show: true, type: ['line', 'bar']}//TODO
+		                    }
+		                },
+		                calculable : true,
+		                grid : {
+		                    x: 70,
+		                    y: 30,
+		                    x2: 20,
+		                    y2: 70//TODO
+		                },
+		                xAxis : [
+		                    {
+		                        type : 'category',
+		                        data : xData
+		                    }
+		                ],
+		                yAxis : [
+		                    {
+		                        type : 'value',
+		                        axisLabel : {//TODO
+					                formatter: '{value} %'//TODO
+					            },//TODO
+		                        splitArea : {show : true}
+		                    }
+		                ],
+		                series : series
+		            });
+		        }
+		    );
+        }
+	</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+%{
+    // Eval fields tags
+    def fieldsHandler = [:]
+    if(_body) {
+        _body.setProperty('fieldsHandler', fieldsHandler);
+}%
+        #{doBody as:'skip' /}
+%{
+    }
+}%
+<div class="table-info">
+<table class="table table-bordered table-striped" style="margin-bottom: 0;" >
+    <thead>
+        <tr>
+        %{ if(_fields) { }%
+            %{ _fields.each() { }%
+            <th>
+                %{ if(!_sort || _sort.contains(it)) { }%
+                <a class="${_caller.orderBy == it ? (_caller.order == 'DESC' ? 'crudSortedDesc' : 'crudSortedAsc') : ''}" href="@{list().remove('page').add('search', params.search).add('orderBy', it).add('order', (_caller.orderBy == it && _caller.order == 'ASC' ? 'DESC' : 'ASC'))}">
+                    &{it}
+                </a>
+                %{ } else { }%
+                    &{it}
+                %{ } }%
+            </th>
+            %{ } }%
+        %{ } else { }%
+            <th>
+                <a class="${_caller.order == 'DESC' ? 'crudSortedDesc' : 'crudSortedAsc'}" href="@{list().remove('page').add('search', params.search).add('order', (_caller.order == 'DESC' ? 'ASC' : 'DESC'))}">
+                    &{_caller.type.name}
+                </a>
+            </th>
+        %{ } }%
+        </tr>
+    </thead>
+    %{ _caller.objects.eachWithIndex() { object, k -> }%
+    <tr class="${k % 2 ? 'even' : 'odd'}">
+        %{ if(_fields) { }%
+            %{ _fields.eachWithIndex() { field, i -> }%
+            <td>
+                %{ if(fieldsHandler[field]) { }%
+                    %{
+                        def handler = fieldsHandler[field];
+                        handler.setProperty('object', object);
+                    }%
+                    #{doBody body:handler /}
+                    %{
+                        handler.setProperty('object', null);
+                    }%
+                %{ } else { }%
+                    %{ if(i == 0) { }%
+                        <a href="@{show(object._key())}">${object[field]?.toString()?.escape()?.raw() ?: '(no value)'}</a>
+                    %{ } else { }%
+                        %{ if(_caller.type.getField(field).type == 'file') { }%
+                            %{ if(object[field]) { }%
+                                <a class="currentAttachment" href="@{attachment(object.id, field)}">${object[field].filename} (${object[field].get().size().formatSize()})</a>
+                             %{ } else { }%
+                                
+                             %{ } }%
+                         %{ } else if(_caller.type.getField(field).type == 'relation') { }%
+                            %{ if(object[field]) { }%
+                                ${object[field]?.name}
+                             %{ } else { }%
+                                
+                             %{ } }%
+                        %{ } else { }%
+                            ${object[field]?.escape()?.raw()}
+                        %{ } }%
+                    %{ } }%
+                %{ } }%
+            </td>
+            %{ } }%
+        %{ } else { }%
+            %{ if(fieldsHandler['default']) { }%
+                %{
+                    def handler = fieldsHandler['default'];
+                    handler.setProperty('object', object);
+                }%
+                #{doBody body:handler /}
+            %{ } else { }%
+                <td>
+                    <a href="@{show(object._key())}">${object.toString()?.escape()?.raw() ?: '(no value)'}</a>
+                </td>
+            %{ } }%
+        %{ } }%
+    </tr>
+    %{ } }%
+</table>
+
+<script type="text/javascript">
+//<!--
+//$('table').dataTable();
+$('table').dataTable({
+			"destroy":true,
+			"oLanguage":{
+                "sProcessing":"&{'sProcessing'}",//处理中...
+    			"sLengthMenu":"&{'Display'} _MENU_ &{'Option'}&{'Result'}",//显示 _MENU_ 项结果
+    			"sZeroRecords":"&{'NoMatchingResults'}",//没有匹配的结果
+    			"sInfo":"&{'Display'}&{'Article'} _START_ &{'To'} _END_ &{'Option'}&{'Result'},&{'Total'} _TOTAL_ &{'Option'}",//显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项
+    			"sInfoEmpty":"&{'Display'}&{'Article'} 0 &{'To'} 0 &{'Option'}&{'Result'},&{'Total'} 0 &{'Option'}",//显示第 0 至 0 项结果，共 0 项
+    			"sInfoFiltered":"(由 _MAX_ 项结果过滤)",
+    			"sSearch":"&{'Search'} ",//搜索:
+    			"sEmptyTable":"&{'DataInTheTableIsEmpty'}",//表中数据为空
+    			"oPaginate":{
+        			"sFirst":"&{'IndexPage'}",//首页
+        			"sPrevious":"&{'UpPage'}",//上页
+        			"sNext":"&{'NextPage'}",//下页
+        			"sLast":"&{'LastPage'}"//末页
+    			}
+            }
+		});
+//$("[href='/orders/list?order=ASC&orderBy=SYS_NAME']").parent().parent().width(1);//.height(100)
+$('table .dataTables_filter input').attr('placeholder', 'Search...');
+
+$('.dataTables_length>label>.form-control').select2().change(function(){
+    $(this).valid();
+});
+//-->
+</script>
+</div>

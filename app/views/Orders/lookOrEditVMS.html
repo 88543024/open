@@ -1,0 +1,217 @@
+#{extends 'main.html' /}
+#{set title:'' /}
+<script type="text/javascript" language="javascript" src="@{'/public/javascripts/My97DatePicker/WdatePicker.js'}"></script>
+#{if objs!=null && objs.size()>0}
+<form id = "ObjsVMS" class="form form-horizontal validate-form"  action="@{batchManual()}" encType="multipart/form-data" method="post" accept-charset="utf-8">
+<input type="hidden" value="${tWorkOrderId}" name="tWorkOrderId" class="form-control">
+#{list items:objs, as:'obj'}
+	<div class="row">
+		<div class="col-md-4">
+			<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'count'}</label>
+				<div class="controls col-md-8">
+					<input type="text" value="${obj.count}" name="${obj.id}_count" class="form-control">
+					<input type="hidden" value="${obj.ELEMENT_ID}" name="ELEMENT_ID" class="form-control">
+					<input type="hidden" value="${obj.id}" name="msWorkOrderId" class="form-control">
+					<input type="hidden" value="" id="submitType" name="submitType" class="form-control">
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'memory'}</label>
+				<div class="controls col-md-8">
+					#{select obj.id+'_memory', items:memoryList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', value:obj.memory, class:'form-control', id:'memory' /}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'os'}</label>
+				<div class="controls col-md-8">
+					#{select obj.id+'_os', items:osPatchList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', value:obj.os, class:'form-control', id:'os' }
+					#{/select}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'dbsoft'}</label>
+				<div class="controls col-md-8">
+					#{select obj.id+'_dbsoft', items:dbPatchList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', value:obj.dbsoft, class:'form-control', id:'dbsoft' }
+					#{/select}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'middleware'}</label>
+				<div class="controls col-md-8">
+					#{select obj.id+'_middleware', items:webPatchList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', value:obj.middleware, class:'form-control', id:'middleware' }
+					#{/select}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'ROOT_VG'}</label>
+				<div class="controls col-md-8">
+					<input type="text" value="100G" name="${obj.id}_disksize" class="form-control" readonly="readonly">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+	    <div class="col-md-4">
+		<div class="form-group no-margin-hr">
+				<!--<label class="control-label col-md-4">&{'disksize'}(GB)</label>-->
+				<label class="control-label col-md-4">&{'DATA_VG'}</label>
+				<div class="controls col-md-8">
+					<input type="text" value="${obj.disksize}" name="" class="form-control" readonly="readonly">
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'vcpu'}</label>
+				<div class="controls col-md-8">
+					#{select obj.id+'_vcpu', items:cpuList, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', value:obj.vcpu, class:'form-control', id:'vcpu' /}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'status'}</label>
+				<div class="controls col-md-8">
+					
+					<!--<input type="text" value="${obj.status}" name="status" class="form-control" disabled>  -->
+					#{if obj.status == '1' || obj.status == '' || obj.status ==null }
+						<input type="text" value="工单未处理" name="status" class="form-control" disabled>
+					#{/if}
+					#{elseif obj.status == '2'}
+						<input type="text" value="虚拟机创建中" name="status" class="form-control" disabled>
+					#{/elseif}
+					#{elseif obj.status == '3'}
+						<input type="text" value="虚拟机创建完成" name="status" class="form-control" disabled>
+					#{/elseif}
+					#{elseif obj.status == '4'}
+						<input type="text" value="虚拟机创建失败" name="status" class="form-control" disabled>
+					#{/elseif}
+					#{elseif obj.status == '5'}
+						<input type="text" value="虚拟机调整中" name="status" class="form-control" disabled>
+					#{/elseif}
+					#{elseif obj.status == '6'}
+						<input type="text" value="虚拟机调整完成" name="status" class="form-control" disabled>
+					#{/elseif}
+					#{elseif obj.status == '7'}
+						<input type="text" value="虚拟机调整失败" name="status" class="form-control" disabled>
+					#{/elseif}
+					#{elseif obj.status == '8'}
+						<input type="text" value="手工操作完成" name="status" class="form-control" disabled>
+					#{/elseif}
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4">
+			<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'ip'}</label>
+				<div class="controls col-md-8">
+					<input type="text" value="自动生成" class="form-control" disabled>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'IMAGE'}</label>
+				<div class="controls col-md-8">
+					#{select obj.id+'_imageId', items:imageList, valueProperty:'image_id', labelProperty:'imageName', class:'form-control', id:'imageId' }
+					#{/select}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group no-margin-hr">
+				<label class="control-label col-md-4">&{'NETWORKSEGMENT'}</label>
+				<div class="controls col-md-8">
+					#{select obj.id+'_segment', items:networkSegment, valueProperty:'VALUE', labelProperty:'DISPLAY_VALUE', class:'form-control', id:'segment' }
+					#{/select}
+				</div>
+			</div>
+		</div>
+	</div>
+<hr/>
+#{/list}
+</form>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3" style="padding-left: 20%;">
+					#{if object.APPLY_TYPE == '资源申请总部' ||object.APPLY_TYPE == '资源申请企业'}
+						<button type="submit" class="btn btn-primary btn-sm" name="_save" onclick="batchManual(1)"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'BATCH_APPLICATION'}</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!-- 申请 -->
+			    		<!--<button type="button" class="btn btn-primary btn-sm" name="_save" onclick="batchManual(5)"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'CANCEL_BUTTON'}</button> 取消 -->
+			    		<button type="button" class="btn btn-primary btn-sm" name="_save" onclick="javascript:window.history.go(-1);"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'CANCEL_BUTTON'}</button>
+					#{/if}
+					#{elseif object.APPLY_TYPE == '资源追加总部'||object.APPLY_TYPE == '资源追加企业'}
+						<button type="button" class="btn btn-primary btn-sm" name="_save" onclick="batchManual(2)"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'BATCH_APPLICATION'}</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!-- 追加 -->
+			    		<!--<button type="button" class="btn btn-primary btn-sm" name="_save" onclick="batchManual(5)"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'CANCEL_BUTTON'}</button> 取消 -->
+			    		<button type="button" class="btn btn-primary btn-sm" name="_save" onclick="javascript:window.history.go(-1);"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'CANCEL_BUTTON'}</button>
+					#{/elseif}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+#{/if}
+
+#{if objs==null || objs.size() == 0}
+<div align="center" style="margin-top:200px">
+   <div class="row">
+	<div class="col-sm-12">
+		<div class="form-actions" style="margin-bottom: 0">
+			虚拟机已经创建，没有可执行的虚拟机
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+			    	<button  type="button" onclick="javascript:window.history.go(-1);" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'RETURN_BUTTON'}</button>&nbsp;&nbsp;<!-- 返回 -->
+				</div>
+			</div>
+		 </div>
+		</div>
+	</div>
+</div>
+#{/if}
+
+<script type="text/javascript">
+function batchManual(type){
+      document.getElementById('ObjsVMS').submit();
+  }
+	/*function batchManual(type){
+	    alert('申请');
+	  	$('#ObjsVMS').
+	 alert($('#ObjsVMS').serialize());
+		$.ajax({
+			 type : 'POST',
+             url : '@{batchManual()}',
+             data:$('#ObjsVMS').serialize(),// 你的formid
+		 data : {
+                },
+             dataType : 'json',
+             async : false,
+		 	 success: function(data){
+       			if(data==true){
+       				alert("刷新成功");
+       				 window.location.reload();
+       			}else {
+       				alert("刷新失败");
+       			}
+     			}
+      	});
+}*/
+</script>
+

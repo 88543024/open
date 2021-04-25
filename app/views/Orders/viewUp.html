@@ -1,0 +1,240 @@
+#{extends 'main.html' /}
+#{set title:'' /}
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'ELEMENT_ID'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.ELEMENT_ID}" class="form-control" readonly="readonly">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'PROJECT_NAME'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${tobject.PROJECT_NAME}" class="form-control" readonly="readonly">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'count'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.count}" name="count" class="form-control" readonly="readonly">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'memory'}</label>
+			<div class="controls col-md-8">
+					<input type="text" value="${object.memory}" name="memory" class="form-control" readonly="readonly">
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'os'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.os}" name="os" class="form-control" readonly="readonly">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'dbsoft'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.dbsoft}" name="dbsoft" class="form-control" readonly="readonly">
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'middleware'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.middleware}" name="middleware" class="form-control" readonly="readonly">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'disksize'}(GB)</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.disksize}" name="disksize" class="form-control" readonly="readonly">
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'vcpu'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.vcpu}" name="vcpu" class="form-control" readonly="readonly">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'status'}</label>
+			<div class="controls col-md-8">
+				
+				<!--<input type="text" value="${object.status}" name="status" class="form-control" readonly="readonly">  -->
+				#{if object.status == '1' || object.status == '' || object.status ==null }
+					<input type="text" value="工单未处理" name="status" class="form-control" readonly="readonly">
+				#{/if}
+				#{elseif object.status == '2'}
+					<input type="text" value="虚拟机创建中" name="status" class="form-control" readonly="readonly">
+				#{/elseif}
+				#{elseif object.status == '3'}
+					<input type="text" value="虚拟机创建完成" name="status" class="form-control" readonly="readonly">
+				#{/elseif}
+				#{elseif object.status == '4'}
+					<input type="text" value="虚拟机创建失败" name="status" class="form-control" readonly="readonly">
+				#{/elseif}
+				#{elseif object.status == '5'}
+					<input type="text" value="虚拟机调整中" name="status" class="form-control" readonly="readonly">
+				#{/elseif}
+				#{elseif object.status == '6'}
+					<input type="text" value="虚拟机调整完成" name="status" class="form-control" readonly="readonly">
+				#{/elseif}
+				#{elseif object.status == '7'}
+					<input type="text" value="虚拟机调整失败" name="status" class="form-control" readonly="readonly">
+				#{/elseif}
+				#{elseif object.status == '8'}
+					<input type="text" value="手工操作完成" name="status" class="form-control" readonly="readonly">
+				#{/elseif}
+			</div>
+		</div>
+	</div>
+</div>
+<!--<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'ip'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="自动生成" class="form-control" disabled>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'IMAGE'}</label>
+			<div class="controls col-md-8">
+				<input type="text" value="${object.os}" name="os" class="form-control" readonly="readonly">
+			</div>
+		</div>
+	</div>
+</div>
+-->
+ <div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'hostname'}</label>
+			<div class="controls col-md-8">
+				<input id="hostname" type="text" value="${object.hostname}" class="form-control">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'ipAdderss'}</label>
+			<div class="controls col-md-8">
+				<input id="ip" type="text" value="${object.ip}" class="form-control" >
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'username'}</label>
+			<div class="controls col-md-8">
+				<input id="username" type="text" value="${object.username}" class="form-control">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group no-margin-hr">
+			<label class="control-label col-md-4">&{'passWord'}</label>
+			<div class="controls col-md-8">
+				<input id="rootPas" type="text" value="${object.password}" class="form-control" >
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="form-actions" style="margin-bottom: 0">
+			<div class="row">
+				<div class="col-sm-9 col-sm-offset-3">
+					<button type="submit" onclick="saveMSPass(${object.id});" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;保存</button>&nbsp;&nbsp;
+			    	<button type="submit" onclick="javascript:window.history.go(-1);" class="btn btn-primary btn-sm" name="_save"><i class="fa fa-save"></i>&nbsp;&nbsp;&{'RETURN_BUTTON'}</button>&nbsp;&nbsp;<!-- 返回 -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script language="javascript">
+
+//发送虚拟机信息
+function saveMSPass(id){
+	var rootPas = $("#rootPas").val();
+	var ip = $("#ip").val();
+	var username = $("#username").val();
+	var hostname = $("#hostname").val();
+	//alert(hostname);
+	/*if(wkId==null||wkId==''){
+		alert("工单ID不能为空");
+		return false;
+	 }else */
+	 if(id == null || id==''){
+	 	alert("资源ID不能为空");
+		return false;
+	 }else if(rootPas == null || rootPas==''){
+	    alert("虚拟机密码不能为空");
+		return false;
+	 }else{
+		$.ajax({
+				type : 'POST',
+                url : '@{saveMSPass()}',
+			 	data : {
+			 		id: id,
+			 		rootPas: rootPas,
+		 			username: username,
+	 				hostname: hostname,
+	 				ip: ip
+			 	},
+                dataType : 'json',
+                async : false,
+			 	success: function(data){
+			 		if(data){
+        				alert("保存成功!!!");
+        				return false;
+        			}else{
+        				alert("保存成功!!!");
+        				return false;
+        			}
+			 	}
+		
+		});
+	}
+}
+</script>
