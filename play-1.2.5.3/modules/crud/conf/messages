@@ -1,0 +1,46 @@
+# Default CRUD messages
+# ~~~~~~
+
+crud.title=管理员
+crud.home=主页
+crud.blank=新建
+crud.index.title=选择需要编辑的对象
+crud.index.objectType=对象类型
+crud.index.action=
+crud.index.add=Add
+crud.add=添加&{%s}
+crud.list.title=&{%s}
+crud.list.size=%d &{%s}
+crud.list.totalSize=共计%d
+crud.pagination.previous=« 前一页
+crud.pagination.next=下一页 »
+crud.pagination.last=最后一页 »»
+crud.pagination.first=«« 第一页
+crud.show.title=编辑&{%s}
+crud.save=保存
+crud.saveAndContinue=保存并继续编辑
+crud.cancel=取消
+crud.hasErrors=請先纠正错误
+crud.blank.title=添加&{%s}
+crud.saveAndAddAnother=保存并添加另一个
+crud.delete=删除&{%s}
+crud.created=&{%s}已经创建
+crud.saved=&{%s}已经保存
+crud.deleted=&{%s}已经删除
+crud.delete.error=不能删除这个对象
+crud.search=搜索
+crud.none=(空)
+crud.selectValue=(請选择一个值)
+
+crud.help.required=必填字段.
+crud.help.minlength=最小长度：%d.
+crud.help.maxlength=最大长度： %d.
+crud.help.email=有效的邮箱的地址.
+crud.help.dateformat=格式：&{%s}.
+crud.help.numeric=数字.
+crud.help.min=必须大于：%d.
+crud.help.future=In the future.
+crud.help.past=In the past.
+crud.help.after=在%s之后.
+crud.help.before=在%s之前.
+crud.help.range=在%d和%d之间
