@@ -81,7 +81,7 @@ public class Schedulings extends CRUD implements Job{
 			//do somethings...... TODO
 			Logger.info("X86Performance Synchronizing");
 		}else if(type!=null&&"USERINFO".equals(type)){
-			Logger.info("AD UserInfo Synchronizing");
+			/*Logger.info("AD UserInfo Synchronizing");
 			try {
 				String user = "SINOPEC\\YT-Cloud-Test";
 				String pwd = "YT-Cloud-Test";
@@ -97,7 +97,7 @@ public class Schedulings extends CRUD implements Job{
 			} catch (Exception e) {
 				Logger.info("AD UserInfo Synchronize Failed!");
 				e.printStackTrace();
-			}
+			}*/
 		}else if(type!=null&&"TSAMINFO".equals(type)){
 			 Logger.info("TSAMINFO get Start");
 			try{
@@ -403,7 +403,7 @@ public class Schedulings extends CRUD implements Job{
 	public static void manualUserInfoSynchronous(){
 		boolean flag = false;//接口返回值
 		Logger.info("AD tsamInfo Synchronizing");
-		try {
+		/*try {
 			String user = "SINOPEC\\YT-Cloud-Test";
 			String pwd = "YT-Cloud-Test";
 			String[] ips = { "10.246.144.11", "10.246.144.12", "10.246.144.13" };
@@ -420,7 +420,7 @@ public class Schedulings extends CRUD implements Job{
 		} catch (Exception e) {
 			Logger.info("AD UserInfo Synchronize Failed!");
 			e.printStackTrace();
-		}
+		}*/
 		renderJSON(flag);
 	}
 	

@@ -17,13 +17,7 @@ import play.db.jpa.Model;
 
 /**
  * 
- * Project Name：istorm_v2.0 
- * Class Name：TConfigReport2KPI 
- * Class Desc： 
- * Author：Fred 
- * Create Date：2012-4-26 上午11:55:37 
- * Last Modified By：Fred 
- * Last Modified：2012-4-26 上午11:55:37 
+ * Project Name:lunwen 
  * Remarks： 
  * @version  
  * 

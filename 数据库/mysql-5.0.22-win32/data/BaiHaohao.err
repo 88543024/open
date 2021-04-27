@@ -1,0 +1,118 @@
+210401 20:59:02  InnoDB: Database was not shut down normally!
+InnoDB: Starting crash recovery.
+InnoDB: Reading tablespace information from the .ibd files...
+InnoDB: Restoring possible half-written data pages from the doublewrite
+InnoDB: buffer...
+210401 20:59:02  InnoDB: Starting log scan based on checkpoint at
+InnoDB: log sequence number 0 6617129.
+InnoDB: Doing recovery: scanned up to log sequence number 0 6617129
+210401 20:59:02  InnoDB: Started; log sequence number 0 6617129
+210401 20:59:02 [Note] mysqld: ready for connections.
+Version: '5.0.22-community'  socket: ''  port: 3306  MySQL Community Edition (GPL)
+210407 20:58:40  InnoDB: Database was not shut down normally!
+InnoDB: Starting crash recovery.
+InnoDB: Reading tablespace information from the .ibd files...
+InnoDB: Restoring possible half-written data pages from the doublewrite
+InnoDB: buffer...
+210407 20:58:40  InnoDB: Starting log scan based on checkpoint at
+InnoDB: log sequence number 0 6634604.
+InnoDB: Doing recovery: scanned up to log sequence number 0 6634604
+210407 20:58:40  InnoDB: Started; log sequence number 0 6634604
+210407 20:58:40 [Note] mysqld: ready for connections.
+Version: '5.0.22-community'  socket: ''  port: 3306  MySQL Community Edition (GPL)
+210411 18:29:39  InnoDB: Database was not shut down normally!
+InnoDB: Starting crash recovery.
+InnoDB: Reading tablespace information from the .ibd files...
+InnoDB: Restoring possible half-written data pages from the doublewrite
+InnoDB: buffer...
+210411 18:29:39  InnoDB: Starting log scan based on checkpoint at
+InnoDB: log sequence number 0 6634624.
+InnoDB: Doing recovery: scanned up to log sequence number 0 6634624
+210411 18:29:39  InnoDB: Started; log sequence number 0 6634624
+210411 18:29:40 [Note] mysqld: ready for connections.
+Version: '5.0.22-community'  socket: ''  port: 3306  MySQL Community Edition (GPL)
+210413 10:08:31  InnoDB: Database was not shut down normally!
+InnoDB: Starting crash recovery.
+InnoDB: Reading tablespace information from the .ibd files...
+InnoDB: Restoring possible half-written data pages from the doublewrite
+InnoDB: buffer...
+210413 10:08:31  InnoDB: Starting log scan based on checkpoint at
+InnoDB: log sequence number 0 6634634.
+InnoDB: Doing recovery: scanned up to log sequence number 0 6634634
+210413 10:08:31  InnoDB: Started; log sequence number 0 6634634
+210413 10:08:31 [Note] mysqld: ready for connections.
+Version: '5.0.22-community'  socket: ''  port: 3306  MySQL Community Edition (GPL)
+210414 10:33:49  InnoDB: Operating system error number 32 in a file operation.
+InnoDB: Some operating system error numbers are described at
+InnoDB: http://dev.mysql.com/doc/mysql/en/Operating_System_error_codes.html
+InnoDB: File name .\ibdata1
+InnoDB: File operation call: 'open'.
+InnoDB: Cannot continue operation.
+210418 20:53:53  InnoDB: Database was not shut down normally!
+InnoDB: Starting crash recovery.
+InnoDB: Reading tablespace information from the .ibd files...
+InnoDB: Restoring possible half-written data pages from the doublewrite
+InnoDB: buffer...
+210418 20:53:53  InnoDB: Starting log scan based on checkpoint at
+InnoDB: log sequence number 0 4213895494.
+InnoDB: Doing recovery: scanned up to log sequence number 0 4213895494
+210418 20:53:53  InnoDB: Started; log sequence number 0 4213895494
+210418 20:53:53 [Note] mysqld: ready for connections.
+Version: '5.0.22-community'  socket: ''  port: 3306  MySQL Community Edition (GPL)
+210423  9:19:30  InnoDB: Operating system error number 32 in a file operation.
+InnoDB: Some operating system error numbers are described at
+InnoDB: http://dev.mysql.com/doc/mysql/en/Operating_System_error_codes.html
+InnoDB: File name .\ibdata1
+InnoDB: File operation call: 'open'.
+InnoDB: Cannot continue operation.
+210423  9:19:39  InnoDB: Operating system error number 32 in a file operation.
+InnoDB: Some operating system error numbers are described at
+InnoDB: http://dev.mysql.com/doc/mysql/en/Operating_System_error_codes.html
+InnoDB: File name .\ibdata1
+InnoDB: File operation call: 'open'.
+InnoDB: Cannot continue operation.
+210423  9:19:41  InnoDB: Operating system error number 32 in a file operation.
+InnoDB: Some operating system error numbers are described at
+InnoDB: http://dev.mysql.com/doc/mysql/en/Operating_System_error_codes.html
+InnoDB: File name .\ibdata1
+InnoDB: File operation call: 'open'.
+InnoDB: Cannot continue operation.
+210423 22:24:41  InnoDB: Database was not shut down normally!
+InnoDB: Starting crash recovery.
+InnoDB: Reading tablespace information from the .ibd files...
+InnoDB: Restoring possible half-written data pages from the doublewrite
+InnoDB: buffer...
+210423 22:24:41  InnoDB: Starting log scan based on checkpoint at
+InnoDB: log sequence number 0 4218289352.
+InnoDB: Doing recovery: scanned up to log sequence number 0 4218289352
+210423 22:24:41  InnoDB: Started; log sequence number 0 4218289352
+210423 22:24:41 [Note] mysqld: ready for connections.
+Version: '5.0.22-community'  socket: ''  port: 3306  MySQL Community Edition (GPL)
+210427 10:38:47  InnoDB: Operating system error number 32 in a file operation.
+InnoDB: Some operating system error numbers are described at
+InnoDB: http://dev.mysql.com/doc/mysql/en/Operating_System_error_codes.html
+InnoDB: File name .\ibdata1
+InnoDB: File operation call: 'open'.
+InnoDB: Cannot continue operation.
+InnoDB: The first specified data file .\ibdata1 did not exist:
+InnoDB: a new database to be created!
+210427 11:26:42  InnoDB: Setting file .\ibdata1 size to 10 MB
+InnoDB: Database physically writes the file full: wait...
+InnoDB: Error: all log files must be created at the same time.
+InnoDB: All log files must be created also in database creation.
+InnoDB: If you want bigger or smaller log files, shut down the
+InnoDB: database and make sure there were no errors in shutdown.
+InnoDB: Then delete the existing log files. Edit the .cnf file
+InnoDB: and start the database again.
+210427 11:26:42 [Note] mysqld: ready for connections.
+Version: '5.0.22-community'  socket: ''  port: 3306  MySQL Community Edition (GPL)
+210427 11:27:15 [ERROR] mysqld: Incorrect information in file: '.\lunwen\resourceuseview.frm'
+210427 11:27:15 [ERROR] mysqld: Incorrect information in file: '.\lunwen\resourceuseview.frm'
+210427 11:27:15 [ERROR] mysqld: Incorrect information in file: '.\lunwen\resourceuseview.frm'
+210427 11:27:15 [ERROR] mysqld: Incorrect information in file: '.\lunwen\resourceuseview.frm'
+210427 11:27:17 [ERROR] mysqld: Incorrect information in file: '.\lunwen\t_config_kpi_query.frm'
+210427 11:27:17 [ERROR] mysqld: Incorrect information in file: '.\lunwen\t_config_kpi_query.frm'
+210427 11:27:17 [ERROR] mysqld: Incorrect information in file: '.\lunwen\t_config_kpi_query.frm'
+210427 11:27:17 [ERROR] mysqld: Incorrect information in file: '.\lunwen\t_config_kpi_query.frm'
+210427 11:27:39 [ERROR] mysqld: Incorrect information in file: '.\lunwen\t_res_vm.frm'
+210427 11:27:39 [ERROR] mysqld: Incorrect information in file: '.\lunwen\t_res_vm.frm'

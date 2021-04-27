@@ -8,9 +8,7 @@ import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import controllers.Schedulings;
 
-/**
- * Created by Humin on 9/17/14.
- */
+
 @OnApplicationStart
 public class Bootstrap extends Job{
 	public static final String USERINFO = "USERINFO";
@@ -27,7 +25,7 @@ public class Bootstrap extends Job{
         this.initSuperManagerData();
         this.initData();
         this.initSynch();
-        Logger.info("IStorM Cloud init successful...");
+        Logger.info("lunwen init successful...");
     }
     
     private void initSuperManagerData(){

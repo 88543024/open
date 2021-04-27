@@ -1,0 +1,11 @@
+******************************************
+windows环境下  mysql  安装使用
+author: xubin
+version: v1
+date: 2008-05-06
+******************************************
+  1.将资料软件包中的 mysql-5.0.22-win32.rar 文件解压至 D:\soft\mysql 目录中
+  2.进入解压后的文件目录，进入bin目录，将mysql_start.bat文件发送至桌面
+    将mysql_open.bat文件发送到桌面
+  3.双击 mysql_start.bat 文件起动 mysql 中文服务
+  4.双击 mysql_open.bat 文件找开mysql数据输入密码  1234 进入mysql数据库  

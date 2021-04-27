@@ -1,0 +1,1 @@
+mysqld --character-set-server=GBK
